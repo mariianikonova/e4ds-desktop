@@ -1,5 +1,5 @@
 Ext.define('E4dsDesk.controller.OnlineUsers', {
-	extend: 'E4dsDesk.controller.Module',
+	extend: 'Ext.app.Controller',
 
 	views: [ 'OnlineUsers' ],
 
@@ -7,9 +7,13 @@ Ext.define('E4dsDesk.controller.OnlineUsers', {
 		ref: 'onlineUsers',
 		selector: 'onlineusers'
 	} ],
-
-	launch: function() {
-		this.getDesktop().addWindow(this.getOnlineUsersView());
+	
+	init: function() {
+		
+	},
+	
+	getMainViewClass: function() {
+		return this.getOnlineUsersView();
 	}
 
 });

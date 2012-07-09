@@ -24,9 +24,23 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
         me.windows = new Ext.util.MixedCollection();
         
         me.control({
-        	'taskbar': {
-        		contextmenu: this.onTaskBarContextmenu
+        	'desktop': {
+        		contextmenu: me.onDesktopContextmenu
         	},
+        	'#desktop-contextmenu': {
+        		beforeshow: me.onDesktopContextmenuBeforeShow
+        	},
+            '#desktop-contextmenu > menuitem[actionType=tile]': {
+                click: me.onDesktopContextmenuTile
+            },        	
+            '#desktop-contextmenu > menuitem[actionType=cascade]': {
+                click: me.onDesktopContextmenuCascade
+            },              	
+        	
+        	
+        	'taskbar': {
+        		contextmenu: me.onWindowContextmenu
+        	},        	
             '#windowbar-contextmenu': {
                 beforeshow: me.onWindowMenuBeforeShow,
                 hide: me.onWindowMenuHide
@@ -54,7 +68,7 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
     //------------------------------------------------------
     // Window contextmenu handlers    
     
-    onTaskBarContextmenu: function(target) {
+    onWindowContextmenu: function(target) {
         var btn = this.getWindowBar().getChildByElement(target) || null;
         var contextMenu = this.getWindowBar().contextMenu;
         
@@ -77,9 +91,7 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
     },
     
     onWindowMenuRestore: function() {
-        var me  = this,
-            win = me.getWindowBarContextMenu().currentWindow;
-        me.restoreWindow(win);
+        this.restoreWindow(this.getWindowBarContextMenu().currentWindow);
     },
 
     onWindowMenuMinimize: function() {
@@ -93,19 +105,18 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
     onWindowMenuClose: function() {
         this.getWindowBarContextMenu().currentWindow.close();
     },
-
     
     onShortcutItemClick: function(view, record) {
-    	this.onClickModuleHandler(record.data.id);
+    	var controller = this.application.getController(record.data.id);
+    	
+        if (!controller.isInit) {
+        	controller.init(this.application);
+        	controller.isInit = true
+        }
+        
+        this.addWindow(controller.getMainViewClass());
     },
 
-    onClickModuleHandler: function(cntrl) {
-        var cn = this.application.getController(cntrl);
-        if(!cn.isInit) {
-        	cn.init(this.application, this);
-        }
-        cn.launch();
-    },
     
     addTaskButton: function(win) {
         var config = {
@@ -167,39 +178,38 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
     },
 
     
+    onDesktopContextmenu: function(e) {
+        this.getDesktop().contextMenu.showAt(e.getXY());
+    },
+    
+    onDesktopContextmenuBeforeShow: function(menu) {
+        var count = this.windows.getCount();
+
+        menu.items.each(function (item) {
+            var min = item.minWindows || 0;
+            item.setDisabled(count < min);
+        });
+    },    
+    
     // ------------------------------------------------------
     // Window management methods
 
-    cascadeWindows: function() {
-        var x = 0, y = 0,
-            zmgr = this.getDesktopZIndexManager();
-
-        zmgr.eachBottomUp(function(win) {
-            if (win.isWindow && win.isVisible() && !win.maximized) {
-                win.setPosition(x, y);
-                x += 20;
-                y += 20;
-            }
-        });
-    },
-    
     addWindow: function(viewClass) {
 
-        var config = {
-                stateful: false,
-                constrainHeader: true,
-                minimizable: true,
-                maximizable: true
-            };
-
-    	var win = new viewClass(config);    	
     	var me = this;    	    	
-        var exWin = me.windows.get(win.xtype);
-
+        var exWin = me.windows.get(viewClass.xtype);
+              
         if (exWin) {
             return exWin;
         }
 
+    	var win = new viewClass({
+            stateful: false,
+            constrainHeader: true,
+            minimizable: true,
+            maximizable: true
+        });
+        
         me.getDesktop().add(win);        
         me.windows.add(win.xtype, win);
 
@@ -274,6 +284,45 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
         return this.windows.get(id);
     },
 
+    
+    onDesktopContextmenuTile: function() {
+        var me = this, availWidth = me.getDesktop().getWidth(true);
+        
+        var x = me.xTickSize, y = me.yTickSize, nextY = y;
+
+        me.windows.each(function(win) {
+            if (win.isVisible() && !win.maximized) {
+                var w = win.el.getWidth();
+
+                // Wrap to next row if we are not at the line start and this Window will
+                // go off the end
+                if (x > me.xTickSize && x + w > availWidth) {
+                    x = me.xTickSize;
+                    y = nextY;
+                }
+
+                win.setPosition(x, y);
+                x += w + me.xTickSize;
+                nextY = Math.max(nextY, y + win.el.getHeight() + me.yTickSize);
+            }
+        });
+    },    
+    
+    onDesktopContextmenuCascade: function() {
+        var x = 0, y = 0,
+            zmgr = this.getDesktopZIndexManager();
+
+        zmgr.eachBottomUp(function(win) {
+            if (win.isWindow && win.isVisible() && !win.maximized) {
+                win.setPosition(x, y);
+                x += 20;
+                y += 20;
+            }
+        });
+    },
+        
+    
+    
     minimizeWindow: function(win) {
         win.minimized = true;
         win.hide();
@@ -297,27 +346,7 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
         return win;
     },
 
-    tileWindows: function() {
-        var me = this, availWidth = me.body.getWidth(true);
-        var x = me.xTickSize, y = me.yTickSize, nextY = y;
 
-        me.windows.each(function(win) {
-            if (win.isVisible() && !win.maximized) {
-                var w = win.el.getWidth();
-
-                // Wrap to next row if we are not at the line start and this Window will
-                // go off the end
-                if (x > me.xTickSize && x + w > availWidth) {
-                    x = me.xTickSize;
-                    y = nextY;
-                }
-
-                win.setPosition(x, y);
-                x += w + me.xTickSize;
-                nextY = Math.max(nextY, y + win.el.getHeight() + me.yTickSize);
-            }
-        });
-    },
 
     updateActiveWindow: function () {
         var me = this, activeWindow = me.getActiveWindow(), last = me.lastActiveWindow;

@@ -8,7 +8,7 @@ Ext.define('E4dsDesk.view.Desktop', {
     html: '&#160;',
     layout: 'fit',
     
-    initComponent: function() {
+    initComponent: function() {    	
     	this.dockedItems = [{
             xtype: 'taskbar',
             dock: 'bottom'
@@ -39,6 +39,26 @@ Ext.define('E4dsDesk.view.Desktop', {
             ]
         }];
         
+		this.addListener('contextmenu', function(e) {
+			e.stopEvent();
+			this.fireEvent("contextmenu", e)
+		}, this, {
+			element: 'el'
+		});
+		
+		this.contextMenu = Ext.create('Ext.menu.Menu', {
+			itemId: 'desktop-contextmenu',
+			items: [ {
+				text: 'Tile',
+				actionType: 'tile',
+				minWindows: 1
+			}, {
+				text: 'Cascade',
+				actionType: 'cascade',
+				minWindows: 1
+			}]
+		})
+    	
         this.callParent(arguments);
     }
 });
