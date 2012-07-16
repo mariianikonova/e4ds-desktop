@@ -1,13 +1,8 @@
 /*----------------------------------------------------
-    TaskBar
+    WindowBar
 */
 
-.ux-taskbar .x-toolbar {
-    background: transparent none;
-    border-color: transparent;
-}
-
-.x-ie6 .ux-taskbar .x-toolbar {
+.x-ie6 .ux-desktop-windowbar {
     border-color: #d3e1f1;
 }
 
@@ -16,16 +11,8 @@
     text-align: left !important;
 }
 
-.ux-taskbar .x-toolbar {
-    height: 28px;
-}
-
-.ux-taskbar {
-    height: 28px;
-    padding: 0;
-}
-
-.x-toolbar .x-toolbar {
+.ux-desktop-windowbar {
+    height: 22px;
     padding: 0;
 }
 

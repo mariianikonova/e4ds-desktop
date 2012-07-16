@@ -2,7 +2,7 @@ Ext.define('E4dsDesk.view.Desktop', {
     extend : 'Ext.panel.Panel',
     alias  : 'widget.desktop',    
     
-    requires: [ 'E4dsDesk.view.Wallpaper', 'E4dsDesk.view.TaskBar' ],
+    requires: [ 'E4dsDesk.view.Wallpaper', 'E4dsDesk.view.WindowBar' ],
     
     border: false,
     html: '&#160;',
@@ -10,8 +10,14 @@ Ext.define('E4dsDesk.view.Desktop', {
     
     initComponent: function() {    	
     	this.dockedItems = [{
-            xtype: 'taskbar',
+            xtype: 'windowbar',
             dock: 'bottom'
+        }, {
+        	xtype: 'toolbar',
+        	dock: 'top',
+        	items: [
+        	        'Menu', '->', 'Logout'
+        	]
         }];
         
     	this.items  = [{

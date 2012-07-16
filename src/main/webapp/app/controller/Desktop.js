@@ -6,9 +6,7 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
 
     refs: [
         { ref: 'desktop',       selector: 'desktop'},   
-        { ref: 'taskBar',       selector: 'taskbar'},
-        { ref: 'windowBar',     selector: 'taskbar #ux-desktop-windowbar'},
-        { ref: 'systemTray',    selector: 'taskbar #ux-desktop-systemtray'},
+        { ref: 'windowBar',     selector: 'windowbar'},
         { ref: 'windowBarContextMenu', selector: '#windowbar-contextmenu'},
         { ref: 'viewport',      selector: 'viewport'},
         { ref: 'wallpaper',     selector: 'wallpaper'},
@@ -36,9 +34,8 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
             '#desktop-contextmenu > menuitem[actionType=cascade]': {
                 click: me.onDesktopContextmenuCascade
             },              	
-        	
-        	
-        	'taskbar': {
+        	        	
+        	'windobar': {
         		contextmenu: me.onWindowContextmenu
         	},        	
             '#windowbar-contextmenu': {
