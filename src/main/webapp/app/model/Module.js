@@ -10,7 +10,10 @@ Ext.define('E4dsDesk.model.Module', {
 	}, {
 		name: 'iconCls',
 		type: 'string'
-	} ],
+	}, {
+		name: 'view',
+		type: 'string'
+	}],
 
 	proxy: {
 		type: 'direct',

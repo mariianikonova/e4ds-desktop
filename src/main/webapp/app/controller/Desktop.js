@@ -35,7 +35,7 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
                 click: me.onDesktopContextmenuCascade
             },              	
         	        	
-        	'windobar': {
+        	'windowbar': {
         		contextmenu: me.onWindowContextmenu
         	},        	
             '#windowbar-contextmenu': {
@@ -104,14 +104,14 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
     },
     
     onShortcutItemClick: function(view, record) {
-    	var controller = this.application.getController(record.data.id);
+    	var data = record.getData();
+    	var controller = this.application.getController(data.id);
     	
         if (!controller.isInit) {
         	controller.init(this.application);
         	controller.isInit = true
         }
-        
-        this.addWindow(controller.getMainViewClass());
+        this.addWindow(data.id, controller['get'+data.view+'View']());
     },
 
     
@@ -191,10 +191,10 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
     // ------------------------------------------------------
     // Window management methods
 
-    addWindow: function(viewClass) {
+    addWindow: function(winId, viewClass) {
 
     	var me = this;    	    	
-        var exWin = me.windows.get(viewClass.xtype);
+        var exWin = me.windows.get(winId);
               
         if (exWin) {
             return exWin;
@@ -208,7 +208,7 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
         });
         
         me.getDesktop().add(win);        
-        me.windows.add(win.xtype, win);
+        me.windows.add(winId, win);
 
         win.taskButton = me.addTaskButton(win);
         win.animateTarget = win.taskButton.el;
@@ -235,9 +235,8 @@ Ext.define('E4dsDesk.controller.Desktop' ,{
             single: true
         });
 
-        // replace normal window close w/fadeOut animation:
         win.doClose = function ()  {
-            win.doClose = Ext.emptyFn; // dblclick can call again...
+            win.doClose = Ext.emptyFn; 
             win.el.disableShadow();
             win.el.fadeOut({
                 listeners: {

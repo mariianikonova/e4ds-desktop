@@ -8,10 +8,20 @@ public class Module {
 
 	private final String iconCls;
 
+	private final String view;
+
 	public Module(String id, String name, String iconCls) {
 		this.id = id;
 		this.name = name;
 		this.iconCls = iconCls;
+		this.view = id;
+	}
+
+	public Module(String id, String name, String iconCls, String view) {
+		this.id = id;
+		this.name = name;
+		this.iconCls = iconCls;
+		this.view = view;
 	}
 
 	public String getId() {
@@ -24,6 +34,10 @@ public class Module {
 
 	public String getIconCls() {
 		return iconCls;
+	}
+
+	public String getView() {
+		return view;
 	}
 
 }

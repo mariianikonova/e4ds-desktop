@@ -10,10 +10,6 @@ Ext.define('E4dsDesk.controller.OnlineUsers', {
 	
 	init: function() {
 		
-	},
-	
-	getMainViewClass: function() {
-		return this.getOnlineUsersView();
 	}
 
 });

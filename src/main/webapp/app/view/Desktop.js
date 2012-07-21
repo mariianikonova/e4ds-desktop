@@ -2,22 +2,32 @@ Ext.define('E4dsDesk.view.Desktop', {
     extend : 'Ext.panel.Panel',
     alias  : 'widget.desktop',    
     
-    requires: [ 'E4dsDesk.view.Wallpaper', 'E4dsDesk.view.WindowBar' ],
+    requires: [ 'E4dsDesk.view.Wallpaper', 'E4dsDesk.view.WindowBar', 'E4dsDesk.view.TopBar' ],
     
     border: false,
     html: '&#160;',
     layout: 'fit',
+    
+	contextMenu : Ext.create('Ext.menu.Menu', {
+		itemId: 'desktop-contextmenu',
+		items: [ {
+			text: 'Tile',
+			actionType: 'tile',
+			minWindows: 1
+		}, {
+			text: 'Cascade',
+			actionType: 'cascade',
+			minWindows: 1
+		}]
+	}),
     
     initComponent: function() {    	
     	this.dockedItems = [{
             xtype: 'windowbar',
             dock: 'bottom'
         }, {
-        	xtype: 'toolbar',
-        	dock: 'top',
-        	items: [
-        	        'Menu', '->', 'Logout'
-        	]
+        	xtype: 'topbar',
+        	dock: 'top'
         }];
         
     	this.items  = [{
@@ -51,19 +61,6 @@ Ext.define('E4dsDesk.view.Desktop', {
 		}, this, {
 			element: 'el'
 		});
-		
-		this.contextMenu = Ext.create('Ext.menu.Menu', {
-			itemId: 'desktop-contextmenu',
-			items: [ {
-				text: 'Tile',
-				actionType: 'tile',
-				minWindows: 1
-			}, {
-				text: 'Cascade',
-				actionType: 'cascade',
-				minWindows: 1
-			}]
-		})
     	
         this.callParent(arguments);
     }

@@ -25,13 +25,19 @@ Ext.define('E4dsDesk.view.WindowBar', {
 		} ]
 	}),
 
-	listeners: {
-		contextmenu: {
-			element: 'el',
-			fn: function(e) {
-				e.stopEvent();
-				me.fireEvent("contextmenu", e.getTarget());
+	initComponent: function() {   
+
+		this.listeners = {
+			contextmenu: {
+				element: 'el',
+				fn: function(e) {
+					e.stopEvent();
+					this.fireEvent("contextmenu", e.getTarget());
+				}, 
+				scope: this
 			}
 		}
+	
+	    this.callParent(arguments);
 	}
 });
