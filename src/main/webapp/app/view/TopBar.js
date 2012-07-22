@@ -19,7 +19,7 @@ Ext.define('E4dsDesk.view.TopBar', {
 
 		'->', 'Logged in as Admin', {
 			text: 'Settings'
-		}, '-',{
+		}, '-', {
 			text: 'Logout'
 		} ];
 

@@ -7,9 +7,9 @@ Ext.define('E4dsDesk.controller.OnlineUsers', {
 		ref: 'onlineUsers',
 		selector: 'onlineusers'
 	} ],
-	
+
 	init: function() {
-		
+
 	}
 
 });

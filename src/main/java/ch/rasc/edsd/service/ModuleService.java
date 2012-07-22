@@ -13,6 +13,7 @@ public class ModuleService {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ImmutableList<Module> read() {
 		return ImmutableList.<Module> builder()
-				.add(new Module("OnlineUsers", "Accordion Window", "accordion-shortcut")).build();
+				.add(new Module("OnlineUsers", "Accordion Window", "accordion-shortcut"))
+				.add(new Module("Notepad", "Notepad", "notepad-shortcut")).build();
 	}
 }

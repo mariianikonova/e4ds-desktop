@@ -13,7 +13,7 @@ Ext.define('E4dsDesk.model.Module', {
 	}, {
 		name: 'view',
 		type: 'string'
-	}],
+	} ],
 
 	proxy: {
 		type: 'direct',

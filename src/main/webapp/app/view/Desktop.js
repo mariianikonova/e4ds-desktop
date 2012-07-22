@@ -1,14 +1,14 @@
 Ext.define('E4dsDesk.view.Desktop', {
-    extend : 'Ext.panel.Panel',
-    alias  : 'widget.desktop',    
-    
-    requires: [ 'E4dsDesk.view.Wallpaper', 'E4dsDesk.view.WindowBar', 'E4dsDesk.view.TopBar' ],
-    
-    border: false,
-    html: '&#160;',
-    layout: 'fit',
-    
-	contextMenu : Ext.create('Ext.menu.Menu', {
+	extend: 'Ext.panel.Panel',
+	alias: 'widget.desktop',
+
+	requires: [ 'E4dsDesk.view.Wallpaper', 'E4dsDesk.view.WindowBar', 'E4dsDesk.view.TopBar' ],
+
+	border: false,
+	html: '&#160;',
+	layout: 'fit',
+
+	contextMenu: Ext.create('Ext.menu.Menu', {
 		itemId: 'desktop-contextmenu',
 		items: [ {
 			text: 'Tile',
@@ -18,18 +18,18 @@ Ext.define('E4dsDesk.view.Desktop', {
 			text: 'Cascade',
 			actionType: 'cascade',
 			minWindows: 1
-		}]
+		} ]
 	}),
-    
-    initComponent: function() {    	
-    	this.dockedItems = [{
-            xtype: 'windowbar',
-            dock: 'bottom'
-        }, {
-        	xtype: 'topbar',
-        	dock: 'top'
-        }];
-        
+
+	initComponent: function() {
+		this.dockedItems = [ {
+			xtype: 'windowbar',
+			dock: 'bottom'
+		}, {
+			xtype: 'topbar',
+			dock: 'top'
+		} ];
+
     	this.items  = [{
             xtype : 'wallpaper'
         }, {
@@ -55,13 +55,16 @@ Ext.define('E4dsDesk.view.Desktop', {
             ]
         }];
         
-		this.addListener('contextmenu', function(e) {
-			e.stopEvent();
-			this.fireEvent("contextmenu", e)
-		}, this, {
-			element: 'el'
-		});
-    	
-        this.callParent(arguments);
-    }
+		this.listeners = {
+			el: {
+				contextmenu: function(e) {
+					this.fireEvent('contextmenu', e);
+				},
+				scope: this,
+				preventDefault: true
+			}
+		};
+
+		this.callParent(arguments);
+	}
 });

@@ -1,13 +1,11 @@
 Ext.define('E4dsDesk.view.OnlineUsers', {
 	extend: 'Ext.window.Window',
-	alias: 'widget.onlineusers',	
-	
+	alias: 'widget.onlineusers',
+
 	title: 'Accordion Window',
 	width: 250,
 	height: 400,
 	iconCls: 'accordion',
-	animCollapse: false,
-	constrainHeader: true,
 	bodyBorder: true,
 	layout: 'accordion',
 	border: false,
