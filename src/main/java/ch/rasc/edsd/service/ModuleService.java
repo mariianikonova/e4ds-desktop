@@ -14,6 +14,9 @@ public class ModuleService {
 	public ImmutableList<Module> read() {
 		return ImmutableList.<Module> builder()
 				.add(new Module("OnlineUsers", "Accordion Window", "accordion-shortcut"))
-				.add(new Module("Notepad", "Notepad", "notepad-shortcut")).build();
+				.add(new Module("Notepad", "Notepad", "notepad-shortcut"))
+				.add(new Module("GridWindow", "Grid Window", "grid-shortcut"))
+				.add(new Module("SystemStatus", "System Status", "cpu-shortcut"))
+				.build();
 	}
 }

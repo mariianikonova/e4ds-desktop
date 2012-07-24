@@ -270,12 +270,13 @@ Ext.define('E4dsDesk.controller.Desktop', {
 				var w = win.el.getWidth();
 
 				if (x + w > availWidth) {
+					x = 0;
 					y = nextY;
 				}
 
 				win.setPosition(x, y);
-				x += w;
-				nextY = Math.max(nextY, y + win.el.getHeight());
+				x += w + 1;
+				nextY = Math.max(nextY, y + win.el.getHeight() + 1);
 			}
 		});
 	},
