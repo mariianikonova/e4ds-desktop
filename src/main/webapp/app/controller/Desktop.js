@@ -45,7 +45,12 @@ Ext.define('E4dsDesk.controller.Desktop', {
 			'#desktop-contextmenu > menuitem[actionType=cascade]': {
 				click: me.onDesktopContextmenuCascade
 			},
-
+			'#desktop-contextmenu > menuitem[actionType=closeall]': {
+				click: me.onDesktopContextmenuCloseAll
+			},			
+			'#desktop-contextmenu > menuitem[actionType=minimizeall]': {
+				click: me.onDesktopContextmenuMinimizeAll
+			},	
 			'windowbar': {
 				contextmenu: me.onWindowContextmenu
 			},
@@ -292,6 +297,25 @@ Ext.define('E4dsDesk.controller.Desktop', {
 			}
 		});
 	},
+	
+	onDesktopContextmenuCloseAll: function() {
+		var me = this;
+		Ext.WindowManager.each(function(win) {
+			if (win.isWindow) {
+				win.close();
+				me.onWindowClose(win);
+			}
+		});
+	},	
+	
+	onDesktopContextmenuMinimizeAll: function() {
+		var me = this;
+		Ext.WindowManager.each(function(win) {
+			if (win.isWindow) {
+				me.minimizeWindow(win);
+			}
+		});
+	},	
 
 	minimizeWindow: function(win) {
 		win.minimized = true;
