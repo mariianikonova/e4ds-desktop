@@ -1,13 +1,11 @@
-Ext.define('E4dsDesk.view.Wallpaper', {
+Ext.define('E4desk.view.Wallpaper', {
 	extend: 'Ext.Component',
-
-	alias: 'widget.wallpaper',
 
 	cls: 'ux-wallpaper',
 	html: '<img src="' + Ext.BLANK_IMAGE_URL + '">',
 
 	stretch: false,
-	wallpaper: '../resources/wallpapers/Blue-Sencha.jpg',
+	wallpaper: 'http://rasc.ch/wallpapers/Blue-Sencha.jpg',
 
 	afterRender: function() {
 		var me = this;
@@ -44,9 +42,7 @@ Ext.define('E4dsDesk.view.Wallpaper', {
 			me.el.setStyle({
 				backgroundImage: bkgnd || ''
 			});
-			if (me.stateful) {
-				me.saveState();
-			}
+
 		}
 		return me;
 	}

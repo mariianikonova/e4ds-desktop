@@ -1,6 +1,6 @@
-Ext.define('E4dsDesk.view.WindowBar', {
+Ext.define('E4desk.view.WindowBar', {
 	extend: 'Ext.toolbar.Toolbar',
-	alias: 'widget.windowbar',
+	itemId: 'windowBar',
 
 	cls: 'ux-desktop-windowbar',
 	layout: {
@@ -9,34 +9,18 @@ Ext.define('E4dsDesk.view.WindowBar', {
 
 	contextMenu: Ext.create('Ext.menu.Menu', {
 		defaultAlign: 'br-tr',
-		itemId: 'windowbar-contextmenu',
 		items: [ {
 			text: 'Restore',
-			actionType: 'restore'
+			action: 'restore'
 		}, {
 			text: 'Minimize',
-			actionType: 'minimize'
+			action: 'minimize'
 		}, {
 			text: 'Maximize',
-			actionType: 'maximize'
+			action: 'maximize'
 		}, '-', {
 			text: 'Close',
-			actionType: 'close'
+			action: 'close'
 		} ]
-	}),
-
-	initComponent: function() {
-
-		this.listeners = {
-			el: {
-				contextmenu: function(e) {
-					e.stopEvent();
-					this.fireEvent('contextmenu', e.getTarget());
-				},
-				scope: this
-			}
-		};
-
-		this.callParent(arguments);
-	}
+	})
 });

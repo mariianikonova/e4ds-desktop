@@ -1,3 +1,16 @@
+.wallpaper-item {
+	padding: 5px;
+	cursor: default;
+}
+
+.wallpaper-item-selected {
+	background-color: #d3e1f1 !important;
+}
+
+.wallpaper-item-over {
+	background-color: #efefef;
+}
+
 .ux-desktop-active-win {
 }
 .ux-desktop-inactive-win {

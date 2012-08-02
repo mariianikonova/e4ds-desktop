@@ -1,6 +1,5 @@
-Ext.define('E4dsDesk.view.OnlineUsers', {
+Ext.define('E4desk.view.module.OnlineUsers', {
 	extend: 'Ext.window.Window',
-	alias: 'widget.onlineusers',
 
 	title: 'Accordion Window',
 	width: 250,
@@ -31,7 +30,6 @@ Ext.define('E4dsDesk.view.OnlineUsers', {
 
 		this.items = [ {
 			xtype: 'treepanel',
-			id: 'im-tree',
 			title: 'Online Users',
 			rootVisible: false,
 			lines: false,

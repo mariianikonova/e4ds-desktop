@@ -1,4 +1,4 @@
-Ext.define('E4dsDesk.model.Module', {
+Ext.define('E4desk.model.Module', {
 	extend: 'Ext.data.Model',
 
 	fields: [ {
@@ -10,10 +10,7 @@ Ext.define('E4dsDesk.model.Module', {
 	}, {
 		name: 'iconCls',
 		type: 'string'
-	}, {
-		name: 'view',
-		type: 'string'
-	} ],
+	}],
 
 	proxy: {
 		type: 'direct',

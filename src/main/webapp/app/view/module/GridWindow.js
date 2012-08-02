@@ -1,6 +1,5 @@
-Ext.define('E4dsDesk.view.GridWindow', {
+Ext.define('E4desk.view.module.GridWindow', {
 	extend: 'Ext.window.Window',
-	alias: 'widget.gridwindow',
 
 	statics: {
 		getDummyData: function() {
@@ -66,7 +65,7 @@ Ext.define('E4dsDesk.view.GridWindow', {
 					name: 'pctChange',
 					type: 'float'
 				} ],
-				data: E4dsDesk.view.GridWindow.getDummyData()
+				data: E4desk.view.module.GridWindow.getDummyData()
 			}),
 			columns: [ new Ext.grid.RowNumberer(), {
 				text: "Company",

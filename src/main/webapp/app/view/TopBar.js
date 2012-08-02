@@ -1,6 +1,6 @@
-Ext.define('E4dsDesk.view.TopBar', {
+Ext.define('E4desk.view.TopBar', {
 	extend: 'Ext.toolbar.Toolbar',
-	alias: 'widget.topbar',
+	itemId: 'topBar',
 
 	initComponent: function() {
 		this.items = [ {
@@ -18,7 +18,9 @@ Ext.define('E4dsDesk.view.TopBar', {
 		},
 
 		'->', 'Logged in as Admin', {
-			text: 'Settings'
+			text: 'Settings',
+			action: 'settings',
+			itemId: 'topBarSettings'
 		}, '-', {
 			text: 'Logout'
 		} ];

@@ -1,6 +1,5 @@
-Ext.define('E4dsDesk.view.Notepad', {
+Ext.define('E4desk.view.module.Notepad', {
 	extend: 'Ext.window.Window',
-	alias: 'widget.notepad',
 
 	title: 'Notepad',
 	width: 600,

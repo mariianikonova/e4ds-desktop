@@ -1,15 +1,9 @@
-Ext.define('E4dsDesk.view.Viewport', {
+Ext.define('E4desk.view.Viewport', {
 	extend: 'Ext.Viewport',
-
-	requires: [ 'E4dsDesk.view.Desktop' ],
-
 	layout: 'fit',
 
 	initComponent: function() {
-		this.items = [ {
-			xtype: 'desktop'
-		} ];
-
+		this.items = [ Ext.create('E4desk.view.Desktop') ];
 		this.callParent(arguments);
 	}
 

@@ -1,16 +1,21 @@
 Ext.Loader.setConfig({
-	enabled: true
-});
-
-Ext.require('Ext.direct.*', function() {
-	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
-});
-
-Ext.application({
-	controllers: [ 'Desktop' ],
-	autoCreateViewport: true,
-	name: 'E4dsDesk',
-	launch: function() {
-		Ext.fly('appLoadingIndicator').destroy();
+	enabled: true,
+	paths: {
+		'E4desk': 'app'
 	}
 });
+
+
+Ext.onReady(function() {
+	Ext.fly('appLoadingIndicator').destroy();
+	
+	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
+
+	Deft.Injector.configure({
+		moduleStore: 'E4desk.store.ModuleStore'
+	});
+	
+	Ext.tip.QuickTipManager.init();
+	Ext.create('E4desk.view.Viewport');
+});
+

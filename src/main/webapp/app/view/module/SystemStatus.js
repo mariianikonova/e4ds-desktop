@@ -1,11 +1,10 @@
-Ext.define('E4dsDesk.view.SystemStatus', {
+Ext.define('E4desk.view.module.SystemStatus', {
 	extend: 'Ext.window.Window',
-	alias: 'widget.systemstatus',
 
 	requires: [ 'Ext.chart.*' ],
 
 	refreshRate: 500,
-
+	iconCls: 'icon-grid',
 	title: 'System Status',
 	width: 800,
 	height: 600,

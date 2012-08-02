@@ -1,72 +1,64 @@
-Ext.define('E4dsDesk.view.Desktop', {
+Ext.define('E4desk.view.Desktop', {
 	extend: 'Ext.panel.Panel',
-	alias: 'widget.desktop',
-
-	requires: [ 'E4dsDesk.view.Wallpaper', 'E4dsDesk.view.WindowBar', 'E4dsDesk.view.TopBar' ],
-
+	inject: [ 'moduleStore' ],
+	controller: 'E4desk.controller.DesktopController',
+	
 	border: false,
 	html: '&#160;',
 	layout: 'fit',
 
 	contextMenu: Ext.create('Ext.menu.Menu', {
-		itemId: 'desktop-contextmenu',
 		items: [ {
 			text: 'Close All',
-			actionType: 'closeall'
+			action: 'closeall',
+			minWindows: 1
 		}, '-', {
 			text: 'Minimize All',
-			actionType: 'minimizeall'
-		}, '-',
-
-		{
-			text: 'Tile',
-			actionType: 'tile',
+			action: 'minimizeall',
 			minWindows: 1
+		}, '-', {
+			text: 'Tile',
+			action: 'tile',
+			minWindows: 2
 		}, {
 			text: 'Cascade',
-			actionType: 'cascade',
-			minWindows: 1
+			action: 'cascade',
+			minWindows: 2
 		} ]
 	}),
 
 	initComponent: function() {
-		this.dockedItems = [ {
-			xtype: 'windowbar',
-			dock: 'bottom'
-		}, {
-			xtype: 'topbar',
-			dock: 'top'
+		this.dockedItems = [
+		  Ext.create('E4desk.view.WindowBar', {dock: 'bottom'}),		   
+		  Ext.create('E4desk.view.TopBar', {dock: 'top'})
+		];
+		
+		this.wallpaper = Ext.create('E4desk.view.Wallpaper');
+		
+		this.items = [ 
+		   this.wallpaper, 
+		   {
+			xtype: 'dataview',
+			itemId: 'shortcutView',
+			overItemCls: 'x-view-over',
+			itemSelector: 'div.ux-desktop-shortcut',
+			trackOver: true,
+			store: this.moduleStore,
+			style: {
+				position: 'absolute'
+			},
+			tpl: [ 
+			       '<tpl for=".">', 
+			          '<div class="ux-desktop-shortcut" id="{name}-shortcut">',
+					    '<div class="ux-desktop-shortcut-icon {iconCls}">', 
+					      '<img src="', Ext.BLANK_IMAGE_URL, '" title="{name}">',
+					    '</div>', 
+					    '<span class="ux-desktop-shortcut-text">{name}</span>', 
+					  '</div>', 
+					'</tpl>',
+					'<div class="x-clear"></div>' 
+				]
 		} ];
-
-		this.items = [
-				{
-					xtype: 'wallpaper'
-				},
-				{
-					xtype: 'dataview',
-					itemId: 'ux-shortcut',
-					overItemCls: 'x-view-over',
-					itemSelector: 'div.ux-desktop-shortcut',
-					trackOver: true,
-					store: Ext.getStore('Modules'),
-					style: {
-						position: 'absolute'
-					},
-					tpl: [ '<tpl for=".">', '<div class="ux-desktop-shortcut" id="{name}-shortcut">',
-							'<div class="ux-desktop-shortcut-icon {iconCls}">', '<img src="', Ext.BLANK_IMAGE_URL, '" title="{name}">',
-							'</div>', '<span class="ux-desktop-shortcut-text">{name}</span>', '</div>', '</tpl>',
-							'<div class="x-clear"></div>' ]
-				} ];
-
-		this.listeners = {
-			el: {
-				contextmenu: function(e) {
-					this.fireEvent('contextmenu', e);
-				},
-				scope: this,
-				preventDefault: true
-			}
-		};
 
 		this.callParent(arguments);
 	}
