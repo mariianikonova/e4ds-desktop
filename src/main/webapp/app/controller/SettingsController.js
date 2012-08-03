@@ -5,32 +5,55 @@ Ext.define('E4desk.controller.SettingsController', {
 		wallpaperDataview: {
 			selectionchange: 'onWallpaperDataviewSelectionChange'
 		},
+		okButton: {
+			click: 'onOkButtonClick'
+		},
+		stretchCheckbox: {
+			change: 'onStretchCheckboxChange'
+		},
 		previewWallpaper: true
 	},
-
+	
+	selectedItem: null,
+	stretch: null,
+	
 	init: function() {
-		this.getWallpaperDataview().getStore().on('load', this.onStoreLoad, this);
+		this.stretch = this.desktopWallpaper.stretch;
+		this.getStretchCheckbox().setValue(this.stretch);
+		this.getWallpaperDataview().getStore().on('load', this.onStoreLoad, this, {single: true});
 	},
 	
 	onStoreLoad: function() {
 		var s = this.desktopWallpaper.wallpaper;
-		var selectedItem = null;
-
+		var me = this;
+		
 		this.getWallpaperDataview().getStore().each(function(item) {
 			if (item.data.img === s) {				
-				selectedItem = item;
+				me.selectedItem = item;
 				return false;
 			}
 		});
 
-		if (selectedItem) {
-			this.getWallpaperDataview().getSelectionModel().select(selectedItem);
+		if (this.selectedItem) {
+			this.getWallpaperDataview().getSelectionModel().select(this.selectedItem);
 		}
 	},
 	
 	onWallpaperDataviewSelectionChange: function(model, selected) {
-    	this.getPreviewWallpaper().setWallpaper(selected[0].data.img, true);
-        this.desktopWallpaper.setWallpaper(selected[0].data.img, true);
+		this.selectedItem = selected[0].data.img;
+    	this.getPreviewWallpaper().setWallpaper(this.selectedItem, this.stretch);        
+	},
+	
+	onStretchCheckboxChange: function(field, newValue) {
+		this.stretch = newValue;
+		this.getPreviewWallpaper().setWallpaper(this.selectedItem, this.stretch);
+	},
+	
+	onOkButtonClick: function() {
+		if (this.selectedItem) {
+			this.desktopWallpaper.setWallpaper(this.selectedItem, this.stretch);
+		}
+		this.getView().close();
 	}
 	
 });

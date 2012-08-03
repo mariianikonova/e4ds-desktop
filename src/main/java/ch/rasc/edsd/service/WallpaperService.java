@@ -19,8 +19,7 @@ public class WallpaperService {
 				.add(new Wallpaper("Desk", "http://rasc.ch/wallpapers/desk.jpg"))
 				.add(new Wallpaper("Desktop", "http://rasc.ch/wallpapers/desktop.jpg"))
 				.add(new Wallpaper("Desktop2", "http://rasc.ch/wallpapers/desktop2.jpg"))
-				.add(new Wallpaper("Ext", "http://rasc.ch/wallpapers/ext.gif"))
-				.add(new Wallpaper("Shiny", "http://rasc.ch/wallpapers/shiny.gif"))
+				.add(new Wallpaper("Moon", "http://rasc.ch/wallpapers/moon.jpg"))
 				.add(new Wallpaper("Sky", "http://rasc.ch/wallpapers/sky.jpg"))
 				.add(new Wallpaper("Wood Sencha", "http://rasc.ch/wallpapers/Wood-Sencha.jpg")).build();
 	}

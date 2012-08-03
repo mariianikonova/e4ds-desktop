@@ -1,6 +1,7 @@
 Ext.define('E4desk.controller.DesktopController', {
 	extend: 'Deft.mvc.ViewController',
-
+	inject: [ 'moduleStore' ],
+	
 	activeWindowCls: 'ux-desktop-active-win',
 	inactiveWindowCls: 'ux-desktop-inactive-win',
 	windowBarCurrentWindow: null,
@@ -25,10 +26,20 @@ Ext.define('E4desk.controller.DesktopController', {
 		},
 		topBarSettings: {
 			click: 'onTopBarSettingsClick'
+		},		
+		applicationMenu: {
+			click: 'onApplicationMenuClick'
 		}
 	},
 
 	init: function() {
+		this.moduleStore.load({
+			scope: this,
+			callback: function() {
+				this.updateApplicationMenu();
+			}
+		});
+		
 		this.windows = new Ext.util.MixedCollection();
 
 		var desktopCtxMenu = this.getView().contextMenu;
@@ -45,6 +56,17 @@ Ext.define('E4desk.controller.DesktopController', {
 		windowBarCtxMenu.down('menuitem[action=close]').on('click', this.onWindowBarContextmenuClose, this);
 	},
 
+	updateApplicationMenu: function() {
+		var me = this;
+		this.moduleStore.each(function(item) {
+			me.getApplicationMenu().add({text: item.data.name, winId: item.data.id});
+		});
+	},
+
+	onApplicationMenuClick: function(menu, item, e) {
+		this.addWindow(item.winId);
+	},
+	
 	onTopBarSettingsClick: function() {
     	var settingsWindow = Ext.create('E4desk.view.Settings');
     	settingsWindow.getController().desktopWallpaper = this.getView().wallpaper;
@@ -277,7 +299,7 @@ Ext.define('E4desk.controller.DesktopController', {
 			enableToggle: true,
 			toggleGroup: 'all',
 			width: 140,
-			margins: '0 2 0 3',
+			margins: '2 2 2 3',
 			text: Ext.util.Format.ellipsis(win.title, 20),
 			listeners: {
 				click: this.onWindowButtonClick,
