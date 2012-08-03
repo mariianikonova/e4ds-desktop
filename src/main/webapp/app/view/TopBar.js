@@ -18,7 +18,9 @@ Ext.define('E4desk.view.TopBar', {
 			iconCls: 'settings'
 		}, '-', {
 			text: 'Logout',
-			iconCls: 'logout'
+			iconCls: 'logout',
+			href: 'j_spring_security_logout',
+			hrefTarget: '_self'
 		} ];
 
 		this.callParent(arguments);
