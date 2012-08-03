@@ -1,206 +1,147 @@
-.wallpaper-item {
+/* Settings Wallpaper */
+div.settings-wallpaper-item {
 	padding: 5px;
 	cursor: default;
 }
 
-.wallpaper-item-selected {
+div.settings-wallpaper-item-selected {
 	background-color: #d3e1f1 !important;
 }
 
-.wallpaper-item-over {
+div.view-over.settings-wallpaper-item {
 	background-color: #efefef;
 }
 
-.ux-desktop-active-win {
-}
-.ux-desktop-inactive-win {
-    opacity: 0.97;
-}
-
-
-
-/*----------------------------------------------------
-    WindowBar
-*/
-
-.x-ie6 .ux-desktop-windowbar {
-    border-color: #d3e1f1;
+/* Desktop Windows */
+.desktop-active-win {
+	
 }
 
-.ux-desktop-windowbar .x-btn-inner,
-.x-nbr .ux-desktop-windowbar .x-btn-icon-text-left button {
-    text-align: left !important;
+.desktop-inactive-win {
+	opacity: 0.97;
 }
 
-.ux-desktop-windowbar {
-    height: 26px;
-    padding: 0;
+/* WindowBar */
+.windowbar .x-btn-inner,.x-nbr .windowbar .x-btn-icon-text-left button {
+	text-align: left !important;
 }
 
-
-/*----------------------------------------------------
-    Tray Clock
-*/
-
-.ux-desktop-trayclock {
-    text-align: center;
-    vertical-align: middle;
-    padding-top: 0;
-    padding-bottom: 0;
+.windowbar {
+	height: 26px;
+	padding: 0;
 }
 
-/*----------------------------------------------------
-    Desktop DataView
-*/
-
-.ux-wallpaper {
-    background-color: #3d71b8;
+/* Desktop DataView */
+.wallpaper {
+	background-color: #3d71b8;
 }
 
-.ux-wallpaper-tiled {
-    background-repeat: repeat;
+.wallpaper-tiled {
+	background-repeat: repeat;
 }
 
-.ux-desktop-shortcut {
-    cursor: pointer;
-    text-align: center;
-    padding: 8px;
-    margin: 8px;
-    width: 64px;
+.desktop-shortcut {
+	cursor: pointer;
+	text-align: center;
+	padding: 8px;
+	margin: 8px;
+	width: 64px;
 }
 
-.ux-desktop-shortcut-icon {
-    width: 48px;
-    height: 48px;
-    background-color: transparent;
-    background-repeat: no-repeat;
+.desktop-shortcut-icon {
+	width: 48px;
+	height: 48px;
+	background-color: transparent;
+	background-repeat: no-repeat;
 }
 
-.ux-desktop-shortcut-text {
-    font: normal 10px tahoma,arial,verdana,sans-serif;
-    text-decoration: none;
-    padding-top: 5px;
-    color: white;
+.desktop-shortcut-text {
+	font: normal 10px tahoma, arial, verdana, sans-serif;
+	text-decoration: none;
+	padding-top: 5px;
+	color: white;
 }
 
-.x-view-over .ux-desktop-shortcut-text {
-    text-decoration: underline;
+.view-over .desktop-shortcut-text {
+	text-decoration: underline;
 }
 
-
-/*----------------------------------------------------
-    Various icon classes
-*/
-
-.accordion-shortcut {
-    background-image: url(../images/im48x48.png);
-}
-
-.cpu-shortcut {
-    background-image: url(../images/statusLarge.png);
-}
-
-.grid-shortcut {
-    background-image: url(../images/grid48x48.png);
-}
-
+/* Icons */
 .notepad-shortcut {
-    background-image: url(../images/notepadLarge.png);
-    width: 46px;
-    height: 46px;
+	background-image: url(../images/notepad.png);
 }
 
-.x-ie6 .accordion-shortcut {
-    background-image: none;
-    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/im48x48.png', sizingMethod='scale');
+.notepad-icon {
+	background-image: url(../images/notepad-icon.png);
 }
 
-.x-ie6 .cpu-shortcut {
-    background-image: none;
-    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/statusLarge.png', sizingMethod='scale');
+/* Online Users */
+.onlineusers-shortcut {
+	background-image: url(../images/onlineusers.png);
 }
 
-.x-ie6 .grid-shortcut {
-    background-image: none;
-    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/grid48x48.png', sizingMethod='scale');
+.onlineusers-icon {
+	background-image: url(../images/onlineusers-icon.png);
 }
-
-.x-ie6 .notepad-shortcut {
-    background-image: none;
-    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/notepadLarge.png', sizingMethod='scale');
-}
-
-.video {
-    background-image: url(../images/gears.gif);
-}
-
-.bogus {
-    background-image: url( ../images/bogus.png ) !important;
-}
-
-.notepad {
-    background-image: url( ../images/bogus.png ) !important;
-}
-
-.logout {
-    background-image: url( ../images/logout.gif ) !important;
-}
-
-.settings {
-    background-image: url( ../images/gears.gif ) !important;
-}
-
-
-.icon-grid {
-    background-image:url( ../images/grid.png ) !important;
-}
-.add {
-    background-image:url(../images/fam/add.gif) !important;
-}
-.option {
-    background-image:url(../images/fam/plugin.gif) !important;
-}
-.remove {
-    background-image:url(../images/fam/delete.gif) !important;
-}
-.save {
-    background-image:url(../../shared/icons/save.gif) !important;
-}
-.accordion {
-    background-image:url(../images/accordian.gif) !important;
-}
-.tabs {
-    background-image:url(../images/tabs.gif) !important;
-}
-
-/*----------------------------------------------------
-    IM window icons
-*/
 
 .user {
-    background-image:url( ../images/fam/user.gif ) !important;
+	background-image: url( ../images/fam/user.png );
 }
 
 .user-add {
-    background-image:url(../images/fam/user_add.gif) !important;
+	background-image: url(../images/fam/user_add.png);
 }
 
 .user-delete {
-    background-image:url(../images/fam/user_delete.gif) !important;
+	background-image: url(../images/fam/user_delete.png);
 }
 
 .connect {
-    background-image:url(../images/fam/connect.gif) !important;
+	background-image: url(../images/fam/connect.png);
 }
 
 .user-girl {
-    background-image:url(../images/fam/user_female.gif) !important;
+	background-image: url(../images/fam/user_female.png);
 }
 
 .user-kid {
-    background-image:url(../images/fam/user_green.gif) !important;
+	background-image: url(../images/fam/user_green.png);
 }
 
-.user-suit {
-    background-image:url(../images/fam/user_suit.gif) !important;
+.systemstatus-shortcut {
+	background-image: url(../images/systemstatus.png);
+}
+
+.systemstatus-icon {
+	background-image: url(../images/systemstatus-icon.png);
+}
+
+/* Grid */
+.grid-shortcut {
+	background-image: url(../images/grid.png);
+}
+
+.grid-icon {
+	background-image: url(../images/grid-icon.png);
+}
+
+.add {
+	background-image: url(../images/fam/add.png);
+}
+
+.option {
+	background-image: url(../images/fam/plugin.png);
+}
+
+.remove {
+	background-image: url(../images/fam/delete.png);
+}
+
+/* TopBar */
+.settings {
+	background-image: url(../images/settings.png);
+}
+
+.logout {
+	background-image: url( ../images/logout.png );
 }

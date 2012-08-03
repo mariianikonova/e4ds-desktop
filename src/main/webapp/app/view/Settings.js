@@ -9,6 +9,7 @@ Ext.define('E4desk.view.Settings', {
 	height: 480,
 	border: false,
 	constrain: true,
+	iconCls: 'settings',
 
 	initComponent: function() {
 
@@ -37,11 +38,11 @@ Ext.define('E4desk.view.Settings', {
 				itemId: 'wallpaperDataview',
 				xtype: 'dataview',
 				store: Ext.create('E4desk.store.WallpaperStore'),
-				itemSelector: 'div.wallpaper-item',
-				selectedItemCls: 'wallpaper-item-selected',
-				overItemCls: 'wallpaper-item-over',
+				itemSelector: 'div.settings-wallpaper-item',
+				selectedItemCls: 'settings-wallpaper-item-selected',
+				overItemCls: 'view-over',
 				trackOver: true,
-				tpl: [ '<tpl for=".">', '<div class="wallpaper-item">', '{text}', '</div>', '</tpl>' ]
+				tpl: [ '<tpl for=".">', '<div class="settings-wallpaper-item">', '{text}', '</div>', '</tpl>' ]
 			} ]
 		}, {
 			xtype: 'panel',

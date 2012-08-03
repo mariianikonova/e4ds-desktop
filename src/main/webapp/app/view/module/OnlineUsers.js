@@ -4,7 +4,7 @@ Ext.define('E4desk.view.module.OnlineUsers', {
 	title: 'Accordion Window',
 	width: 250,
 	height: 400,
-	iconCls: 'accordion',
+	iconCls: 'onlineusers-icon',
 	bodyBorder: true,
 	layout: 'accordion',
 	border: false,

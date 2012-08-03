@@ -2,7 +2,7 @@ Ext.define('E4desk.view.WindowBar', {
 	extend: 'Ext.toolbar.Toolbar',
 	itemId: 'windowBar',
 
-	cls: 'ux-desktop-windowbar',
+	cls: 'windowbar',
 	layout: {
 		overflowHandler: 'Scroller'
 	},

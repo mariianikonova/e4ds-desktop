@@ -14,9 +14,11 @@ Ext.define('E4desk.view.TopBar', {
 		'->', 'Logged in as Admin', {
 			text: 'Settings',
 			action: 'settings',
-			itemId: 'topBarSettings'
+			itemId: 'topBarSettings',
+			iconCls: 'settings'
 		}, '-', {
-			text: 'Logout'
+			text: 'Logout',
+			iconCls: 'logout'
 		} ];
 
 		this.callParent(arguments);

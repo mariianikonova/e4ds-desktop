@@ -26,7 +26,7 @@ Ext.define('E4desk.view.module.GridWindow', {
 	title: 'Grid Window',
 	width: 740,
 	height: 480,
-	iconCls: 'icon-grid',
+	iconCls: 'grid-icon',
 	layout: 'fit',
 
 	initComponent: function() {

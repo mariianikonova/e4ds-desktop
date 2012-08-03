@@ -2,8 +2,8 @@ Ext.define('E4desk.controller.DesktopController', {
 	extend: 'Deft.mvc.ViewController',
 	inject: [ 'moduleStore' ],
 	
-	activeWindowCls: 'ux-desktop-active-win',
-	inactiveWindowCls: 'ux-desktop-inactive-win',
+	activeWindowCls: 'desktop-active-win',
+	inactiveWindowCls: 'desktop-inactive-win',
 	windowBarCurrentWindow: null,
 	lastActiveWindow: null,
 	
@@ -59,7 +59,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	updateApplicationMenu: function() {
 		var me = this;
 		this.moduleStore.each(function(item) {
-			me.getApplicationMenu().add({text: item.data.name, winId: item.data.id});
+			me.getApplicationMenu().add({text: item.data.name, winId: item.data.id, iconCls: item.data.iconCls + '-icon'});
 		});
 	},
 

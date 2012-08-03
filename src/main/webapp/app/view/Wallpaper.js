@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.Wallpaper', {
 	extend: 'Ext.Component',
 
-	cls: 'ux-wallpaper',
+	cls: 'wallpaper',
 	html: '<img src="' + Ext.BLANK_IMAGE_URL + '">',
 
 	stretch: false,
@@ -27,7 +27,7 @@ Ext.define('E4desk.view.Wallpaper', {
 			} else if (me.stretch) {
 				imgEl.src = wallpaper;
 
-				me.el.removeCls('ux-wallpaper-tiled');
+				me.el.removeCls('wallpaper-tiled');
 				Ext.fly(imgEl).setStyle({
 					width: '100%',
 					height: '100%'
@@ -36,7 +36,7 @@ Ext.define('E4desk.view.Wallpaper', {
 				Ext.fly(imgEl).hide();
 
 				bkgnd = 'url(' + wallpaper + ')';
-				me.el.addCls('ux-wallpaper-tiled');
+				me.el.addCls('wallpaper-tiled');
 			}
 
 			me.el.setStyle({

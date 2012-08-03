@@ -4,7 +4,7 @@ Ext.define('E4desk.view.module.SystemStatus', {
 	requires: [ 'Ext.chart.*' ],
 
 	refreshRate: 500,
-	iconCls: 'icon-grid',
+	iconCls: 'systemstatus-icon',
 	title: 'System Status',
 	width: 800,
 	height: 600,

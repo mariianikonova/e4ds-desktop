@@ -4,7 +4,7 @@ Ext.define('E4desk.view.module.Notepad', {
 	title: 'Notepad',
 	width: 600,
 	height: 400,
-	iconCls: 'notepad',
+	iconCls: 'notepad-icon',
 	bodyBorder: true,
 	layout: 'fit',
 	border: false,

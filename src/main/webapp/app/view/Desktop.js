@@ -40,8 +40,8 @@ Ext.define('E4desk.view.Desktop', {
 		   {
 			xtype: 'dataview',
 			itemId: 'shortcutView',
-			overItemCls: 'x-view-over',
-			itemSelector: 'div.ux-desktop-shortcut',
+			overItemCls: 'view-over',
+			itemSelector: 'div.desktop-shortcut',
 			trackOver: true,
 			store: this.moduleStore,
 			style: {
@@ -49,11 +49,11 @@ Ext.define('E4desk.view.Desktop', {
 			},
 			tpl: [ 
 			       '<tpl for=".">', 
-			          '<div class="ux-desktop-shortcut" id="{name}-shortcut">',
-					    '<div class="ux-desktop-shortcut-icon {iconCls}">', 
+			          '<div class="desktop-shortcut" id="{name}-shortcut">',
+					    '<div class="desktop-shortcut-icon {iconCls}-shortcut">', 
 					      '<img src="', Ext.BLANK_IMAGE_URL, '" title="{name}">',
 					    '</div>', 
-					    '<span class="ux-desktop-shortcut-text">{name}</span>', 
+					    '<span class="desktop-shortcut-text">{name}</span>', 
 					  '</div>', 
 					'</tpl>',
 					'<div class="x-clear"></div>' 
