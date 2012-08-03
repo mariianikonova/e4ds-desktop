@@ -15,13 +15,12 @@
 	</style>
 	<link rel="stylesheet" type="text/css" href="resources/ux/css/Notification.css">
 </head>
-<body>
+<body> 
+    <%@ include file="old.jspf"%>
     <%@ include file="loader.jspf"%>
 	<script src="http://cdn.sencha.com/ext-4.1.1-gpl/ext-all-debug.js"></script>
-
 	<script src="resources/ux/window/Notification.js"></script>
-	<script src="login.js"></script>
-    
+	<script src="login.js"></script>    
 	<script type="text/javascript">
 		Ext.onReady(function() {
 			Ext.fly('floatingCirclesG').destroy();
@@ -30,6 +29,5 @@
 			</c:if>
 		});
 	</script>
-	
 </body>
 </html>

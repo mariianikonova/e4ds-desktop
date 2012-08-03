@@ -1,0 +1,14 @@
+<style>
+.chromeframe {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	background: orange;
+	color: black;
+	padding: 0.2em 0.2em;
+	z-index: 999;
+	font-size: 15px;
+	font-weight: bold;
+}
+</style>
+<!--[if lt IE 8]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
