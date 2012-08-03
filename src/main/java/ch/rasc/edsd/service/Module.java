@@ -8,10 +8,13 @@ public class Module {
 
 	private final String iconCls;
 
-	public Module(String id, String name, String iconCls) {
+	private final boolean showOnDesktop;
+
+	public Module(String id, String name, String iconCls, boolean showOnDesktop) {
 		this.id = id;
 		this.name = name;
 		this.iconCls = iconCls;
+		this.showOnDesktop = showOnDesktop;
 	}
 
 	public String getId() {
@@ -24,6 +27,10 @@ public class Module {
 
 	public String getIconCls() {
 		return iconCls;
+	}
+
+	public boolean isShowOnDesktop() {
+		return showOnDesktop;
 	}
 
 }

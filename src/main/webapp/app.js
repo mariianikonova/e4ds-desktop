@@ -11,9 +11,11 @@ Ext.onReady(function() {
 	
 	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
 
+	/*
 	Deft.Injector.configure({
 		moduleStore: 'E4desk.store.ModuleStore'
 	});
+	*/
 	
 	Ext.tip.QuickTipManager.init();
 	Ext.create('E4desk.view.Viewport');

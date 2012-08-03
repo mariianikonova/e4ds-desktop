@@ -1,6 +1,5 @@
 Ext.define('E4desk.controller.DesktopController', {
 	extend: 'Deft.mvc.ViewController',
-	inject: [ 'moduleStore' ],
 	
 	activeWindowCls: 'desktop-active-win',
 	inactiveWindowCls: 'desktop-inactive-win',
@@ -33,10 +32,11 @@ Ext.define('E4desk.controller.DesktopController', {
 	},
 
 	init: function() {
-		this.moduleStore.load({
+		var moduleStore = Ext.create('E4desk.store.ModuleStore');		
+		moduleStore.load({
 			scope: this,
 			callback: function() {
-				this.updateApplicationMenu();
+				this.updateApplicationMenu(moduleStore);
 			}
 		});
 		
@@ -56,10 +56,16 @@ Ext.define('E4desk.controller.DesktopController', {
 		windowBarCtxMenu.down('menuitem[action=close]').on('click', this.onWindowBarContextmenuClose, this);
 	},
 
-	updateApplicationMenu: function() {
-		var me = this;
-		this.moduleStore.each(function(item) {
-			me.getApplicationMenu().add({text: item.data.name, winId: item.data.id, iconCls: item.data.iconCls + '-icon'});
+	updateApplicationMenu: function(store) {
+		
+		var applicationMenu = this.getApplicationMenu();
+		var shortcutViewStore = this.getShortcutView().getStore();
+		
+		store.each(function(item) {
+			if (item.data.showOnDesktop) {
+				shortcutViewStore.add(item);
+			}
+			applicationMenu.add({text: item.data.name, winId: item.data.id, iconCls: item.data.iconCls + '-icon'});
 		});
 	},
 

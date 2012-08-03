@@ -10,6 +10,9 @@ Ext.define('E4desk.model.Module', {
 	}, {
 		name: 'iconCls',
 		type: 'string'
+	}, {
+		name: 'showOnDesktop',
+		type: 'boolean'
 	}],
 
 	proxy: {

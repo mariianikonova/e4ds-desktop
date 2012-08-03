@@ -13,9 +13,9 @@ public class ModuleService {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ImmutableList<Module> read() {
 		return ImmutableList.<Module> builder()
-				.add(new Module("E4desk.view.module.OnlineUsers", "Online Users", "onlineusers"))
-				.add(new Module("E4desk.view.module.Notepad", "Notepad", "notepad"))
-				.add(new Module("E4desk.view.module.GridWindow", "Grid Window", "grid"))
-				.add(new Module("E4desk.view.module.SystemStatus", "System Status", "systemstatus")).build();
+				.add(new Module("E4desk.view.module.OnlineUsers", "Online Users", "onlineusers", true))
+				.add(new Module("E4desk.view.module.Notepad", "Notepad", "notepad", false))
+				.add(new Module("E4desk.view.module.GridWindow", "Grid Window", "grid", true))
+				.add(new Module("E4desk.view.module.SystemStatus", "System Status", "systemstatus", true)).build();
 	}
 }

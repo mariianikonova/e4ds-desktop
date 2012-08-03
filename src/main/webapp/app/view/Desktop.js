@@ -1,8 +1,7 @@
 Ext.define('E4desk.view.Desktop', {
 	extend: 'Ext.panel.Panel',
-	inject: [ 'moduleStore' ],
 	controller: 'E4desk.controller.DesktopController',
-	
+
 	border: false,
 	html: '&#160;',
 	layout: 'fit',
@@ -28,22 +27,21 @@ Ext.define('E4desk.view.Desktop', {
 	}),
 
 	initComponent: function() {
-		this.dockedItems = [
-		  Ext.create('E4desk.view.WindowBar', {dock: 'bottom'}),		   
-		  Ext.create('E4desk.view.TopBar', {dock: 'top'})
-		];
-		
+		this.dockedItems = [ Ext.create('E4desk.view.WindowBar', {
+			dock: 'bottom'
+		}), Ext.create('E4desk.view.TopBar', {
+			dock: 'top'
+		}) ];
+
 		this.wallpaper = Ext.create('E4desk.view.Wallpaper');
-		
-		this.items = [ 
-		   this.wallpaper, 
-		   {
+
+		this.items = [ this.wallpaper, {
 			xtype: 'dataview',
 			itemId: 'shortcutView',
 			overItemCls: 'view-over',
 			itemSelector: 'div.desktop-shortcut',
 			trackOver: true,
-			store: this.moduleStore,
+			store: Ext.create('E4desk.store.DesktopStore'),
 			style: {
 				position: 'absolute'
 			},
