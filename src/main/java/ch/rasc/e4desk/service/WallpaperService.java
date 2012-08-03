@@ -1,4 +1,4 @@
-package ch.rasc.edsd.service;
+package ch.rasc.e4desk.service;
 
 import org.springframework.stereotype.Service;
 
