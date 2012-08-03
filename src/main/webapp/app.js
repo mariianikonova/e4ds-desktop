@@ -7,7 +7,7 @@ Ext.Loader.setConfig({
 
 
 Ext.onReady(function() {
-	Ext.fly('appLoadingIndicator').destroy();
+	Ext.fly('floatingCirclesG').destroy();
 	
 	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
 
