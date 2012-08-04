@@ -4,14 +4,17 @@ Ext.define('E4desk.view.TopBar', {
 
 	initComponent: function() {
 		this.items = [ {
-			text: 'Application Menu',			
+			text: 'Application Menu',
 			menu: {
 				xtype: 'menu',
-				itemId: 'applicationMenu'				
+				itemId: 'applicationMenu'
 			}
-		},
-
-		'->', 'Logged in as Admin', {
+		}, '->', {
+			xtype: 'label',
+			text: '',
+			cls: 'loggedOnLabel',
+			itemId: 'loggedOnLabel'
+		}, '-', {
 			text: 'Settings',
 			action: 'settings',
 			itemId: 'topBarSettings',

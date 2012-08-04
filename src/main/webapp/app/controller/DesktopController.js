@@ -28,10 +28,14 @@ Ext.define('E4desk.controller.DesktopController', {
 		},		
 		applicationMenu: {
 			click: 'onApplicationMenuClick'
-		}
+		},
+		loggedOnLabel: true
 	},
 
 	init: function() {
+		
+		infrastructureService.getLoggedOnUser(this.showLoggedOnUser, this);
+		
 		var moduleStore = Ext.create('E4desk.store.ModuleStore');		
 		moduleStore.load({
 			scope: this,
@@ -56,6 +60,10 @@ Ext.define('E4desk.controller.DesktopController', {
 		windowBarCtxMenu.down('menuitem[action=close]').on('click', this.onWindowBarContextmenuClose, this);
 	},
 
+	showLoggedOnUser: function(fullname) {
+		this.getLoggedOnLabel().setText('Logged in as ' + fullname);
+	},
+	
 	updateApplicationMenu: function(store) {
 		
 		var applicationMenu = this.getApplicationMenu();

@@ -138,6 +138,10 @@ div.view-over.settings-wallpaper-item {
 }
 
 /* TopBar */
+.loggedOnLabel {
+	padding-right: 5px;
+	font-weight: bold;
+}
 .settings {
 	background-image: url(../images/settings.png);
 }

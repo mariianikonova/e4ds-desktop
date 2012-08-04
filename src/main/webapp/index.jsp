@@ -10,11 +10,13 @@
 	<title>e4desk</title>	
     <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext-4.1.1-gpl/resources/css/ext-all.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/desktop.css" />
+    <link rel="stylesheet" type="text/css" href="resources/ux/css/Notification.css">
 </head>
 <body>    
     <%@ include file="old.jspf"%>
     <%@ include file="loader.jspf"%>
 	<script src="http://cdn.sencha.com/ext-4.1.1-gpl/ext-all-debug.js"></script>
+	<script src="resources/ux/window/Notification.js"></script>
 	<script src="api.js"></script>
 	<script src="deft-debug.js"></script>
 	<script src="app.js"></script>
