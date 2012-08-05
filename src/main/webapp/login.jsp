@@ -11,7 +11,7 @@
 	
 	<link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext-4.1.1-gpl/resources/css/ext-all.css">
 	<style>
-	  .icon-login { background-image: url(../images/login.png); }
+	  .icon-login { background-image: url(resources/images/login.png); }
 	</style>
 	<link rel="stylesheet" type="text/css" href="resources/ux/css/Notification.css">
 </head>
@@ -19,13 +19,14 @@
     <%@ include file="old.jspf"%>
     <%@ include file="loader.jspf"%>
 	<script src="http://cdn.sencha.com/ext-4.1.1-gpl/ext-all-debug.js"></script>
+    <script src="i18n.js"></script>
 	<script src="resources/ux/window/Notification.js"></script>
 	<script src="login.js"></script>    
 	<script type="text/javascript">
 		Ext.onReady(function() {
 			Ext.fly('floatingCirclesG').destroy();
 			<c:if test="${not empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
-			Ext.ux.window.Notification.error("Error", "Login Error");
+			Ext.ux.window.Notification.error(i18n.error, i18n.login_failed);
 			</c:if>
 		});
 	</script>

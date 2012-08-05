@@ -3,7 +3,7 @@ Ext.onReady(function() {
 
 	var login = Ext.create('Ext.form.Panel', {
 		frame: true,
-		title: 'Login',
+		title: i18n.login_title,
 		url: 'j_spring_security_check',
 		width: 320,
 		iconCls: 'icon-login',
@@ -21,7 +21,7 @@ Ext.onReady(function() {
 		},
 
 		items: [ {
-			fieldLabel: 'Username',
+			fieldLabel: i18n.user_username,
 			name: 'j_username',
 			allowBlank: false,
 			listeners: {
@@ -32,7 +32,7 @@ Ext.onReady(function() {
 				}
 			}
 		}, {
-			fieldLabel: 'Password',
+			fieldLabel: i18n.user_password,
 			name: 'j_password',
 			inputType: 'password',
 			allowBlank: false,
@@ -44,13 +44,13 @@ Ext.onReady(function() {
 				}
 			}
 		}, {
-			fieldLabel: 'Remember Me',
+			fieldLabel: i18n.login_rememberme,
 			name: '_spring_security_remember_me',
 			xtype: 'checkbox'
 		} ],
 
 		buttons: [ {
-			text: 'Login with user',
+			text: i18n.login_withuser,
 			handler: function() {
 				var form = this.up('form').getForm();
 				form.setValues({
@@ -60,7 +60,7 @@ Ext.onReady(function() {
 				form.submit();
 			}
 		}, {
-			text: 'Login with admin',
+			text: i18n.login_withadmin,
 			handler: function() {
 				var form = this.up('form').getForm();
 				form.setValues({
@@ -70,7 +70,7 @@ Ext.onReady(function() {
 				form.submit();
 			}
 		}, {
-			text: 'Login',
+			text: i18n.login,
 			handler: function() {
 				submitForm();
 			}

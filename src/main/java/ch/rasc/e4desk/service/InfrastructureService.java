@@ -17,12 +17,12 @@ public class InfrastructureService {
 	public void heartbeat() {
 		// nothing here
 	}
-	
+
 	@ExtDirectMethod
 	@PreAuthorize("isAuthenticated()")
 	public String getLoggedOnUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ((User)principal).getUsername();
+		return ((User) principal).getUsername();
 	}
-	
+
 }
