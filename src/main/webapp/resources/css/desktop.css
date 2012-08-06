@@ -75,6 +75,10 @@ div.view-over.settings-wallpaper-item {
 	background-image: url(../images/notepad-icon.png);
 }
 
+.tabs-icon {
+	background-image: url(../images/tabs-icon.gif);
+}
+
 /* Online Users */
 .onlineusers-shortcut {
 	background-image: url(../images/onlineusers.png);
