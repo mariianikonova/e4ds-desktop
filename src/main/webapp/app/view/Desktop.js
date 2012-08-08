@@ -23,7 +23,15 @@ Ext.define('E4desk.view.Desktop', {
 			text: 'Cascade',
 			action: 'cascade',
 			minWindows: 2
-		} ]
+		}, {
+			text: 'Fit Horizontal',
+			action: 'fithorizontal',
+			minWindows: 1
+		}, {
+			text: 'Fit Vertical',
+			action: 'fitvertical',
+			minWindows: 1
+		}]
 	}),
 
 	initComponent: function() {

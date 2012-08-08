@@ -51,6 +51,8 @@ Ext.define('E4desk.controller.DesktopController', {
 		desktopCtxMenu.down('menuitem[action=minimizeall]').on('click', this.onDesktopContextmenuMinimizeAll);
 		desktopCtxMenu.down('menuitem[action=tile]').on('click', this.onDesktopContextmenuTile, this);
 		desktopCtxMenu.down('menuitem[action=cascade]').on('click', this.onDesktopContextmenuCascade);
+		desktopCtxMenu.down('menuitem[action=fithorizontal]').on('click', this.onDesktopContextmenuFitHorizontal, this);
+		desktopCtxMenu.down('menuitem[action=fitvertical]').on('click', this.onDesktopContextmenuFitVertical, this);
 		
 		var windowBarCtxMenu = this.getWindowBar().contextMenu;
 		windowBarCtxMenu.on('hide', function() { this.windowBarCurrentWindow = null }, this);
@@ -147,6 +149,46 @@ Ext.define('E4desk.controller.DesktopController', {
 				y += 20;
 			}
 		});
+	},
+	
+	onDesktopContextmenuFitHorizontal: function() {
+		var availWidth = this.getView().getWidth(true);
+		var availHeight = this.getView().down('#wallpaper').getHeight(true);
+
+		var x = 0;
+		var noOfWindows = this.windows.length;
+		var fitWidth = parseInt(availWidth / noOfWindows);
+
+		if (fitWidth > 0) {
+			Ext.WindowManager.each(function(win) {
+				if (win.isWindow && win.isVisible()) {
+					win.setWidth(fitWidth);
+					win.setHeight(availHeight);
+					win.setPosition(x, 0);
+					x += fitWidth;
+				}
+			});	 
+		}		
+	},
+	
+	onDesktopContextmenuFitVertical: function() {		
+		var availWidth = this.getView().getWidth(true);
+		var availHeight = this.getView().down('#wallpaper').getHeight(true);
+		
+		var y = 0;
+		var noOfWindows = this.windows.length;
+		var fitHeight = parseInt(availHeight / noOfWindows);
+		
+		if (fitHeight > 0) {	    	  
+			Ext.WindowManager.each(function(win) {
+				if (win.isWindow && win.isVisible()) {
+					win.setWidth(availWidth);
+					win.setHeight(fitHeight);
+					win.setPosition(0, y);
+					y += fitHeight;
+				}
+			});	    	  
+		}
 	},
 
 	onWindowBarContextmenu: function(e) {

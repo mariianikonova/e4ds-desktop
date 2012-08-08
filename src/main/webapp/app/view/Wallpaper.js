@@ -1,6 +1,6 @@
 Ext.define('E4desk.view.Wallpaper', {
 	extend: 'Ext.Component',
-
+	itemId: 'wallpaper',
 	cls: 'wallpaper',
 	html: '<img src="' + Ext.BLANK_IMAGE_URL + '">',
 
