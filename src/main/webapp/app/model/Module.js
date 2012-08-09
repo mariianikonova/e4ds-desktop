@@ -13,6 +13,9 @@ Ext.define('E4desk.model.Module', {
 	}, {
 		name: 'showOnDesktop',
 		type: 'boolean'
+	}, {
+		name: 'menuPath',
+		type: 'string'
 	}],
 
 	proxy: {

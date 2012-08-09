@@ -15,8 +15,9 @@ public class ModuleService {
 		return ImmutableList.<Module> builder()
 				.add(new Module("E4desk.view.module.OnlineUsers", "Online Users", "onlineusers", true))
 				.add(new Module("E4desk.view.module.Notepad", "Notepad", "notepad", false))
-				.add(new Module("E4desk.view.module.TabWindow", "Tab Window", "tabs", false))				
+				.add(new Module("E4desk.view.module.TabWindow", "Tab Window", "tabs", false))					
 				.add(new Module("E4desk.view.module.GridWindow", "Grid Window", "grid", true))
-				.add(new Module("E4desk.view.module.SystemStatus", "System Status", "systemstatus", true)).build();
+				.add(new Submenu("System", "settings", "system"))
+				.add(new Module("E4desk.view.module.SystemStatus", "System Status", "systemstatus", true, "system")).build();
 	}
 }

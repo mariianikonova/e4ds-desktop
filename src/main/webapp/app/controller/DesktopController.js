@@ -67,20 +67,45 @@ Ext.define('E4desk.controller.DesktopController', {
 	},
 	
 	updateApplicationMenu: function(store) {
-		
+		var me = this;
 		var applicationMenu = this.getApplicationMenu();
 		var shortcutViewStore = this.getShortcutView().getStore();
+		var submenus = {};
 		
 		store.each(function(item) {
-			if (item.data.showOnDesktop) {
+			var menuItem = null;
+			var data = item.data;
+			
+			if (data.showOnDesktop) {
 				shortcutViewStore.add(item);
 			}
-			applicationMenu.add({text: item.data.name, winId: item.data.id, iconCls: item.data.iconCls + '-icon'});
+			
+			if (data.id) {
+				menuItem = {text: data.name, winId: data.id, iconCls: data.iconCls + '-icon'};
+				if (data.menuPath && submenus[data.menuPath]) {
+					submenus[data.menuPath].add(menuItem);
+				} else {
+					applicationMenu.add(menuItem);
+				}
+			} else {
+				submenus[data.menuPath] = Ext.create('Ext.menu.Menu', {
+					listeners: {
+				        click: me.onApplicationMenuClick,
+				        scope: me
+					}
+				});
+				applicationMenu.add({text: data.name, iconCls: data.iconCls, menu: submenus[data.menuPath]});
+			}
+
 		});
+
+		
 	},
 
 	onApplicationMenuClick: function(menu, item, e) {
-		this.addWindow(item.winId);
+		if (item.winId) {
+			this.addWindow(item.winId);
+		}
 	},
 	
 	onTopBarSettingsClick: function() {
