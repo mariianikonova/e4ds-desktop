@@ -41,17 +41,17 @@ Ext.define('E4desk.controller.SettingsController', {
 	
 	onWallpaperDataviewSelectionChange: function(model, selected) {
 		this.selectedItem = selected[0].data.img;
-    	this.getPreviewWallpaper().setWallpaper(this.selectedItem, this.stretch);        
+    	this.getPreviewWallpaper().setWallpaper(this.selectedItem, true);        
 	},
 	
 	onStretchCheckboxChange: function(field, newValue) {
 		this.stretch = newValue;
-		this.getPreviewWallpaper().setWallpaper(this.selectedItem, this.stretch);
 	},
 	
 	onOkButtonClick: function() {
 		if (this.selectedItem) {
 			this.desktopWallpaper.setWallpaper(this.selectedItem, this.stretch);
+			infrastructureService.saveUserSettings(this.selectedItem, this.stretch);
 		}
 		this.getView().close();
 	}

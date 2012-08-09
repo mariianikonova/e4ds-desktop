@@ -1,11 +1,10 @@
 Ext.define('E4desk.view.Wallpaper', {
 	extend: 'Ext.Component',
-	itemId: 'wallpaper',
 	cls: 'wallpaper',
 	html: '<img src="' + Ext.BLANK_IMAGE_URL + '">',
 
 	stretch: false,
-	wallpaper: 'http://rasc.ch/wallpapers/Blue-Sencha.jpg',
+	wallpaper: '',
 
 	afterRender: function() {
 		var me = this;

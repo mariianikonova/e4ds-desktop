@@ -35,6 +35,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	init: function() {
 		
 		infrastructureService.getLoggedOnUser(this.showLoggedOnUser, this);
+		infrastructureService.getUserSettings(this.handleUserSettings, this);
 		
 		var moduleStore = Ext.create('E4desk.store.ModuleStore');		
 		moduleStore.load({
@@ -64,6 +65,10 @@ Ext.define('E4desk.controller.DesktopController', {
 
 	showLoggedOnUser: function(fullname) {
 		this.getLoggedOnLabel().setText('Logged in as ' + fullname);
+	},
+	
+	handleUserSettings: function(settings) {
+		this.getView().wallpaper.setWallpaper(settings.wallpaper, settings.stretch)
 	},
 	
 	updateApplicationMenu: function(store) {
@@ -178,7 +183,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	
 	onDesktopContextmenuFitHorizontal: function() {
 		var availWidth = this.getView().getWidth(true);
-		var availHeight = this.getView().down('#wallpaper').getHeight(true);
+		var availHeight = this.getView().wallpaper.getHeight(true);
 
 		var x = 0;
 		var noOfWindows = this.windows.length;
@@ -198,7 +203,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	
 	onDesktopContextmenuFitVertical: function() {		
 		var availWidth = this.getView().getWidth(true);
-		var availHeight = this.getView().down('#wallpaper').getHeight(true);
+		var availHeight = this.getView().wallpaper.getHeight(true);
 		
 		var y = 0;
 		var noOfWindows = this.windows.length;
