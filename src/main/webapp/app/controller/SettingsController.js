@@ -49,7 +49,7 @@ Ext.define('E4desk.controller.SettingsController', {
 	},
 	
 	onOkButtonClick: function() {
-		if (this.selectedItem) {
+		if (this.selectedItem !== null) {
 			this.desktopWallpaper.setWallpaper(this.selectedItem, this.stretch);
 			infrastructureService.saveUserSettings(this.selectedItem, this.stretch);
 		}

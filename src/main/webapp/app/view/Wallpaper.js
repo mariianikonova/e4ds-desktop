@@ -4,7 +4,7 @@ Ext.define('E4desk.view.Wallpaper', {
 	html: '<img src="' + Ext.BLANK_IMAGE_URL + '">',
 
 	stretch: false,
-	wallpaper: '',
+	wallpaper: null,
 
 	afterRender: function() {
 		var me = this;
