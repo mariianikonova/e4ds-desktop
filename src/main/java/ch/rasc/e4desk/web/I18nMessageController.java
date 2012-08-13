@@ -11,14 +11,13 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -36,8 +35,6 @@ public class I18nMessageController implements InitializingBean {
 	private final static String prefix = "var i18n = ";
 
 	private final static String postfix = ";";
-
-	private final static long sixMonthFromNow = DateTime.now().plusMonths(6).getMillis();
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -64,27 +61,8 @@ public class I18nMessageController implements InitializingBean {
 	public void i18n(HttpServletRequest request, HttpServletResponse response, Locale locale)
 			throws JsonGenerationException, JsonMappingException, IOException {
 
-		String ifNoneMatch = request.getHeader("If-None-Match");
-
 		byte[] output = buildResponse(locale);
-		String etag = "\"" + DigestUtils.md5DigestAsHex(output) + "\"";
-
-		if (etag.equals(ifNoneMatch)) {
-			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-			return;
-		}
-
-		response.setContentType(JS_CONTENT_TYPE);
-
-		response.setContentLength(output.length);
-		response.setHeader("Vary", "Accept-Encoding");
-		response.setDateHeader("Expires", sixMonthFromNow);
-		response.setHeader("ETag", etag);
-		response.setHeader("Cache-control", "public, max-age=15552000");
-
-		ServletOutputStream out = response.getOutputStream();
-		out.write(output);
-		out.flush();
+		ExtDirectSpringUtil.handleCacheableResponse(request, response, output, "application/javascript;charset=UTF-8");
 	}
 
 	private byte[] buildResponse(Locale locale) {
