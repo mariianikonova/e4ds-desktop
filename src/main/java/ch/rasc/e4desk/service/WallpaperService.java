@@ -12,8 +12,7 @@ public class WallpaperService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ImmutableList<Wallpaper> read() {
-		return ImmutableList.<Wallpaper> builder()
-				.add(new Wallpaper("None", null))
+		return ImmutableList.<Wallpaper> builder().add(new Wallpaper("None", null))
 				.add(new Wallpaper("Blue Sencha", "http://rasc.ch/wallpapers/Blue-Sencha.jpg"))
 				.add(new Wallpaper("Blue", "http://rasc.ch/wallpapers/blue.jpg"))
 				.add(new Wallpaper("Dark Sencha", "http://rasc.ch/wallpapers/Dark-Sencha.jpg"))

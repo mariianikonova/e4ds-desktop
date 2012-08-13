@@ -4,19 +4,19 @@ public class UserSettings {
 
 	private final String wallpaper;
 
-	private final boolean stretch;
+	private final String picturePos;
 
-	public UserSettings(String wallpaper, boolean stretch) {
+	public UserSettings(String wallpaper, String picturePos) {
 		this.wallpaper = wallpaper;
-		this.stretch = stretch;
+		this.picturePos = picturePos;
 	}
 
 	public String getWallpaper() {
 		return wallpaper;
 	}
 
-	public boolean isStretch() {
-		return stretch;
+	public String getPicturePos() {
+		return picturePos;
 	}
 
 }

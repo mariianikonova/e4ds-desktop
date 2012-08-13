@@ -36,7 +36,12 @@ div.view-over.settings-wallpaper-item {
 	background-color: #3d71b8;
 }
 
-.wallpaper-tiled {
+.wallpaper-center {
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.wallpaper-tile {
 	background-repeat: repeat;
 }
 

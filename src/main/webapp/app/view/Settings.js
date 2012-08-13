@@ -22,10 +22,7 @@ Ext.define('E4desk.view.Settings', {
 			itemId: 'okButton'
 		}, {
 			text: 'Cancel',
-			handler: function() {
-				this.close()
-			},
-			scope: this
+			itemId: 'cancelButton'
 		} ];
 
 		this.items = [ {
@@ -50,11 +47,16 @@ Ext.define('E4desk.view.Settings', {
 			region: 'center',
 			layout: 'fit',
 			items: [ this.preview ]
-		}, {			
-			xtype: 'checkbox',
+		}, {
+			xtype: 'radiogroup',
+			itemId: 'picturepos',
 			region: 'south',
-			itemId: 'stretchCheckbox',
-			boxLabel: 'Stretch to fit'
+			fieldLabel: 'Picture Position',
+			items: [
+				{ boxLabel: 'Original Size, Center', name: 'pos', inputValue: 'center' },
+				{ boxLabel: 'Original Size, Tile', name: 'pos', inputValue: 'tile' },
+				{ boxLabel: 'Strech', name: 'pos', inputValue: 'stretch' }
+			]
 		} ];
 
 		this.callParent();

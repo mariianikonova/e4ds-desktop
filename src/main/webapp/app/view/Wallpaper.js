@@ -3,19 +3,18 @@ Ext.define('E4desk.view.Wallpaper', {
 	cls: 'wallpaper',
 	html: '<img src="' + Ext.BLANK_IMAGE_URL + '">',
 
-	stretch: false,
+	picturePosition: 'center',
 	wallpaper: null,
 
 	afterRender: function() {
-		var me = this;
-		me.callParent();
-		me.setWallpaper(me.wallpaper, me.stretch);
+		this.callParent();
+		this.setWallpaper(this.wallpaper, this.picturePosition);
 	},
 
-	setWallpaper: function(wallpaper, stretch) {
+	setWallpaper: function(wallpaper, pos) {
 		var me = this, imgEl, bkgnd;
 
-		me.stretch = (stretch !== false);
+		me.picturePosition = pos || 'center';
 		me.wallpaper = wallpaper;
 
 		if (me.rendered) {
@@ -23,19 +22,27 @@ Ext.define('E4desk.view.Wallpaper', {
 
 			if (!wallpaper || wallpaper == Ext.BLANK_IMAGE_URL) {
 				Ext.fly(imgEl).hide();
-			} else if (me.stretch) {
-				imgEl.src = wallpaper;
-
-				me.el.removeCls('wallpaper-tiled');
+    			me.el.removeCls('wallpaper-center');
+    			me.el.removeCls('wallpaper-tile');				
+			} else if (me.picturePosition === 'center') {
+				Ext.fly(imgEl).hide();
+				bkgnd = 'url(' + wallpaper + ')';
+				me.el.removeCls('wallpaper-tile');
+				me.el.addCls('wallpaper-center');
+			} else if (me.picturePosition === 'tile') {
+				Ext.fly(imgEl).hide();
+				bkgnd = 'url(' + wallpaper + ')';
+				me.el.removeCls('wallpaper-center');
+				me.el.addCls('wallpaper-tile');
+			} else if (me.picturePosition === 'stretch') {
+    			me.el.removeCls('wallpaper-center');
+    			me.el.removeCls('wallpaper-tile');
+    			
+				imgEl.src = wallpaper;				
 				Ext.fly(imgEl).setStyle({
 					width: '100%',
 					height: '100%'
-				}).show();
-			} else {
-				Ext.fly(imgEl).hide();
-
-				bkgnd = 'url(' + wallpaper + ')';
-				me.el.addCls('wallpaper-tiled');
+				}).show();			
 			}
 
 			me.el.setStyle({

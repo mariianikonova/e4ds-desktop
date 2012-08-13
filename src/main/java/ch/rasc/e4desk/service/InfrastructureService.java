@@ -17,12 +17,12 @@ import com.google.common.collect.Maps;
 public class InfrastructureService {
 
 	private final static Map<String, UserSettings> userSettings = Maps.newHashMap();
-	
+
 	static {
-		userSettings.put("admin", new UserSettings("http://rasc.ch/wallpapers/Blue-Sencha.jpg", true));
-		userSettings.put("user", new UserSettings("http://rasc.ch/wallpapers/Wood-Sencha.jpg", true));
+		userSettings.put("admin", new UserSettings("http://rasc.ch/wallpapers/Blue-Sencha.jpg", "center"));
+		userSettings.put("user", new UserSettings("http://rasc.ch/wallpapers/Wood-Sencha.jpg", "center"));
 	}
-	
+
 	@ExtDirectMethod(value = POLL, event = "heartbeat")
 	@PreAuthorize("isAuthenticated()")
 	public void heartbeat() {
@@ -35,17 +35,17 @@ public class InfrastructureService {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ((User) principal).getUsername();
 	}
-	
+
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")	
+	@PreAuthorize("isAuthenticated()")
 	public UserSettings getUserSettings() {
 		return userSettings.get(getLoggedOnUser());
 	}
-	
+
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")		
-	public void saveUserSettings(String wallpaper, boolean strech) {
-		userSettings.put(getLoggedOnUser(), new UserSettings(wallpaper, strech));
+	@PreAuthorize("isAuthenticated()")
+	public void saveUserSettings(String wallpaper, String picturePos) {
+		userSettings.put(getLoggedOnUser(), new UserSettings(wallpaper, picturePos));
 	}
 
 }
