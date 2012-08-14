@@ -21,6 +21,11 @@ public class WallpaperService {
 				.add(new Wallpaper("Desktop2", "http://rasc.ch/wallpapers/desktop2.jpg"))
 				.add(new Wallpaper("Moon", "http://rasc.ch/wallpapers/moon.jpg"))
 				.add(new Wallpaper("Sky", "http://rasc.ch/wallpapers/sky.jpg"))
-				.add(new Wallpaper("Wood Sencha", "http://rasc.ch/wallpapers/Wood-Sencha.jpg")).build();
+				.add(new Wallpaper("Wood Sencha", "http://rasc.ch/wallpapers/Wood-Sencha.jpg"))				
+				.add(new Wallpaper("Bender", "http://rasc.ch/wallpapers/bender.jpg"))
+				.add(new Wallpaper("Frog", "http://rasc.ch/wallpapers/frog.jpg"))
+				.add(new Wallpaper("Mike Wazowski", "http://rasc.ch/wallpapers/mikewazowski.jpg"))
+				.add(new Wallpaper("Pi", "http://rasc.ch/wallpapers/pi.jpg"))
+				.build();
 	}
 }
