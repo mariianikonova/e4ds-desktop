@@ -40,6 +40,7 @@ Ext.define('E4desk.view.Settings', {
 				selectedItemCls: 'settings-wallpaper-item-selected',
 				overItemCls: 'view-over',
 				trackOver: true,
+				autoScroll: true,
 				tpl: [ '<tpl for=".">', '<div class="settings-wallpaper-item">', '{text}', '</div>', '</tpl>' ]
 			} ]
 		}, {
