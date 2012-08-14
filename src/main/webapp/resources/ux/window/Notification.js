@@ -8,8 +8,8 @@
  *	Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
  *	and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
- *	Version: 2.0
- *	Last changed date: 2012-03-06
+ *	Version: 2.1
+ *	Last changed date: 2012-08-12
  */
 
 Ext.define('Ext.ux.window.Notification', {
@@ -17,7 +17,7 @@ Ext.define('Ext.ux.window.Notification', {
 	alias: 'widget.uxNotification',
 
 	cls: 'ux-notification-window',
-	autoHide: true,
+	autoClose: true,
 	autoHeight: true,
 	plain: false,
 	draggable: false,
@@ -44,13 +44,15 @@ Ext.define('Ext.ux.window.Notification', {
 	slideInDuration: 1500,
 	slideBackDuration: 1000,
 	hideDuration: 500,
-	autoHideDelay: 7000,
+	autoCloseDelay: 7000,
 	stickOnClick: true,
 	stickWhileHover: true,
 
 	// Private. Do not override!
 	isHiding: false,
 	readyToHide: false,
+	destroyAfterHide: false,
+	closeOnMouseOut: false,
 
 	// Caching coordinates to be able to align to final position of siblings being animated
 	xPos: 0,
@@ -73,7 +75,7 @@ Ext.define('Ext.ux.window.Notification', {
 				manager: 'notification',
 				iconCls: error ? 'ux-notification-icon-error' : 'ux-notification-icon-information',
 				
-				autoHideDelay: 4000,
+				autoCloseDelay: 4000,
 				slideInDuration: 300,
 				
 				paddingX: 5,
@@ -86,9 +88,144 @@ Ext.define('Ext.ux.window.Notification', {
 						'font-weight': 'bold'
 				}
 			}).show();
-		}
+		}		
 	},
 
+	initComponent: function() {
+		var me = this;
+
+		// Backwards compatibility
+		if (Ext.isDefined(me.corner)) {
+			me.position = me.corner;
+		}
+		if (Ext.isDefined(me.slideDownAnimation)) {
+			me.slideBackAnimation = me.slideDownAnimation;
+		}
+		if (Ext.isDefined(me.autoDestroyDelay)) {
+			me.autoCloseDelay = me.autoDestroyDelay;
+		}
+		if (Ext.isDefined(me.autoHideDelay)) {
+			me.autoCloseDelay = me.autoHideDelay;
+		}
+		if (Ext.isDefined(me.autoHide)) {
+			me.autoClose = me.autoHide;
+		}
+		if (Ext.isDefined(me.slideInDelay)) {
+			me.slideInDuration = me.slideInDelay;
+		}
+		if (Ext.isDefined(me.slideDownDelay)) {
+			me.slideBackDuration = me.slideDownDelay;
+		}
+		if (Ext.isDefined(me.fadeDelay)) {
+			me.hideDuration = me.fadeDelay;
+		}
+
+		// 'bc', lc', 'rc', 'tc' compatibility
+		me.position = me.position.replace(/c/, '');
+
+		me.updateAlignment(me.position);
+
+		me.setManager(me.manager);
+
+		me.callParent(arguments);
+	},
+
+	onRender: function() {
+		var me = this;
+
+		me.el.hover(
+			function () {
+				me.mouseIsOver = true;
+			},
+			function () {
+				me.mouseIsOver = false;
+				if (me.closeOnMouseOut) {
+					me.closeOnMouseOut = false;
+					me.close();
+				}
+			},
+			me
+		);
+
+		this.callParent(arguments);
+
+	},
+	
+	updateAlignment: function (position) {
+		var me = this;
+
+		switch (position) {
+			case 'br':
+				me.paddingFactorX = -1;
+				me.paddingFactorY = -1;
+				me.siblingAlignment = "br-br";
+				if (me.useXAxis) {
+					me.managerAlignment = "bl-br";
+				} else {
+					me.managerAlignment = "tr-br";
+				}
+				break;
+			case 'bl':
+				me.paddingFactorX = 1;
+				me.paddingFactorY = -1;
+				me.siblingAlignment = "bl-bl";
+				if (me.useXAxis) {
+					me.managerAlignment = "br-bl";
+				} else {
+					me.managerAlignment = "tl-bl";
+				}
+				break;
+			case 'tr':
+				me.paddingFactorX = -1;
+				me.paddingFactorY = 1;
+				me.siblingAlignment = "tr-tr";
+				if (me.useXAxis) {
+					me.managerAlignment = "tl-tr";
+				} else {
+					me.managerAlignment = "br-tr";
+				}
+				break;
+			case 'tl':
+				me.paddingFactorX = 1;
+				me.paddingFactorY = 1;
+				me.siblingAlignment = "tl-tl";
+				if (me.useXAxis) {
+					me.managerAlignment = "tr-tl";
+				} else {
+					me.managerAlignment = "bl-tl";
+				}
+				break;
+			case 'b':
+				me.paddingFactorX = 0;
+				me.paddingFactorY = -1;
+				me.siblingAlignment = "b-b";
+				me.useXAxis = 0;
+				me.managerAlignment = "t-b";
+				break;
+			case 't':
+				me.paddingFactorX = 0;
+				me.paddingFactorY = 1;
+				me.siblingAlignment = "t-t";
+				me.useXAxis = 0;
+				me.managerAlignment = "b-t";
+				break;
+			case 'l':
+				me.paddingFactorX = 1;
+				me.paddingFactorY = 0;
+				me.siblingAlignment = "l-l";
+				me.useXAxis = 1;
+				me.managerAlignment = "r-l";
+				break;
+			case 'r':
+				me.paddingFactorX = -1;
+				me.paddingFactorY = 0;
+				me.siblingAlignment = "r-r";
+				me.useXAxis = 1;
+				me.managerAlignment = "l-r";
+				break;
+			}
+	},
+	
 	getXposAlignedToManager: function () {
 		var me = this;
 
@@ -184,102 +321,10 @@ Ext.define('Ext.ux.window.Notification', {
 		return me.manager.notifications[alignment];
 	},
 
-	beforeShow: function () {
+	setManager: function (manager) {
 		var me = this;
 
-		// 1.x backwards compatibility
-		if (Ext.isDefined(me.corner)) {
-			me.position = me.corner;
-		}
-		if (Ext.isDefined(me.slideDownAnimation)) {
-			me.slideBackAnimation = me.slideDownAnimation;
-		}
-		if (Ext.isDefined(me.autoDestroyDelay)) {
-			me.autoHideDelay = me.autoDestroyDelay;
-		}
-		if (Ext.isDefined(me.slideInDelay)) {
-			me.slideInDuration = me.slideInDelay;
-		}
-		if (Ext.isDefined(me.slideDownDelay)) {
-			me.slideBackDuration = me.slideDownDelay;
-		}
-		if (Ext.isDefined(me.fadeDelay)) {
-			me.hideDuration = me.fadeDelay;
-		}
-
-		// 'bc', lc', 'rc', 'tc' compatibility
-		me.position = me.position.replace(/c/, '');
-
-		switch (me.position) {
-			case 'br':
-				me.paddingFactorX = -1;
-				me.paddingFactorY = -1;
-				me.siblingAlignment = "br-br";
-				if (me.useXAxis) {
-					me.managerAlignment = "bl-br";
-				} else {
-					me.managerAlignment = "tr-br";
-				}
-				break;
-			case 'bl':
-				me.paddingFactorX = 1;
-				me.paddingFactorY = -1;
-				me.siblingAlignment = "bl-bl";
-				if (me.useXAxis) {
-					me.managerAlignment = "br-bl";
-				} else {
-					me.managerAlignment = "tl-bl";
-				}
-				break;
-			case 'tr':
-				me.paddingFactorX = -1;
-				me.paddingFactorY = 1;
-				me.siblingAlignment = "tr-tr";
-				if (me.useXAxis) {
-					me.managerAlignment = "tl-tr";
-				} else {
-					me.managerAlignment = "br-tr";
-				}
-				break;
-			case 'tl':
-				me.paddingFactorX = 1;
-				me.paddingFactorY = 1;
-				me.siblingAlignment = "tl-tl";
-				if (me.useXAxis) {
-					me.managerAlignment = "tr-tl";
-				} else {
-					me.managerAlignment = "bl-tl";
-				}
-				break;
-			case 'b':
-				me.paddingFactorX = 0;
-				me.paddingFactorY = -1;
-				me.siblingAlignment = "b-b";
-				me.useXAxis = 0;
-				me.managerAlignment = "t-b";
-				break;
-			case 't':
-				me.paddingFactorX = 0;
-				me.paddingFactorY = 1;
-				me.siblingAlignment = "t-t";
-				me.useXAxis = 0;
-				me.managerAlignment = "b-t";
-				break;
-			case 'l':
-				me.paddingFactorX = 1;
-				me.paddingFactorY = 0;
-				me.siblingAlignment = "l-l";
-				me.useXAxis = 1;
-				me.managerAlignment = "r-l";
-				break;
-			case 'r':
-				me.paddingFactorX = -1;
-				me.paddingFactorY = 0;
-				me.siblingAlignment = "r-r";
-				me.useXAxis = 1;
-				me.managerAlignment = "l-r";
-				break;
-			}
+		me.manager = manager;
 
 		if (typeof me.manager == 'string') {
 			me.manager = Ext.getCmp(me.manager);
@@ -297,30 +342,33 @@ Ext.define('Ext.ux.window.Notification', {
 		if (typeof me.manager.notifications == 'undefined') {
 			me.manager.notifications = {};
 		}
+	},
+	
+	beforeShow: function () {
+		var me = this;
 
 		if (me.stickOnClick) {
 			if (me.body && me.body.dom) {
 				Ext.fly(me.body.dom).on('click', function () {
-					me.cancelAutoHide();
+					me.cancelAutoClose();
 					me.addCls('notification-fixed');
 				}, me);
 			}
 		}
 
-		me.el.hover(
-			function () {
-				me.mouseIsOver = true;
-			},
-			function () {
-				me.mouseIsOver = false;
-			},
-			me
-		);
-		
-		if (me.autoHide) {
-			me.task = new Ext.util.DelayedTask(me.doAutoHide, me);
-			me.task.delay(me.autoHideDelay);
+		if (me.autoClose) {
+			me.task = new Ext.util.DelayedTask(me.doAutoClose, me);
+			me.task.delay(me.autoCloseDelay);
 		}
+
+		// Shunting offscreen to avoid flicker
+		me.el.setX(-10000);
+		me.el.setOpacity(1);
+		
+	},
+
+	afterShow: function () {
+		var me = this;
 
 		var notifications = me.getNotifications(me.managerAlignment);
 
@@ -329,15 +377,13 @@ Ext.define('Ext.ux.window.Notification', {
 			me.xPos = me.getXposAlignedToSibling(notifications[notifications.length - 1]);
 			me.yPos = me.getYposAlignedToSibling(notifications[notifications.length - 1]);
 		} else {
-			me.el.alignTo(me.manager.el, me.managerAlignment, [(me.paddingX * me.paddingFactorX), (me.paddingY * me.paddingFactorY)]);
+			me.el.alignTo(me.manager.el, me.managerAlignment, [(me.paddingX * me.paddingFactorX), (me.paddingY * me.paddingFactorY)], false);
 			me.xPos = me.getXposAlignedToManager();
 			me.yPos = me.getYposAlignedToManager();
 		}
 
 		Ext.Array.include(notifications, me);
 
-		me.stopAnimation();
-		
 		me.el.animate({
 			to: {
 				x: me.xPos,
@@ -349,13 +395,14 @@ Ext.define('Ext.ux.window.Notification', {
 			dynamic: true
 		});
 
+		this.callParent(arguments);
 	},
-
+	
 	slideBack: function () {
 		var me = this;
 
 		var notifications = me.getNotifications(me.managerAlignment);
-		var index = Ext.Array.indexOf(notifications, me);
+		var index = Ext.Array.indexOf(notifications, me)
 
 		// Not animating the element if it already started to hide itself or if the manager is not present in the dom
 		if (!me.isHiding && me.el && me.manager && me.manager.el && me.manager.el.dom && me.manager.el.isVisible()) {
@@ -382,35 +429,42 @@ Ext.define('Ext.ux.window.Notification', {
 		}
 	},
 
-	cancelAutoHide: function() {
+	cancelAutoClose: function() {
 		var me = this;
 
-		if (me.autoHide) {
+		if (me.autoClose) {
 			me.task.cancel();
-			me.autoHide = false;
 		}
 	},
 
-	doAutoHide: function () {
+	doAutoClose: function () {
 		var me = this;
 
-		/* Delayed hiding when mouse leaves the component.
-		   Doing this before me.mouseIsOver is checked below to avoid a race condition while resetting event handlers */
-		me.el.hover(
-			function () {
-			},
-			function () {
-				me.hide();
-			},
-			me
-		);
-		
 		if (!(me.stickWhileHover && me.mouseIsOver)) {
-			// Hide immediately
-			me.hide();
+			// Close immediately
+			me.close();
+		} else {
+			// Delayed closing when mouse leaves the component.
+			me.closeOnMouseOut = true;
 		}
 	},
 
+	removeFromManager: function () {
+		var me = this;
+
+		if (me.manager) {
+			var notifications = me.getNotifications(me.managerAlignment);
+			var index = Ext.Array.indexOf(notifications, me);
+			if (index != -1) {
+				Ext.Array.erase(notifications, index, 1);
+
+				// Slide "down" all notifications "above" the hidden one
+				for (;index < notifications.length; index++) {
+					notifications[index].slideBack();
+				}
+			}
+		}
+	},
 
 	hide: function () {
 		var me = this;
@@ -420,7 +474,7 @@ Ext.define('Ext.ux.window.Notification', {
 
 			me.isHiding = true;
 
-			me.cancelAutoHide();
+			me.cancelAutoClose();
 			me.stopAnimation();
 
 			me.el.animate({
@@ -432,32 +486,34 @@ Ext.define('Ext.ux.window.Notification', {
 				dynamic: false,
 				listeners: {
 					afteranimate: function () {
-						if (me.manager) {
-							var notifications = me.getNotifications(me.managerAlignment);
-							var index = Ext.Array.indexOf(notifications, me);
-							if (index != -1) {
-								Ext.Array.erase(notifications, index, 1);
-
-								// Slide "down" all notifications "above" the hidden one
-								for (;index < notifications.length; index++) {
-									notifications[index].slideBack();
-								}
-							}
-						}
-
+						me.removeFromManager();
 						me.readyToHide = true;
-						me.hide();
+						me.hide(me.animateTarget, me.doClose, me);
 					}
 				}
 			});
 		}
 
-		// Calling parents hide function to complete hiding
+		// Calling parent's hide function to complete hiding
 		if (me.readyToHide) {
 			me.isHiding = false;
 			me.readyToHide = false;
 			me.removeCls('notification-fixed');
-			this.callParent(arguments);
+			me.callParent(arguments);
+			if (me.destroyAfterHide) {
+				me.destroy();
+			}
+		}
+	},
+
+	destroy: function () {
+		var me = this;
+
+		if (!me.hidden) {
+			me.destroyAfterHide = true;
+			me.hide(me.animateTarget, me.doClose, me);
+		} else {
+			me.callParent(arguments);
 		}
 	}
 
@@ -466,16 +522,19 @@ Ext.define('Ext.ux.window.Notification', {
 
 /*	Changelog:
  *
- *	2011-09-01 - 1.1: Bugfix. Array.indexOf not universally implemented, causing errors in IE<=8. Replaced with Ext.Array.indexOf.
- *	2011-09-12 - 1.2: Added config options: stickOnClick and stickWhileHover.
- *	2011-09-13 - 1.3: Cleaned up component destruction.
- *	2012-03-06 - 2.0: Renamed some properties ending with "Delay" to the more correct: "Duration".
+ *  2011-09-01 - 1.1: Bugfix. Array.indexOf not universally implemented, causing errors in IE<=8. Replaced with Ext.Array.indexOf.
+ *  2011-09-12 - 1.2: Added config options: stickOnClick and stickWhileHover.
+ *  2011-09-13 - 1.3: Cleaned up component destruction.
+ *  2012-03-06 - 2.0: Renamed some properties ending with "Delay" to the more correct: "Duration".
  *                    Moved the hiding animation out of destruction and into hide.
- *	                  Renamed the corresponding "destroy" properties to "hide".
+ *                    Renamed the corresponding "destroy" properties to "hide".
  *                    (Hpsam) Changed addClass to addCls.
  *                    (Hpsam) Avoiding setting 'notification-fixed' when auto hiding.
  *                    (Justmyhobby) Using separate arrays to enable managers to mix alignments.
  *                    (Kreeve_ctisn) Removed default title.
- *	                  (Jmaia) Center of edges can be used for positioning. Renamed corner property to position.
+ *                    (Jmaia) Center of edges can be used for positioning. Renamed corner property to position.
  *                    (Hpsam) Hiding or destroying manager does not cause errors.
+ *  2012-08-12 - 2.1: Renamed autoHide to autoClose
+ *                    (Dmurat) Enabled reuse of notifications (closeAction: 'hide')
+ *                    (Idonofrio) Destroying notification by default (closeAction: 'destroy')
  */
