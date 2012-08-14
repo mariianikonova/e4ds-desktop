@@ -65,13 +65,17 @@ Ext.define('E4desk.view.Settings', {
 				itemId: 'picturepos',				
 				fieldLabel: 'Picture Position',
 				items: [ {
-					boxLabel: 'Original Size, Center',
+					boxLabel: 'Center',
 					name: 'pos',
 					inputValue: 'center'
 				}, {
-					boxLabel: 'Original Size, Tile',
+					boxLabel: 'Tile',
 					name: 'pos',
 					inputValue: 'tile'
+				},{
+					boxLabel: 'Resize',
+					name: 'pos',
+					inputValue: 'fit'
 				}, {
 					boxLabel: 'Strech',
 					name: 'pos',

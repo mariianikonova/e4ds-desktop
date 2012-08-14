@@ -19,30 +19,35 @@ Ext.define('E4desk.controller.SettingsController', {
 		},
 		previewWallpaper: true
 	},
-	
-	oldWallpaperUrl: null,
-	oldPicturePosition: null,
-	oldBackgroundColor: null,
-	newWallpaperUrl: null,
-	newPicturePosition: null,
-	newBackgroundColor: null,
-	
+
+	wallpaperUrl: null,
+	imageWidth: null,
+	imageHeight: null,
+	picturePosition: null,
+	backgroundColor: null,
+
 	init: function() {
-		this.oldWallpaperUrl = this.desktopWallpaper.wallpaper;
-		this.oldPicturePosition = this.desktopWallpaper.picturePosition;
-		this.oldBackgroundColor = this.desktopWallpaper.backgroundColor;
-		
-		this.getPicturepos().setValue({pos: this.oldPicturePosition});
-		this.getBackgroundColor().setValue(this.oldBackgroundColor);
-		this.getWallpaperDataview().getStore().on('load', this.onStoreLoad, this, {single: true});
+		this.wallpaperUrl = this.desktopWallpaper.wallpaper;
+		this.imageWidth = this.desktopWallpaper.imageWidth;
+		this.imageHeight = this.desktopWallpaper.imageHeight;
+		this.picturePosition = this.desktopWallpaper.picturePosition;
+		this.backgroundColor = this.desktopWallpaper.backgroundColor;
+
+		this.getPicturepos().setValue({
+			pos: this.picturePosition
+		});
+		this.getBackgroundColor().setValue(this.backgroundColor);
+		this.getWallpaperDataview().getStore().on('load', this.onStoreLoad, this, {
+			single: true
+		});
 	},
-	
+
 	onStoreLoad: function() {
 		var me = this;
 		var sitem = null;
-		
+
 		this.getWallpaperDataview().getStore().each(function(item) {
-			if (item.data.img === me.oldWallpaperUrl) {				
+			if (item.data.img === me.wallpaperUrl) {
 				sitem = item;
 				return false;
 			}
@@ -52,32 +57,37 @@ Ext.define('E4desk.controller.SettingsController', {
 			this.getWallpaperDataview().getSelectionModel().select(sitem);
 		}
 	},
-	
+
 	onWallpaperDataviewSelectionChange: function(model, selected) {
-		this.newWallpaperUrl = selected[0].data.img;
-    	this.getPreviewWallpaper().setWallpaper(this.newWallpaperUrl, 'stretch', this.newBackgroundColor);
-    	this.desktopWallpaper.setWallpaper(this.newWallpaperUrl, this.newPicturePosition, this.newBackgroundColor);
+		this.wallpaperUrl = selected[0].data.img;
+		this.imageWidth = selected[0].data.width;
+		this.imageHeight = selected[0].data.height;
+		this.getPreviewWallpaper().setWallpaper(this.wallpaperUrl, this.imageWidth, this.imageHeight, this.picturePosition,
+				this.backgroundColor);
 	},
-	
+
 	onBackgroundColorChange: function(field, newValue) {
-		this.newBackgroundColor = newValue;
-    	this.getPreviewWallpaper().setWallpaper(this.newWallpaperUrl, 'stretch', this.newBackgroundColor);
-    	this.desktopWallpaper.setWallpaper(this.newWallpaperUrl, this.newPicturePosition, this.newBackgroundColor);
+		this.backgroundColor = newValue;
+		this.getPreviewWallpaper().setWallpaper(this.wallpaperUrl, this.imageWidth, this.imageHeight, this.picturePosition,
+				this.backgroundColor);
 	},
-	
+
 	onPictureposChange: function(field, newValue) {
-		this.newPicturePosition = newValue.pos;
-		this.desktopWallpaper.setWallpaper(this.newWallpaperUrl, this.newPicturePosition, this.newBackgroundColor);
+		this.picturePosition = newValue.pos;
+		this.getPreviewWallpaper().setWallpaper(this.wallpaperUrl, this.imageWidth, this.imageHeight, this.picturePosition,
+				this.backgroundColor);
 	},
-	
+
 	onOkButtonClick: function() {
-		infrastructureService.saveUserSettings(this.newWallpaperUrl, this.newPicturePosition, this.newBackgroundColor);		
+		this.desktopWallpaper
+				.setWallpaper(this.wallpaperUrl, this.imageWidth, this.imageHeight, this.picturePosition, this.backgroundColor);
+		infrastructureService.saveUserSettings(this.wallpaperUrl, this.imageWidth, this.imageHeight, this.picturePosition,
+				this.backgroundColor);
 		this.getView().close();
 	},
-	
+
 	onCancelButtonClick: function() {
-		this.desktopWallpaper.setWallpaper(this.oldWallpaperUrl, this.oldPicturePosition, this.oldBackgroundColor);
 		this.getView().close();
 	}
-	
+
 });

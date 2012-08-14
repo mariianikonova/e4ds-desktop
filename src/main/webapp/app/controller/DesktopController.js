@@ -68,7 +68,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	},
 	
 	handleUserSettings: function(settings) {
-		this.getView().wallpaper.setWallpaper(settings.wallpaper, settings.picturePos, settings.backgroundColor);
+		this.getView().wallpaper.setWallpaper(settings.wallpaper, settings.imageWidth, settings.imageHeight, settings.picturePos, settings.backgroundColor);
 	},
 	
 	updateApplicationMenu: function(store) {

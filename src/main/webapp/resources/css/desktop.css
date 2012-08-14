@@ -34,6 +34,9 @@ div.view-over.settings-wallpaper-item {
 /* Desktop DataView */
 .wallpaper {
 	background-color: #3d71b8;
+	display: table-cell;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .wallpaper-center {
