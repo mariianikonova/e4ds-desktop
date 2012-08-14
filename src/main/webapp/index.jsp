@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext-4.1.1-gpl/resources/css/ext-all.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/desktop.css" />
     <link rel="stylesheet" type="text/css" href="resources/ux/css/Notification.css">
+    <link rel="stylesheet" type="text/css" href="resources/ux/css/colorpicker.css">
 </head>
 <body>    
     <%@ include file="old.jspf"%>

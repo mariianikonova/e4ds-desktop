@@ -1,7 +1,8 @@
 Ext.Loader.setConfig({
 	enabled: true,
 	paths: {
-		'E4desk': 'app'
+		'E4desk': 'app',
+		'Ext.ux': 'resources/ux'
 	}
 });
 

@@ -6,9 +6,12 @@ public class UserSettings {
 
 	private final String picturePos;
 
-	public UserSettings(String wallpaper, String picturePos) {
+	private final String backgroundColor;
+
+	public UserSettings(String wallpaper, String picturePos, String backgroundColor) {
 		this.wallpaper = wallpaper;
 		this.picturePos = picturePos;
+		this.backgroundColor = backgroundColor;
 	}
 
 	public String getWallpaper() {
@@ -17,6 +20,10 @@ public class UserSettings {
 
 	public String getPicturePos() {
 		return picturePos;
+	}
+
+	public String getBackgroundColor() {
+		return backgroundColor;
 	}
 
 }

@@ -5,15 +5,17 @@ Ext.define('E4desk.view.Wallpaper', {
 
 	picturePosition: 'center',
 	wallpaper: null,
+	backgroundColor: '#3d71b8',
 
 	afterRender: function() {
 		this.callParent();
 		this.setWallpaper(this.wallpaper, this.picturePosition);
 	},
 
-	setWallpaper: function(wallpaper, pos) {
+	setWallpaper: function(wallpaper, pos, bkgcolor) {
 		var me = this, imgEl, bkgnd;
 
+		me.backgroundColor = bkgcolor || '#3d71b8';
 		me.picturePosition = pos || 'center';
 		me.wallpaper = wallpaper;
 
@@ -46,7 +48,8 @@ Ext.define('E4desk.view.Wallpaper', {
 			}
 
 			me.el.setStyle({
-				backgroundImage: bkgnd || ''
+				backgroundImage: bkgnd || '',
+				backgroundColor: me.backgroundColor
 			});
 
 		}

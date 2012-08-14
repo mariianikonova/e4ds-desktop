@@ -1,6 +1,7 @@
 Ext.define('E4desk.view.Settings', {
 	extend: 'Ext.window.Window',
 	controller: 'E4desk.controller.SettingsController',
+	requires: ['Ext.ux.colorpicker.ColorPicker', 'Ext.ux.colorpicker.ColorPickerField'],
 
 	layout: 'border',
 	title: 'Change Settings',
@@ -48,15 +49,34 @@ Ext.define('E4desk.view.Settings', {
 			layout: 'fit',
 			items: [ this.preview ]
 		}, {
-			xtype: 'radiogroup',
-			itemId: 'picturepos',
+			xtype: 'container',
 			region: 'south',
-			fieldLabel: 'Picture Position',
-			items: [
-				{ boxLabel: 'Original Size, Center', name: 'pos', inputValue: 'center' },
-				{ boxLabel: 'Original Size, Tile', name: 'pos', inputValue: 'tile' },
-				{ boxLabel: 'Strech', name: 'pos', inputValue: 'stretch' }
-			]
+			layout: {
+				type: 'vbox',
+		        align: 'stretch'
+			},
+			items: [ {
+				xtype: 'ux.colorpickerfield',
+				itemId: 'backgroundColor',
+				fieldLabel: 'Background Color'
+			}, {
+				xtype: 'radiogroup',
+				itemId: 'picturepos',				
+				fieldLabel: 'Picture Position',
+				items: [ {
+					boxLabel: 'Original Size, Center',
+					name: 'pos',
+					inputValue: 'center'
+				}, {
+					boxLabel: 'Original Size, Tile',
+					name: 'pos',
+					inputValue: 'tile'
+				}, {
+					boxLabel: 'Strech',
+					name: 'pos',
+					inputValue: 'stretch'
+				} ]
+			} ]
 		} ];
 
 		this.callParent();

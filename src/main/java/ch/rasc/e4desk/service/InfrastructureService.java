@@ -19,8 +19,8 @@ public class InfrastructureService {
 	private final static Map<String, UserSettings> userSettings = Maps.newHashMap();
 
 	static {
-		userSettings.put("admin", new UserSettings("http://rasc.ch/wallpapers/Blue-Sencha.jpg", "center"));
-		userSettings.put("user", new UserSettings("http://rasc.ch/wallpapers/Wood-Sencha.jpg", "center"));
+		userSettings.put("admin", new UserSettings("http://rasc.ch/wallpapers/Blue-Sencha.jpg", "center", "#3d71b8"));
+		userSettings.put("user", new UserSettings("http://rasc.ch/wallpapers/Wood-Sencha.jpg", "center", "#3d71b8"));
 	}
 
 	@ExtDirectMethod(value = POLL, event = "heartbeat")
@@ -44,8 +44,8 @@ public class InfrastructureService {
 
 	@ExtDirectMethod
 	@PreAuthorize("isAuthenticated()")
-	public void saveUserSettings(String wallpaper, String picturePos) {
-		userSettings.put(getLoggedOnUser(), new UserSettings(wallpaper, picturePos));
+	public void saveUserSettings(String wallpaper, String picturePos, String backgroundColor) {
+		userSettings.put(getLoggedOnUser(), new UserSettings(wallpaper, picturePos, backgroundColor));
 	}
 
 }
