@@ -62,7 +62,7 @@ public class I18nMessageController implements InitializingBean {
 			throws JsonGenerationException, JsonMappingException, IOException {
 
 		byte[] output = buildResponse(locale);
-		ExtDirectSpringUtil.handleCacheableResponse(request, response, output, "application/javascript;charset=UTF-8");
+		ExtDirectSpringUtil.handleCacheableResponse(request, response, output, JS_CONTENT_TYPE);
 	}
 
 	private byte[] buildResponse(Locale locale) {
