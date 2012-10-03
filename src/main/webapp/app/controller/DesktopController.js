@@ -5,7 +5,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	inactiveWindowCls: 'desktop-inactive-win',
 	windowBarCurrentWindow: null,
 	lastActiveWindow: null,
-	
+
 	control: {
 		view: {
 			contextmenu: {
