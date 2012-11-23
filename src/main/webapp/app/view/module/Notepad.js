@@ -1,5 +1,6 @@
 Ext.define('E4desk.view.module.Notepad', {
 	extend: 'Ext.window.Window',
+	controller: 'E4desk.controller.NotepadController',
 
 	title: 'Notepad',
 	width: 600,

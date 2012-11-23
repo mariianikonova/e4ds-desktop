@@ -5,6 +5,10 @@ Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
+/**
+* DeftJS Class-related static utility methods.
+* @private
+*/
 
 Ext.define('Deft.core.Class', {
   alternateClassName: ['Deft.Class'],
@@ -46,12 +50,39 @@ Ext.define('Deft.core.Class', {
       } else {
         data.onClassExtended = onClassExtended;
       }
+    },
+    /**
+    		* Returns true if the passed class name is a superclass of the passed Class reference.
+    */
+
+    extendsClass: function(className, currentClass) {
+      try {
+        if (Ext.getClassName(currentClass) === className) {
+          return true;
+        }
+        if (currentClass != null ? currentClass.superclass : void 0) {
+          if (Ext.getClassName(currentClass.superclass) === className) {
+            return true;
+          } else {
+            return Deft.Class.extendsClass(className, Ext.getClass(currentClass.superclass));
+          }
+        } else {
+          return false;
+        }
+      } catch (error) {
+        return false;
+      }
     }
   }
 });
 /**
 Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
+*/
+
+/**
+* Logger used by DeftJS. Output is shown in the console when using ext-dev/ext-all-dev.
+* @private
 */
 
 Ext.define('Deft.log.Logger', {
@@ -106,11 +137,15 @@ Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
+/**
+* Common utility functions used by DeftJS.
+*/
+
 Ext.define('Deft.util.Function', {
   alternateClassName: ['Deft.Function'],
   statics: {
     /**
-    		Creates a new wrapper function that spreads the passed Array over the target function arguments.
+    		* Creates a new wrapper function that spreads the passed Array over the target function arguments.
     */
 
     spread: function(fn, scope) {
@@ -124,7 +159,7 @@ Ext.define('Deft.util.Function', {
       };
     },
     /**
-    		Returns a new wrapper function that caches the return value for previously processed function argument(s).
+    		* Returns a new wrapper function that caches the return value for previously processed function argument(s).
     */
 
     memoize: function(fn, scope, hashFn) {
@@ -146,8 +181,14 @@ Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
+/**
+* Event listener for events fired via the Deft.event.LiveEventBus.
+* @private
+*/
+
 Ext.define('Deft.event.LiveEventListener', {
   alternateClassName: ['Deft.LiveEventListener'],
+  requires: ['Ext.ComponentQuery'],
   constructor: function(config) {
     var component, components, _i, _len;
     Ext.apply(this, config);
@@ -200,9 +241,13 @@ Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
+/**
+* Event bus for live component selectors.
+*/
+
 Ext.define('Deft.event.LiveEventBus', {
   alternateClassName: ['Deft.LiveEventBus'],
-  requires: ['Deft.event.LiveEventListener'],
+  requires: ['Ext.Component', 'Ext.ComponentManager', 'Deft.event.LiveEventListener'],
   singleton: true,
   constructor: function() {
     this.listeners = [];
@@ -308,13 +353,11 @@ Ext.define('Deft.event.LiveEventBus', {
       }
     });
   }
-  Ext.require('Ext.ComponentManager', function() {
-    Ext.Function.interceptAfter(Ext.ComponentManager, 'register', function(component) {
-      Deft.event.LiveEventBus.register(component);
-    });
-    Ext.Function.interceptAfter(Ext.ComponentManager, 'unregister', function(component) {
-      Deft.event.LiveEventBus.unregister(component);
-    });
+  Ext.Function.interceptAfter(Ext.ComponentManager, 'register', function(component) {
+    Deft.event.LiveEventBus.register(component);
+  });
+  Ext.Function.interceptAfter(Ext.ComponentManager, 'unregister', function(component) {
+    Deft.event.LiveEventBus.unregister(component);
   });
 });
 /*
@@ -323,9 +366,8 @@ Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
 /**
-@private
-
-Used by {@link Deft.ioc.Injector}.
+* Used by Deft.ioc.Injector.
+* @private
 */
 
 Ext.define('Deft.ioc.DependencyProvider', {
@@ -353,7 +395,7 @@ Ext.define('Deft.ioc.DependencyProvider', {
     		Value to use to resolve this dependency.
     */
 
-    value: null,
+    value: void 0,
     /**
     		Indicates whether this dependency should be resolved as a singleton, or as a transient value for each resolution request.
     */
@@ -429,7 +471,7 @@ Ext.define('Deft.ioc.DependencyProvider', {
   resolve: function(targetInstance) {
     var instance, parameters;
     Deft.Logger.log("Resolving '" + (this.getIdentifier()) + "'.");
-    if (this.getValue() != null) {
+    if (this.getValue() !== void 0) {
       return this.getValue();
     }
     instance = null;
@@ -462,14 +504,12 @@ Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
 /**
-A lightweight IoC container for dependency injection.
-
-Used in conjunction with {@link Deft.mixin.Injectable}.
+* A lightweight IoC container for dependency injection.
 */
 
 Ext.define('Deft.ioc.Injector', {
   alternateClassName: ['Deft.Injector'],
-  requires: ['Deft.log.Logger', 'Deft.ioc.DependencyProvider'],
+  requires: ['Ext.Component', 'Deft.log.Logger', 'Deft.ioc.DependencyProvider'],
   singleton: true,
   constructor: function() {
     this.providers = {};
@@ -480,7 +520,9 @@ Ext.define('Deft.ioc.Injector', {
   */
 
   configure: function(configuration) {
-    Deft.Logger.log('Configuring injector.');
+    var newProviders;
+    Deft.Logger.log('Configuring the injector.');
+    newProviders = {};
     Ext.Object.each(configuration, function(identifier, config) {
       var provider;
       Deft.Logger.log("Configuring dependency provider for '" + identifier + "'.");
@@ -495,13 +537,22 @@ Ext.define('Deft.ioc.Injector', {
         }, config));
       }
       this.providers[identifier] = provider;
+      newProviders[identifier] = provider;
     }, this);
-    Ext.Object.each(this.providers, function(identifier, provider) {
+    Ext.Object.each(newProviders, function(identifier, provider) {
       if (provider.getEager()) {
         Deft.Logger.log("Eagerly creating '" + (provider.getIdentifier()) + "'.");
         provider.resolve();
       }
     }, this);
+  },
+  /**
+  	Reset the Injector.
+  */
+
+  reset: function() {
+    Deft.Logger.log('Resetting the injector.');
+    this.providers = {};
   },
   /**
   	Indicates whether the Injector can resolve a dependency by the specified identifier with the corresponding object instance or value.
@@ -578,14 +629,12 @@ Ext.define('Deft.ioc.Injector', {
 }, function() {
   if (Ext.getVersion('extjs') != null) {
     if (Ext.getVersion('core').isLessThan('4.1.0')) {
-      Ext.require('Ext.Component', function() {
-        Ext.Component.override({
-          constructor: function(config) {
-            config = Ext.Object.merge({}, config || {}, this.injectConfig || {});
-            delete this.injectConfig;
-            return this.callOverridden([config]);
-          }
-        });
+      Ext.Component.override({
+        constructor: function(config) {
+          config = Ext.Object.merge({}, config || {}, this.injectConfig || {});
+          delete this.injectConfig;
+          return this.callOverridden([config]);
+        }
       });
     } else {
       Ext.define('Deft.InjectableComponent', {
@@ -605,9 +654,8 @@ Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
 /**
-A mixin that marks a class as participating in dependency injection.
-
-Used in conjunction with {@link Deft.ioc.Injector}.
+* A mixin that marks a class as participating in dependency injection. Used in conjunction with Deft.ioc.Injector.
+* @deprecated 0.8 Injections are now done automatically using class preprocessors.
 */
 
 Ext.define('Deft.mixin.Injectable', {
@@ -680,6 +728,283 @@ Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
+/**
+* Used by Deft.mvc.ViewController to handle events fired from injected objects.
+*/
+
+Ext.define('Deft.mvc.Observer', {
+  requires: ['Deft.core.Class', 'Ext.util.Observable'],
+  statics: {
+    /**
+    		* Merges child and parent observers into a single object. This differs from a normal object merge because
+    		* a given observer target and event can potentially have multiple handlers declared in different parent or
+    		* child classes. It transforms an event handler value into an array of values, and merges the arrays of handlers
+    		* from child to parent. This maintains the handlers even if both parent and child classes have handlers for the
+    		* same target and event.
+    */
+
+    mergeObserve: function(originalParentObserve, originalChildObserve) {
+      var childEvent, childEvents, childHandler, childHandlerArray, childObserve, childTarget, handlerConfig, newChildEvents, newParentEvents, parentEvent, parentEvents, parentHandler, parentHandlerArray, parentObserve, parentTarget, thisChildEvent, thisParentEvent, _i, _j, _len, _len1, _ref, _ref1;
+      if (!Ext.isObject(originalParentObserve)) {
+        parentObserve = {};
+      } else {
+        parentObserve = Ext.clone(originalParentObserve);
+      }
+      if (!Ext.isObject(originalChildObserve)) {
+        childObserve = {};
+      } else {
+        childObserve = Ext.clone(originalChildObserve);
+      }
+      for (parentTarget in parentObserve) {
+        parentEvents = parentObserve[parentTarget];
+        if (Ext.isArray(parentEvents)) {
+          newParentEvents = {};
+          for (_i = 0, _len = parentEvents.length; _i < _len; _i++) {
+            thisParentEvent = parentEvents[_i];
+            if (Ext.Object.getSize(thisParentEvent) === 1) {
+              Ext.apply(newParentEvents, thisParentEvent);
+            } else {
+              handlerConfig = {};
+              if (thisParentEvent != null ? thisParentEvent.fn : void 0) {
+                handlerConfig.fn = thisParentEvent.fn;
+              }
+              if (thisParentEvent != null ? thisParentEvent.scope : void 0) {
+                handlerConfig.scope = thisParentEvent.scope;
+              }
+              newParentEvents[thisParentEvent.event] = [handlerConfig];
+            }
+          }
+          parentObserve[parentTarget] = newParentEvents;
+        }
+      }
+      for (childTarget in childObserve) {
+        childEvents = childObserve[childTarget];
+        if (Ext.isArray(childEvents)) {
+          newChildEvents = {};
+          for (_j = 0, _len1 = childEvents.length; _j < _len1; _j++) {
+            thisChildEvent = childEvents[_j];
+            if (Ext.Object.getSize(thisChildEvent) === 1) {
+              Ext.apply(newChildEvents, thisChildEvent);
+            } else {
+              handlerConfig = {};
+              if (thisChildEvent != null ? thisChildEvent.fn : void 0) {
+                handlerConfig.fn = thisChildEvent.fn;
+              }
+              if (thisChildEvent != null ? thisChildEvent.scope : void 0) {
+                handlerConfig.scope = thisChildEvent.scope;
+              }
+              newChildEvents[thisChildEvent.event] = [handlerConfig];
+            }
+          }
+          childObserve[childTarget] = newChildEvents;
+        }
+      }
+      for (childTarget in childObserve) {
+        childEvents = childObserve[childTarget];
+        for (childEvent in childEvents) {
+          childHandler = childEvents[childEvent];
+          if (Ext.isString(childHandler)) {
+            childObserve[childTarget][childEvent] = childHandler.replace(' ', '').split(',');
+          }
+          if (!(parentObserve != null ? parentObserve[childTarget] : void 0)) {
+            parentObserve[childTarget] = {};
+          }
+          if (!(parentObserve != null ? (_ref = parentObserve[childTarget]) != null ? _ref[childEvent] : void 0 : void 0)) {
+            parentObserve[childTarget][childEvent] = childObserve[childTarget][childEvent];
+            delete childObserve[childTarget][childEvent];
+          }
+        }
+      }
+      for (parentTarget in parentObserve) {
+        parentEvents = parentObserve[parentTarget];
+        for (parentEvent in parentEvents) {
+          parentHandler = parentEvents[parentEvent];
+          if (Ext.isString(parentHandler)) {
+            parentObserve[parentTarget][parentEvent] = parentHandler.split(',');
+          }
+          if (childObserve != null ? (_ref1 = childObserve[parentTarget]) != null ? _ref1[parentEvent] : void 0 : void 0) {
+            childHandlerArray = childObserve[parentTarget][parentEvent];
+            parentHandlerArray = parentObserve[parentTarget][parentEvent];
+            parentObserve[parentTarget][parentEvent] = Ext.Array.unique(Ext.Array.insert(parentHandlerArray, 0, childHandlerArray));
+          }
+        }
+      }
+      return parentObserve;
+    }
+  },
+  /**
+  	* Expects a config object with properties for host, target, and events.
+  */
+
+  constructor: function(config) {
+    var eventName, events, handler, handlerArray, host, references, scope, target, _i, _len;
+    this.listeners = [];
+    host = config != null ? config.host : void 0;
+    target = config != null ? config.target : void 0;
+    events = config != null ? config.events : void 0;
+    if (host && target && (this.isPropertyChain(target) || this.isTargetObservable(host, target))) {
+      for (eventName in events) {
+        handlerArray = events[eventName];
+        if (Ext.isString(handlerArray)) {
+          handlerArray = handlerArray.replace(' ', '').split(',');
+        }
+        for (_i = 0, _len = handlerArray.length; _i < _len; _i++) {
+          handler = handlerArray[_i];
+          scope = host;
+          if (Ext.isObject(handler)) {
+            if (handler != null ? handler.event : void 0) {
+              eventName = handler.event;
+            }
+            if (handler != null ? handler.fn : void 0) {
+              handler = handler.fn;
+            }
+            if (handler != null ? handler.scope : void 0) {
+              scope = handler.scope;
+            }
+          }
+          references = this.locateReferences(host, target, handler);
+          if (references) {
+            references.target.on(eventName, references.handler, host);
+            this.listeners.push({
+              targetName: target,
+              target: references.target,
+              event: eventName,
+              handler: references.handler,
+              scope: scope
+            });
+            Deft.Logger.log("Created observer on '" + target + "' for event '" + eventName + "'.");
+          } else {
+            Deft.Logger.warn("Could not create observer on '" + target + "' for event '" + eventName + "'.");
+          }
+        }
+      }
+    } else {
+      Deft.Logger.warn("Could not create observers on '" + target + "' because '" + target + "' is not an Ext.util.Observable");
+    }
+    return this;
+  },
+  /**
+  	* Returns true if the passed host has a target that is Observable.
+  	* Checks for an isObservable=true property, observable mixin, or if the class extends Observable.
+  */
+
+  isTargetObservable: function(host, target) {
+    var hostTarget, hostTargetClass, _ref;
+    hostTarget = this.locateTarget(host, target);
+    if (!(hostTarget != null)) {
+      return false;
+    }
+    if ((hostTarget.isObservable != null) || (((_ref = hostTarget.mixins) != null ? _ref.observable : void 0) != null)) {
+      return true;
+    } else {
+      hostTargetClass = Ext.ClassManager.getClass(hostTarget);
+      return Deft.Class.extendsClass('Ext.util.Observable', hostTargetClass) || Deft.Class.extendsClass('Ext.mixin.Observable', hostTargetClass);
+    }
+  },
+  /**
+  	* Attempts to locate an observer target given the host object and target property name.
+  	* Checks for both host[ target ], and host.getTarget().
+  */
+
+  locateTarget: function(host, target) {
+    var result;
+    if (Ext.isFunction(host['get' + Ext.String.capitalize(target)])) {
+      result = host['get' + Ext.String.capitalize(target)].call(host);
+      return result;
+    } else if ((host != null ? host[target] : void 0) != null) {
+      result = host[target];
+      return result;
+    } else {
+      return null;
+    }
+  },
+  /**
+  	* Returns true if the passed target is a string containing a '.', indicating that it is referencing a nested property.
+  */
+
+  isPropertyChain: function(target) {
+    return Ext.isString(target) && target.indexOf('.') > -1;
+  },
+  /**
+  	* Given a host object, target property name, and handler, return object references for the final target and handler function.
+  	* If necessary, recurse down a property chain to locate the final target object for the event listener.
+  */
+
+  locateReferences: function(host, target, handler) {
+    var handlerHost, propertyChain;
+    handlerHost = host;
+    if (this.isPropertyChain(target)) {
+      propertyChain = this.parsePropertyChain(host, target);
+      if (!propertyChain) {
+        return null;
+      }
+      host = propertyChain.host;
+      target = propertyChain.target;
+    }
+    if (Ext.isFunction(handler)) {
+      return {
+        target: this.locateTarget(host, target),
+        handler: handler
+      };
+    } else if (Ext.isFunction(handlerHost[handler])) {
+      return {
+        target: this.locateTarget(host, target),
+        handler: handlerHost[handler]
+      };
+    } else {
+      return null;
+    }
+  },
+  /**
+  	* Given a target property chain and a property host object, recurse down the property chain and return
+  	* the final host object from the property chain, and the final object that will accept the event listener.
+  */
+
+  parsePropertyChain: function(host, target) {
+    var propertyChain;
+    if (Ext.isString(target)) {
+      propertyChain = target.split('.');
+    } else if (Ext.isArray(target)) {
+      propertyChain = target;
+    } else {
+      return null;
+    }
+    if (propertyChain.length > 1 && (this.locateTarget(host, propertyChain[0]) != null)) {
+      return this.parsePropertyChain(this.locateTarget(host, propertyChain[0]), propertyChain.slice(1));
+    } else if (this.isTargetObservable(host, propertyChain[0])) {
+      return {
+        host: host,
+        target: propertyChain[0]
+      };
+    } else {
+      return null;
+    }
+  },
+  /**
+  	* Iterate through the listeners array and remove each event listener.
+  */
+
+  destroy: function() {
+    var listenerData, _i, _len, _ref;
+    _ref = this.listeners;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      listenerData = _ref[_i];
+      Deft.Logger.log("Removing observer on '" + listenerData.targetName + "' for event '" + listenerData.event + "'.");
+      listenerData.target.un(listenerData.event, listenerData.handler, listenerData.scope);
+    }
+    this.listeners = [];
+  }
+});
+/*
+Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
+Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
+*/
+
+/**
+* Manages live events attached to component selectors. Used by Deft.mvc.ComponentSelector.
+* @private
+*/
+
 Ext.define('Deft.mvc.ComponentSelectorListener', {
   requires: ['Deft.event.LiveEventBus'],
   constructor: function(config) {
@@ -714,8 +1039,12 @@ Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
+/**
+* Models a component selector used by Deft.mvc.ViewController to locate view components and attach event listeners.
+*/
+
 Ext.define('Deft.mvc.ComponentSelector', {
-  requires: ['Deft.log.Logger', 'Deft.mvc.ComponentSelectorListener'],
+  requires: ['Ext.ComponentQuery', 'Deft.log.Logger', 'Deft.mvc.ComponentSelectorListener'],
   constructor: function(config) {
     var eventName, fn, listener, options, scope, _ref;
     Ext.apply(this, config);
@@ -815,21 +1144,30 @@ Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
 /**
-A lightweight MVC view controller.
-
-Used in conjunction with {@link Deft.mixin.Controllable}.
+* A lightweight MVC view controller.
+*
+*     Ext.define("MyApp.view.MyTabPanel", {
+*       extend: "Ext.tab.Panel",
+*       controller: 'MyApp.controller.MyTabPanelController',
+*       ...
+*     });
 */
 
 Ext.define('Deft.mvc.ViewController', {
   alternateClassName: ['Deft.ViewController'],
-  requires: ['Deft.log.Logger', 'Deft.mvc.ComponentSelector'],
+  requires: ['Deft.core.Class', 'Deft.log.Logger', 'Deft.mvc.ComponentSelector', 'Deft.mvc.Observer'],
   config: {
     /**
-    		View controlled by this ViewController.
+    		* View controlled by this ViewController.
     */
 
     view: null
   },
+  /**
+  	* Observers automatically created and removed by this ViewController.
+  */
+
+  observe: {},
   constructor: function(config) {
     if (config == null) {
       config = {};
@@ -837,10 +1175,14 @@ Ext.define('Deft.mvc.ViewController', {
     if (config.view) {
       this.controlView(config.view);
     }
-    return this.initConfig(config);
+    this.initConfig(config);
+    if (Ext.Object.getSize(this.observe) > 0) {
+      this.createObservers();
+    }
+    return this;
   },
   /**
-  	@protected
+  	* @protected
   */
 
   controlView: function(view) {
@@ -872,28 +1214,33 @@ Ext.define('Deft.mvc.ViewController', {
     }
   },
   /**
-  	Initialize the ViewController
+  	* Initialize the ViewController
   */
 
   init: function() {},
   /**
-  	Destroy the ViewController
+  	* Destroy the ViewController
   */
 
   destroy: function() {
+    var id, selector;
+    for (id in this.registeredComponentReferences) {
+      this.removeComponentReference(id);
+    }
+    for (selector in this.registeredComponentSelectors) {
+      this.removeComponentSelector(selector);
+    }
+    this.removeObservers();
     return true;
   },
   /**
-  	@private
+  	* @private
   */
 
   onViewInitialize: function() {
     var config, id, listeners, live, originalViewDestroyFunction, selector, self, _ref;
     if (Ext.getVersion('extjs') != null) {
       this.getView().on('beforedestroy', this.onViewBeforeDestroy, this);
-      this.getView().on('destroy', this.onViewDestroy, this, {
-        single: true
-      });
     } else {
       self = this;
       originalViewDestroyFunction = this.getView().destroy;
@@ -931,7 +1278,7 @@ Ext.define('Deft.mvc.ViewController', {
     this.init();
   },
   /**
-  	@private
+  	* @private
   */
 
   onViewBeforeDestroy: function() {
@@ -942,20 +1289,7 @@ Ext.define('Deft.mvc.ViewController', {
     return false;
   },
   /**
-  	@private
-  */
-
-  onViewDestroy: function() {
-    var id, selector;
-    for (id in this.registeredComponentReferences) {
-      this.removeComponentReference(id);
-    }
-    for (selector in this.registeredComponentSelectors) {
-      this.removeComponentSelector(selector);
-    }
-  },
-  /**
-  	Add a component accessor method the ViewController for the specified view-relative selector.
+  	* Add a component accessor method the ViewController for the specified view-relative selector.
   */
 
   addComponentReference: function(id, selector, live) {
@@ -991,7 +1325,7 @@ Ext.define('Deft.mvc.ViewController', {
     this.registeredComponentReferences[id] = true;
   },
   /**
-  	Remove a component accessor method the ViewController for the specified view-relative selector.
+  	* Remove a component accessor method the ViewController for the specified view-relative selector.
   */
 
   removeComponentReference: function(id) {
@@ -1011,7 +1345,7 @@ Ext.define('Deft.mvc.ViewController', {
     delete this.registeredComponentReferences[id];
   },
   /**
-  	Get the component(s) corresponding to the specified view-relative selector.
+  	* Get the component(s) corresponding to the specified view-relative selector.
   */
 
   getViewComponent: function(selector) {
@@ -1030,7 +1364,7 @@ Ext.define('Deft.mvc.ViewController', {
     }
   },
   /**
-  	Add a component selector with the specified listeners for the specified view-relative selector.
+  	* Add a component selector with the specified listeners for the specified view-relative selector.
   */
 
   addComponentSelector: function(selector, listeners, live) {
@@ -1055,7 +1389,7 @@ Ext.define('Deft.mvc.ViewController', {
     this.registeredComponentSelectors[selector] = componentSelector;
   },
   /**
-  	Remove a component selector with the specified listeners for the specified view-relative selector.
+  	* Remove a component selector with the specified listeners for the specified view-relative selector.
   */
 
   removeComponentSelector: function(selector) {
@@ -1071,12 +1405,59 @@ Ext.define('Deft.mvc.ViewController', {
     delete this.registeredComponentSelectors[selector];
   },
   /**
-  	Get the component selectorcorresponding to the specified view-relative selector.
+  	* Get the component selectorcorresponding to the specified view-relative selector.
   */
 
   getComponentSelector: function(selector) {
     return this.registeredComponentSelectors[selector];
+  },
+  /**
+  	* @protected
+  */
+
+  createObservers: function() {
+    var events, target, _ref;
+    this.registeredObservers = {};
+    _ref = this.observe;
+    for (target in _ref) {
+      events = _ref[target];
+      this.addObserver(target, events);
+    }
+  },
+  addObserver: function(target, events) {
+    var observer;
+    observer = Ext.create('Deft.mvc.Observer', {
+      host: this,
+      target: target,
+      events: events
+    });
+    return this.registeredObservers[target] = observer;
+  },
+  /**
+  	* @protected
+  */
+
+  removeObservers: function() {
+    var observer, target, _ref;
+    _ref = this.registeredObservers;
+    for (target in _ref) {
+      observer = _ref[target];
+      observer.destroy();
+      delete this.registeredObservers[target];
+    }
   }
+}, function() {
+  /**
+  	* Preprocessor to handle merging of 'observe' objects on parent and child classes.
+  */
+  return Deft.Class.registerPreprocessor('observe', function(Class, data, hooks, callback) {
+    Deft.Class.hookOnClassExtended(data, function(Class, data, hooks) {
+      var _ref;
+      if (Class.superclass && ((_ref = Class.superclass) != null ? _ref.observe : void 0) && Deft.Class.extendsClass('Deft.mvc.ViewController', Class)) {
+        data.observe = Deft.mvc.Observer.mergeObserve(Class.superclass.observe, data.observe);
+      }
+    });
+  }, 'before', 'extend');
 });
 /*
 Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
@@ -1084,13 +1465,51 @@ Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
 /**
-A mixin that creates and attaches the specified view controller(s) to the target view.
+* A lightweight Application template class.
+*/
 
-Used in conjunction with {@link Deft.mvc.ViewController}.
+var initialized;
+
+Ext.define('Deft.mvc.Application', {
+  alternateClassName: ['Deft.Application']
+  /**
+  	* Indicates whether this Application instance has been initialized.
+  */
+
+}, initialized = false, {
+  /**
+  	* @param {Object} [config] Configuration object.
+  */
+
+  constructor: function(config) {
+    if (config == null) {
+      config = {};
+    }
+    this.initConfig(config);
+    Ext.onReady(function() {
+      this.init();
+      this.initialized = true;
+    }, this);
+    return this;
+  },
+  /**
+  	* Initialize the Application
+  */
+
+  init: function() {}
+});
+/*
+Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
+Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
+*/
+
+/**
+* A mixin that creates and attaches the specified view controller(s) to the target view. Used in conjunction with Deft.mvc.ViewController.
+* @deprecated 0.8 ViewController attachemnt is now done automatically using class preprocessors.
 */
 
 Ext.define('Deft.mixin.Controllable', {
-  requires: ['Deft.core.Class', 'Deft.log.Logger'],
+  requires: ['Ext.Container', 'Deft.core.Class', 'Deft.log.Logger'],
   /**
   	@private
   */
@@ -1181,224 +1600,6 @@ Ext.define('Deft.mixin.Controllable', {
 /*
 Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
-*/
-
-Ext.define('Deft.promise.Deferred', {
-  alternateClassName: ['Deft.Deferred'],
-  constructor: function() {
-    this.state = 'pending';
-    this.progress = void 0;
-    this.value = void 0;
-    this.progressCallbacks = [];
-    this.successCallbacks = [];
-    this.failureCallbacks = [];
-    this.cancelCallbacks = [];
-    this.promise = Ext.create('Deft.Promise', this);
-    return this;
-  },
-  /**
-  	Returns a new {@link Deft.promise.Promise} with the specified callbacks registered to be called when this {@link Deft.promise.Deferred} is resolved, rejected, updated or cancelled.
-  */
-
-  then: function(callbacks) {
-    var callback, cancelCallback, deferred, failureCallback, progressCallback, scope, successCallback, wrapCallback, wrapProgressCallback, _i, _len, _ref;
-    if (Ext.isObject(callbacks)) {
-      successCallback = callbacks.success, failureCallback = callbacks.failure, progressCallback = callbacks.progress, cancelCallback = callbacks.cancel, scope = callbacks.scope;
-    } else {
-      successCallback = arguments[0], failureCallback = arguments[1], progressCallback = arguments[2], cancelCallback = arguments[3], scope = arguments[4];
-    }
-    _ref = [successCallback, failureCallback, progressCallback, cancelCallback];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      callback = _ref[_i];
-      if (!(Ext.isFunction(callback) || callback === null || callback === void 0)) {
-        Ext.Error.raise({
-          msg: 'Error while configuring callback: a non-function specified.'
-        });
-      }
-    }
-    deferred = Ext.create('Deft.promise.Deferred');
-    wrapCallback = function(callback, action) {
-      return function(value) {
-        var result;
-        if (Ext.isFunction(callback)) {
-          try {
-            result = callback.call(scope, value);
-            if (result instanceof Ext.ClassManager.get('Deft.promise.Promise') || result instanceof Ext.ClassManager.get('Deft.promise.Deferred')) {
-              result.then(Ext.bind(deferred.resolve, deferred), Ext.bind(deferred.reject, deferred), Ext.bind(deferred.update, deferred), Ext.bind(deferred.cancel, deferred));
-            } else {
-              deferred.resolve(result);
-            }
-          } catch (error) {
-            deferred.reject(error);
-          }
-        } else {
-          deferred[action](value);
-        }
-      };
-    };
-    this.register(wrapCallback(successCallback, 'resolve'), this.successCallbacks, 'resolved', this.value);
-    this.register(wrapCallback(failureCallback, 'reject'), this.failureCallbacks, 'rejected', this.value);
-    this.register(wrapCallback(cancelCallback, 'cancel'), this.cancelCallbacks, 'cancelled', this.value);
-    wrapProgressCallback = function(callback) {
-      return function(value) {
-        var result;
-        if (Ext.isFunction(callback)) {
-          result = callback.call(scope, value);
-          deferred.update(result);
-        } else {
-          deferred.update(value);
-        }
-      };
-    };
-    this.register(wrapProgressCallback(progressCallback), this.progressCallbacks, 'pending', this.progress);
-    return deferred.getPromise();
-  },
-  /**
-  	Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Deferred} is rejected.
-  */
-
-  otherwise: function(callback, scope) {
-    var _ref;
-    if (Ext.isObject(callback)) {
-      _ref = callback, callback = _ref.fn, scope = _ref.scope;
-    }
-    return this.then({
-      failure: callback,
-      scope: scope
-    });
-  },
-  /**
-  	Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Deferred} is either resolved, rejected, or cancelled.
-  */
-
-  always: function(callback, scope) {
-    var _ref;
-    if (Ext.isObject(callback)) {
-      _ref = callback, callback = _ref.fn, scope = _ref.scope;
-    }
-    return this.then({
-      success: callback,
-      failure: callback,
-      cancel: callback,
-      scope: scope
-    });
-  },
-  /**
-  	Update progress for this {@link Deft.promise.Deferred} and notify relevant callbacks.
-  */
-
-  update: function(progress) {
-    if (this.state === 'pending') {
-      this.progress = progress;
-      this.notify(this.progressCallbacks, progress);
-    } else {
-      if (this.state !== 'cancelled') {
-        Ext.Error.raise({
-          msg: 'Error: this Deferred has already been completed and cannot be modified.'
-        });
-      }
-    }
-  },
-  /**
-  	Resolve this {@link Deft.promise.Deferred} and notify relevant callbacks.
-  */
-
-  resolve: function(value) {
-    this.complete('resolved', value, this.successCallbacks);
-  },
-  /**
-  	Reject this {@link Deft.promise.Deferred} and notify relevant callbacks.
-  */
-
-  reject: function(error) {
-    this.complete('rejected', error, this.failureCallbacks);
-  },
-  /**
-  	Cancel this {@link Deft.promise.Deferred} and notify relevant callbacks.
-  */
-
-  cancel: function(reason) {
-    this.complete('cancelled', reason, this.cancelCallbacks);
-  },
-  /**
-  	Get this {@link Deft.promise.Deferred}'s associated {@link Deft.promise.Promise}.
-  */
-
-  getPromise: function() {
-    return this.promise;
-  },
-  /**
-  	Get this {@link Deft.promise.Deferred}'s current state.
-  */
-
-  getState: function() {
-    return this.state;
-  },
-  /**
-  	Register a callback for this {@link Deft.promise.Deferred} for the specified callbacks and state, immediately notifying with the specified value (if applicable).
-  	@private
-  */
-
-  register: function(callback, callbacks, state, value) {
-    if (Ext.isFunction(callback)) {
-      if (this.state === 'pending') {
-        callbacks.push(callback);
-        if (this.state === state && value !== void 0) {
-          this.notify([callback], value);
-        }
-      } else {
-        if (this.state === state) {
-          this.notify([callback], value);
-        }
-      }
-    }
-  },
-  /**
-  	Complete this {@link Deft.promise.Deferred} with the specified state and value.
-  	@private
-  */
-
-  complete: function(state, value, callbacks) {
-    if (this.state === 'pending') {
-      this.state = state;
-      this.value = value;
-      this.notify(callbacks, value);
-      this.releaseCallbacks();
-    } else {
-      if (this.state !== 'cancelled') {
-        Ext.Error.raise({
-          msg: 'Error: this Deferred has already been completed and cannot be modified.'
-        });
-      }
-    }
-  },
-  /**
-  	Notify the specified callbacks with the specified value.
-  	@private
-  */
-
-  notify: function(callbacks, value) {
-    var callback, _i, _len;
-    for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
-      callback = callbacks[_i];
-      callback(value);
-    }
-  },
-  /**
-  	Release references to all callbacks registered with this {@link Deft.promise.Deferred}.
-  	@private
-  */
-
-  releaseCallbacks: function() {
-    this.progressCallbacks = null;
-    this.successCallbacks = null;
-    this.failureCallbacks = null;
-    this.cancelCallbacks = null;
-  }
-});
-/*
-Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
-Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 
 Promise.when(), all(), any(), map() and reduce() methods adapted from:
 [when.js](https://github.com/cujojs/when)
@@ -1406,13 +1607,17 @@ Copyright (c) B Cavalier & J Hann
 Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
 */
 
+/**
+* A Promise represents the result of a future value that has not been defined yet, typically because it is created asynchronously. Used in conjunction with Deft.promise.Deferred.
+*/
+
 Ext.define('Deft.promise.Promise', {
   alternateClassName: ['Deft.Promise'],
   statics: {
     /**
-    		Returns a new {@link Deft.promise.Promise} that:
-    		- resolves immediately for the specified value, or
-    		- resolves, rejects, updates or cancels when the specified {@link Deft.promise.Deferred} or {@link Deft.promise.Promise} is resolved, rejected, updated or cancelled.
+    		* Returns a new {@link Deft.promise.Promise} that:
+    		* - resolves immediately for the specified value, or
+    		* - resolves, rejects, updates or cancels when the specified {@link Deft.promise.Deferred} or {@link Deft.promise.Promise} is resolved, rejected, updated or cancelled.
     */
 
     when: function(promiseOrValue) {
@@ -1434,8 +1639,8 @@ Ext.define('Deft.promise.Promise', {
       }
     },
     /**
-    		Returns a new {@link Deft.promise.Promise} that will only resolve once all the specified `promisesOrValues` have resolved.
-    		The resolution value will be an Array containing the resolution value of each of the `promisesOrValues`.
+    		* Returns a new {@link Deft.promise.Promise} that will only resolve once all the specified `promisesOrValues` have resolved.
+    		* The resolution value will be an Array containing the resolution value of each of the `promisesOrValues`.
     */
 
     all: function(promisesOrValues) {
@@ -1499,8 +1704,8 @@ Ext.define('Deft.promise.Promise', {
       });
     },
     /**
-    		Returns a new {@link Deft.promise.Promise} that will only resolve once any one of the the specified `promisesOrValues` has resolved.
-    		The resolution value will be the resolution value of the triggering `promiseOrValue`.
+    		* Returns a new {@link Deft.promise.Promise} that will only resolve once any one of the the specified `promisesOrValues` has resolved.
+    		* The resolution value will be the resolution value of the triggering `promiseOrValue`.
     */
 
     any: function(promisesOrValues) {
@@ -1555,8 +1760,8 @@ Ext.define('Deft.promise.Promise', {
       });
     },
     /**
-    		Returns a new function that wraps the specified function and caches the results for previously processed inputs.
-    		Similar to `Deft.util.Function::memoize()`, except it allows input to contain promises and/or values.
+    		* Returns a new function that wraps the specified function and caches the results for previously processed inputs.
+    		* Similar to `Deft.util.Function::memoize()`, except it allows input to contain promises and/or values.
     */
 
     memoize: function(fn, scope, hashFn) {
@@ -1569,8 +1774,8 @@ Ext.define('Deft.promise.Promise', {
       }, this);
     },
     /**
-    		Traditional map function, similar to `Array.prototype.map()`, that allows input to contain promises and/or values.
-    		The specified map function may return either a value or a promise.
+    		* Traditional map function, similar to `Array.prototype.map()`, that allows input to contain promises and/or values.
+    		* The specified map function may return either a value or a promise.
     */
 
     map: function(promisesOrValues, mapFunction) {
@@ -1590,10 +1795,12 @@ Ext.define('Deft.promise.Promise', {
       });
     },
     /**
-    		Traditional reduce function, similar to `Array.reduce()`, that allows input to contain promises and/or values.
+    		* Traditional reduce function, similar to `Array.reduce()`, that allows input to contain promises and/or values.
     */
 
     reduce: function(promisesOrValues, reduceFunction, initialValue) {
+      var initialValueSpecified;
+      initialValueSpecified = arguments.length === 3;
       return this.when(promisesOrValues).then({
         success: function(promisesOrValues) {
           var reduceArguments, whenFunction;
@@ -1607,7 +1814,7 @@ Ext.define('Deft.promise.Promise', {
               });
             }
           ];
-          if (arguments.length === 3) {
+          if (initialValueSpecified) {
             reduceArguments.push(initialValue);
           }
           return this.when(this.reduceArray.apply(promisesOrValues, reduceArguments));
@@ -1616,8 +1823,8 @@ Ext.define('Deft.promise.Promise', {
       });
     },
     /**
-    		Fallback implementation when Array.reduce is not available.
-    		@private
+    		* Fallback implementation when Array.reduce is not available.
+    		* @private
     */
 
     reduceArray: function(reduceFunction, initialValue) {
@@ -1648,7 +1855,7 @@ Ext.define('Deft.promise.Promise', {
       return reduced;
     },
     /**
-    		@private
+    		* @private
     */
 
     reduceIntoArray: function(previousValue, currentValue, currentIndex) {
@@ -1661,35 +1868,35 @@ Ext.define('Deft.promise.Promise', {
     return this;
   },
   /**
-  	Returns a new {@link Deft.promise.Promise} with the specified callbacks registered to be called when this {@link Deft.promise.Promise} is resolved, rejected, updated or cancelled.
+  	* Returns a new {@link Deft.promise.Promise} with the specified callbacks registered to be called when this {@link Deft.promise.Promise} is resolved, rejected, updated or cancelled.
   */
 
   then: function(callbacks) {
     return this.deferred.then.apply(this.deferred, arguments);
   },
   /**
-  	Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Promise} is rejected.
+  	* Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Promise} is rejected.
   */
 
   otherwise: function(callback, scope) {
     return this.deferred.otherwise.apply(this.deferred, arguments);
   },
   /**
-  	Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Promise} is resolved, rejected or cancelled.
+  	* Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Promise} is resolved, rejected or cancelled.
   */
 
   always: function(callback, scope) {
     return this.deferred.always.apply(this.deferred, arguments);
   },
   /**
-  	Cancel this {@link Deft.promise.Promise} and notify relevant callbacks.
+  	* Cancel this {@link Deft.promise.Promise} and notify relevant callbacks.
   */
 
   cancel: function(reason) {
     return this.deferred.cancel(reason);
   },
   /**
-  	Get this {@link Deft.promise.Promise}'s current state.
+  	* Get this {@link Deft.promise.Promise}'s current state.
   */
 
   getState: function() {
@@ -1698,5 +1905,284 @@ Ext.define('Deft.promise.Promise', {
 }, function() {
   if (Array.prototype.reduce != null) {
     this.reduceArray = Array.prototype.reduce;
+  }
+});
+/*
+Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
+Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
+*/
+
+/**
+* A Deferred manages the state of an asynchronous process that will eventually be exposed to external code via a Deft.promise.Promise.
+*/
+
+Ext.define('Deft.promise.Deferred', {
+  alternateClassName: ['Deft.Deferred'],
+  requires: ['Deft.promise.Promise'],
+  constructor: function() {
+    this.state = 'pending';
+    this.progress = void 0;
+    this.value = void 0;
+    this.progressCallbacks = [];
+    this.successCallbacks = [];
+    this.failureCallbacks = [];
+    this.cancelCallbacks = [];
+    this.promise = Ext.create('Deft.Promise', this);
+    return this;
+  },
+  /**
+  	* Returns a new {@link Deft.promise.Promise} with the specified callbacks registered to be called when this {@link Deft.promise.Deferred} is resolved, rejected, updated or cancelled.
+  */
+
+  then: function(callbacks) {
+    var callback, cancelCallback, deferred, failureCallback, progressCallback, scope, successCallback, wrapCallback, wrapProgressCallback, _i, _len, _ref;
+    if (Ext.isObject(callbacks)) {
+      successCallback = callbacks.success, failureCallback = callbacks.failure, progressCallback = callbacks.progress, cancelCallback = callbacks.cancel, scope = callbacks.scope;
+    } else {
+      successCallback = arguments[0], failureCallback = arguments[1], progressCallback = arguments[2], cancelCallback = arguments[3], scope = arguments[4];
+    }
+    _ref = [successCallback, failureCallback, progressCallback, cancelCallback];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      callback = _ref[_i];
+      if (!(Ext.isFunction(callback) || callback === null || callback === void 0)) {
+        Ext.Error.raise({
+          msg: 'Error while configuring callback: a non-function specified.'
+        });
+      }
+    }
+    deferred = Ext.create('Deft.promise.Deferred');
+    wrapCallback = function(callback, action) {
+      return function(value) {
+        var result;
+        if (Ext.isFunction(callback)) {
+          try {
+            result = callback.call(scope, value);
+            if (result instanceof Ext.ClassManager.get('Deft.promise.Promise') || result instanceof Ext.ClassManager.get('Deft.promise.Deferred')) {
+              result.then(Ext.bind(deferred.resolve, deferred), Ext.bind(deferred.reject, deferred), Ext.bind(deferred.update, deferred), Ext.bind(deferred.cancel, deferred));
+            } else {
+              deferred.resolve(result);
+            }
+          } catch (error) {
+            deferred.reject(error);
+          }
+        } else {
+          deferred[action](value);
+        }
+      };
+    };
+    this.register(wrapCallback(successCallback, 'resolve'), this.successCallbacks, 'resolved', this.value);
+    this.register(wrapCallback(failureCallback, 'reject'), this.failureCallbacks, 'rejected', this.value);
+    this.register(wrapCallback(cancelCallback, 'cancel'), this.cancelCallbacks, 'cancelled', this.value);
+    wrapProgressCallback = function(callback) {
+      return function(value) {
+        var result;
+        if (Ext.isFunction(callback)) {
+          result = callback.call(scope, value);
+          deferred.update(result);
+        } else {
+          deferred.update(value);
+        }
+      };
+    };
+    this.register(wrapProgressCallback(progressCallback), this.progressCallbacks, 'pending', this.progress);
+    return deferred.getPromise();
+  },
+  /**
+  	* Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Deferred} is rejected.
+  */
+
+  otherwise: function(callback, scope) {
+    var _ref;
+    if (Ext.isObject(callback)) {
+      _ref = callback, callback = _ref.fn, scope = _ref.scope;
+    }
+    return this.then({
+      failure: callback,
+      scope: scope
+    });
+  },
+  /**
+  	* Returns a new {@link Deft.promise.Promise} with the specified callback registered to be called when this {@link Deft.promise.Deferred} is either resolved, rejected, or cancelled.
+  */
+
+  always: function(callback, scope) {
+    var _ref;
+    if (Ext.isObject(callback)) {
+      _ref = callback, callback = _ref.fn, scope = _ref.scope;
+    }
+    return this.then({
+      success: callback,
+      failure: callback,
+      cancel: callback,
+      scope: scope
+    });
+  },
+  /**
+  	* Update progress for this {@link Deft.promise.Deferred} and notify relevant callbacks.
+  */
+
+  update: function(progress) {
+    if (this.state === 'pending') {
+      this.progress = progress;
+      this.notify(this.progressCallbacks, progress);
+    } else {
+      if (this.state !== 'cancelled') {
+        Ext.Error.raise({
+          msg: 'Error: this Deferred has already been completed and cannot be modified.'
+        });
+      }
+    }
+  },
+  /**
+  	* Resolve this {@link Deft.promise.Deferred} and notify relevant callbacks.
+  */
+
+  resolve: function(value) {
+    this.complete('resolved', value, this.successCallbacks);
+  },
+  /**
+  	* Reject this {@link Deft.promise.Deferred} and notify relevant callbacks.
+  */
+
+  reject: function(error) {
+    this.complete('rejected', error, this.failureCallbacks);
+  },
+  /**
+  	* Cancel this {@link Deft.promise.Deferred} and notify relevant callbacks.
+  */
+
+  cancel: function(reason) {
+    this.complete('cancelled', reason, this.cancelCallbacks);
+  },
+  /**
+  	* Get this {@link Deft.promise.Deferred}'s associated {@link Deft.promise.Promise}.
+  */
+
+  getPromise: function() {
+    return this.promise;
+  },
+  /**
+  	* Get this {@link Deft.promise.Deferred}'s current state.
+  */
+
+  getState: function() {
+    return this.state;
+  },
+  /**
+  	* Register a callback for this {@link Deft.promise.Deferred} for the specified callbacks and state, immediately notifying with the specified value (if applicable).
+  	* @private
+  */
+
+  register: function(callback, callbacks, state, value) {
+    if (Ext.isFunction(callback)) {
+      if (this.state === 'pending') {
+        callbacks.push(callback);
+        if (this.state === state && value !== void 0) {
+          this.notify([callback], value);
+        }
+      } else {
+        if (this.state === state) {
+          this.notify([callback], value);
+        }
+      }
+    }
+  },
+  /**
+  	* Complete this {@link Deft.promise.Deferred} with the specified state and value.
+  	* @private
+  */
+
+  complete: function(state, value, callbacks) {
+    if (this.state === 'pending') {
+      this.state = state;
+      this.value = value;
+      this.notify(callbacks, value);
+      this.releaseCallbacks();
+    } else {
+      if (this.state !== 'cancelled') {
+        Ext.Error.raise({
+          msg: 'Error: this Deferred has already been completed and cannot be modified.'
+        });
+      }
+    }
+  },
+  /**
+  	* Notify the specified callbacks with the specified value.
+  	* @private
+  */
+
+  notify: function(callbacks, value) {
+    var callback, _i, _len;
+    for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
+      callback = callbacks[_i];
+      callback(value);
+    }
+  },
+  /**
+  	* Release references to all callbacks registered with this {@link Deft.promise.Deferred}.
+  	* @private
+  */
+
+  releaseCallbacks: function() {
+    this.progressCallbacks = null;
+    this.successCallbacks = null;
+    this.failureCallbacks = null;
+    this.cancelCallbacks = null;
+  }
+});
+/*
+Copyright (c) 2012 [DeftJS Framework Contributors](http://deftjs.org)
+Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
+
+sequence(), parallel(), pipeline() methods adapted from:
+[when.js](https://github.com/cujojs/when)
+Copyright (c) B Cavalier & J Hann
+Open source under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
+*/
+
+/**
+* Utility class with static methods to create chains of Deft.promise.Promises objects.
+*/
+
+Ext.define('Deft.promise.Chain', {
+  alternateClassName: ['Deft.Chain'],
+  requires: ['Deft.promise.Promise'],
+  statics: {
+    /**
+    		* Execute an Array (or Deferred/Promise of an Array) of functions sequentially.
+    		* The specified functions may optionally return their results as Promises.
+    		* Returns a Promise of an Array of results for each function call (in the same order).
+    */
+
+    sequence: function(fns, scope) {
+      return Deft.Promise.reduce(fns, function(results, fn) {
+        return Deft.Promise.when(fn.call(scope)).then(function(result) {
+          results.push(result);
+          return results;
+        });
+      }, []);
+    },
+    /**
+    		* Execute an Array (or Deferred/Promise of an Array) of functions in parallel.
+    		* The specified functions may optionally return their results as Promises.
+    		* Returns a Promise of an Array of results for each function call (in the same order).
+    */
+
+    parallel: function(fns, scope) {
+      return Deft.Promise.map(fns, function(fn) {
+        return fn.call(scope);
+      });
+    },
+    /**
+    		* Execute an Array (or Deferred/Promise of an Array) of functions as a pipeline, where each function's result is passed to the subsequent function as input.
+    		* The specified functions may optionally return their results as Promises.
+    		* Returns a Promise of the result value for the final function in the pipeline.
+    */
+
+    pipeline: function(fns, scope, initialValue) {
+      return Deft.Promise.reduce(fns, function(value, fn) {
+        return fn.call(scope, value);
+      }, initialValue);
+    }
   }
 });

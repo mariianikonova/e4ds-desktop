@@ -76,7 +76,7 @@ Ext.define('Ext.ux.window.Notification', {
 				iconCls: error ? 'ux-notification-icon-error' : 'ux-notification-icon-information',
 				
 				autoCloseDelay: 4000,
-				slideInDuration: 300,
+				slideInDuration: 200,
 				
 				paddingX: 5,
 				paddingY: 31,
@@ -402,7 +402,7 @@ Ext.define('Ext.ux.window.Notification', {
 		var me = this;
 
 		var notifications = me.getNotifications(me.managerAlignment);
-		var index = Ext.Array.indexOf(notifications, me)
+		var index = Ext.Array.indexOf(notifications, me);
 
 		// Not animating the element if it already started to hide itself or if the manager is not present in the dom
 		if (!me.isHiding && me.el && me.manager && me.manager.el && me.manager.el.dom && me.manager.el.isVisible()) {

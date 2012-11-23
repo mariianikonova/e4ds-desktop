@@ -30,11 +30,11 @@ Ext.onReady(function() {
 		}
 	});
 	
-	/*
+	
 	Deft.Injector.configure({
-		moduleStore: 'E4desk.store.ModuleStore'
+		messageBus: 'Ext.util.Observable'
 	});
-	*/
+	
 	
 	Ext.tip.QuickTipManager.init();
 	Ext.create('E4desk.view.Viewport');

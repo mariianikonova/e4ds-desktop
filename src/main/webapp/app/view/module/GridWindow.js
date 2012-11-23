@@ -1,5 +1,6 @@
 Ext.define('E4desk.view.module.GridWindow', {
 	extend: 'Ext.window.Window',
+	controller: 'E4desk.controller.GridWindowController',
 
 	statics: {
 		getDummyData: function() {
