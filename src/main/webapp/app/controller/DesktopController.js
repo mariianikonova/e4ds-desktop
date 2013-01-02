@@ -56,7 +56,7 @@ Ext.define('E4desk.controller.DesktopController', {
 		desktopCtxMenu.down('menuitem[action=fitvertical]').on('click', this.onDesktopContextmenuFitVertical, this);
 		
 		var windowBarCtxMenu = this.getWindowBar().contextMenu;
-		windowBarCtxMenu.on('hide', function() { this.windowBarCurrentWindow = null }, this);
+		windowBarCtxMenu.on('hide', function() { this.windowBarCurrentWindow = null; }, this);
 		windowBarCtxMenu.down('menuitem[action=restore]').on('click', this.onWindowBarContextmenuRestore, this);		
 		windowBarCtxMenu.down('menuitem[action=minimize]').on('click', this.onWindowBarContextmenuMinimize, this);
 		windowBarCtxMenu.down('menuitem[action=maximize]').on('click', this.onWindowBarContextmenuMaximize, this);
