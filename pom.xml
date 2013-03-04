@@ -22,7 +22,7 @@
 	</licenses>
 
 	<prerequisites>
-		<maven>3.0.0</maven>
+		<maven>3.0.3</maven>
 	</prerequisites>
 
 	<properties>
@@ -304,13 +304,13 @@
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
-			<version>1.11</version>
+			<version>1.12</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.sf.uadetector</groupId>
 			<artifactId>uadetector-resources</artifactId>
-			<version>2013.01</version>
+			<version>2013.02</version>
 		</dependency>
 
 		<dependency>
