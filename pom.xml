@@ -3,8 +3,23 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.rasc</groupId>
 	<artifactId>e4ds-desktop</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
+
+	<developers>
+		<developer>
+			<name>Ralph Schaer</name>
+			<email>ralphschaer@gmail.com</email>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<prerequisites>
 		<maven>3.0.0</maven>
@@ -299,20 +314,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.sourceforge.jtds</groupId>
-			<artifactId>jtds</artifactId>
-			<version>1.3.0</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.23</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>ch.rasc</groupId>
 			<artifactId>embeddedtc</artifactId>
 			<version>1.5</version>
@@ -333,6 +334,13 @@
 					<groupId>javax.servlet.jsp</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.3.170</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -421,9 +429,9 @@
 
 				<dependencies>
 					<dependency>
-						<groupId>net.sourceforge.jtds</groupId>
-						<artifactId>jtds</artifactId>
-						<version>1.3.0</version>
+						<groupId>com.h2database</groupId>
+						<artifactId>h2</artifactId>
+						<version>1.3.170</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -608,6 +616,40 @@
 					</extraDependencies>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.10.b1</version>
+				<configuration>
+					<header>${basedir}/src/main/config/header.txt</header>
+					<properties>
+						<owner>Ralph Schaer</owner>
+						<year>2013</year>
+						<email>ralphschaer@gmail.com</email>
+					</properties>
+					<excludes>
+						<exclude>**/*.xml</exclude>
+						<exclude>**/*.txt</exclude>
+						<exclude>**/*.md</exclude>
+						<exclude>**/*.yaml</exclude>
+						<exclude>**/*.properties</exclude>
+						<exclude>**/model/*.js</exclude>
+						<exclude>**/ux/**/*</exclude>
+						<exclude>**/.gitignore</exclude>
+					</excludes>
+					<strictCheck>true</strictCheck>
+				</configuration>
+				<executions>
+					<execution>
+						<id>check-headers</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			
 
 		</plugins>
 
