@@ -35,7 +35,7 @@ Ext.define('E4desk.view.Settings', {
 		});
 
 		this.buttons = [ {
-			text: i18n.ok,
+			text: i18n.save,
 			itemId: 'okButton'
 		}, {
 			text: i18n.cancel,

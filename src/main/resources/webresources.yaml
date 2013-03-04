@@ -56,6 +56,7 @@ app:
     - /app/model/AccessLog.js
     - /app/model/LoggingEvent.js
     - /app/model/Module.js
+    - /app/model/Role.js
     - /app/model/User.js
     - /app/model/Wallpaper.js
     - /app/store/AccessLogs.js
@@ -63,6 +64,7 @@ app:
     - /app/store/LoggingEvents.js
     - /app/store/LogLevels.js
     - /app/store/ModuleStore.js
+    - /app/store/Roles.js
     - /app/store/Users.js
     - /app/store/WallpaperStore.js
     - /app/controller/AccessLogController.js
@@ -85,11 +87,11 @@ app:
     - /app/view/Viewport.js
     - /app/view/Wallpaper.js
     - /app/view/WindowBar.js    
-    - /app/view/GridWindow.js
-    - /app/view/Notepad.js
-    - /app/view/OnlineUsers.js
-    - /app/view/SystemStatus.js
-    - /app/view/TabWindow.js    
+    - /app/view/module/GridWindow.js
+    - /app/view/module/Notepad.js
+    - /app/view/module/OnlineUsers.js
+    - /app/view/module/SystemStatus.js
+    - /app/view/module/TabWindow.js    
     - /app.js
     
   css:

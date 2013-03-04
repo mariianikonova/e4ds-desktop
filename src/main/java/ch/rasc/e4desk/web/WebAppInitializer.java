@@ -165,6 +165,12 @@ public class WebAppInitializer implements WebApplicationInitializer {
 				byte[] cssContent;
 				try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
 					for (String line : (List<String>) children.get("css")) {
+						
+						for (Entry<Object, Object> entry : versionProperties.entrySet()) {
+							String var = "{" + entry.getKey() + "}";
+							line = line.replace(var, (String) entry.getValue());
+						}
+						
 						byte[] b = ByteStreams.toByteArray(container.getResourceAsStream(line));
 						String changedCss = changeImageUrls(new String(b, StandardCharsets.UTF_8), line);
 						changedCss = compressCss(changedCss);
@@ -248,6 +254,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 		while (matcher.find()) {
 			String url = matcher.group(2);
+			if (url.equals("#default#VML")) {
+				continue;
+			}
+			url = url.trim();
 			Path pa = basePath.resolveSibling(url).normalize();
 			matcher.appendReplacement(sb, "$1" + pa.toString().replace("\\", "/") + "$3");
 		}
