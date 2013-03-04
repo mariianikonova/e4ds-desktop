@@ -3,9 +3,9 @@
 
   <Resource name="jdbc/e4desk" auth="Container"
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-            type="javax.sql.DataSource" username="sa" password="papa8gei."
-            driverClassName="net.sourceforge.jtds.jdbc.Driver"
-            url="jdbc:jtds:sqlserver://localhost/e4desk"
+            type="javax.sql.DataSource" username="sa" password=""
+            driverClassName="org.h2.Driver"
+            url="jdbc:h2:./target/e4desk"
             initialSize="2"
             minIdle="2"
             maxIdle="4"

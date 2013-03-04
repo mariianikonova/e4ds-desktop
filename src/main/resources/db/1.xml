@@ -89,7 +89,7 @@
 	</changeSet>
 
 	<changeSet author="dev" id="8">
-		<createTable tableName="User">
+		<createTable tableName="AppUser">
 			<column autoIncrement="true" name="id" type="BIGINT">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_User" />
 			</column>
@@ -128,7 +128,7 @@
 	</changeSet>
 
 	<changeSet author="dev" id="10">
-		<createTable tableName="UserRoles">
+		<createTable tableName="AppUserRoles">
 			<column name="userId" type="BIGINT">
 				<constraints nullable="false"/>
 			</column>
@@ -137,13 +137,13 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		<addPrimaryKey columnNames="userId,roleId" constraintName="PK_UserRoles" tableName="UserRoles" />
+		<addPrimaryKey columnNames="userId,roleId" constraintName="PK_AppUserRoles" tableName="AppUserRoles" />
 		
-		<addForeignKeyConstraint baseColumnNames="userId" baseTableName="UserRoles" constraintName="FK_UserRoles_User"
+		<addForeignKeyConstraint baseColumnNames="userId" baseTableName="AppUserRoles" constraintName="FK_AppUserRoles_AppUser"
 			referencedColumnNames="id"
-			referencedTableName="User" />		
+			referencedTableName="AppUser" />		
 		
-		<addForeignKeyConstraint baseColumnNames="roleId" baseTableName="UserRoles" constraintName="FK_UserRoles_Role"
+		<addForeignKeyConstraint baseColumnNames="roleId" baseTableName="AppUserRoles" constraintName="FK_AppUserRoles_Role"
 			referencedColumnNames="id"
 			referencedTableName="Role" />			
 	</changeSet>

@@ -36,7 +36,7 @@ import ch.ralscha.extdirectspring.generator.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "`User`")
+@Table(name = "AppUser")
 @Model(value = "E4desk.model.User", readMethod = "userService.read", destroyMethod = "userService.destroy", paging = true)
 public class User extends AbstractPersistable {
 
@@ -66,7 +66,7 @@ public class User extends AbstractPersistable {
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
+	@JoinTable(name = "AppUserRoles", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private Set<Role> roles;
 
 	@JsonIgnore
