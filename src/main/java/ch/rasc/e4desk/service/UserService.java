@@ -52,6 +52,7 @@ import ch.rasc.e4desk.entity.User;
 import ch.rasc.e4desk.security.JpaUserDetails;
 import ch.rasc.e4desk.util.Util;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPQLQuery;
@@ -110,6 +111,7 @@ public class UserService {
 	@Transactional
 	@PreAuthorize("isAuthenticated()")
 	public ExtDirectFormPostResult userFormPost(@RequestParam(value = "id", required = false) final Long userId,
+			@RequestParam(required = false) final String roleIds,
 			@Valid final User modifiedUser, final BindingResult bindingResult, Locale locale) {
 
 		// Check uniqueness of email
@@ -131,7 +133,13 @@ public class UserService {
 				modifiedUser.setPasswordHash(passwordEncoder.encode(modifiedUser.getPasswordHash()));
 			}
 
-			Set<Role> roles = Sets.newHashSet(getAdminRole());
+			Set<Role> roles = Sets.newHashSet();
+			if (StringUtils.hasText(roleIds)) {
+				Iterable<String> roleIdsIt = Splitter.on(",").split(roleIds);
+				for (String roleId : roleIdsIt) {
+					roles.add(entityManager.find(Role.class, Long.valueOf(roleId)));
+				}
+			}
 
 			if (userId != null) {
 				User dbUser = entityManager.find(User.class, userId);
@@ -159,11 +167,6 @@ public class UserService {
 		return new ExtDirectFormPostResult(bindingResult);
 	}
 
-	private Role getAdminRole() {
-		return new JPAQuery(entityManager).from(QRole.role).where(QRole.role.name.eq("ROLE_ADMIN"))
-				.singleResult(QRole.role);
-	}
-
 	@ExtDirectMethod
 	@PreAuthorize("isAuthenticated()")
 	@Transactional(readOnly = true)
@@ -176,7 +179,8 @@ public class UserService {
 	}
 
 	private boolean isLastAdmin(User user) {
-		Role role = getAdminRole();
+		Role role = new JPAQuery(entityManager).from(QRole.role).where(QRole.role.name.eq("ROLE_ADMIN"))
+				.singleResult(QRole.role);
 		JPQLQuery query = new JPAQuery(entityManager).from(QUser.user);
 		query.where(QUser.user.ne(user).and(QUser.user.roles.contains(role)));
 		return query.notExists();

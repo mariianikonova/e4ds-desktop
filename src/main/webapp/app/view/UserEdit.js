@@ -99,7 +99,7 @@ Ext.define('E4desk.view.UserEdit', {
 			store: Ext.create('E4desk.store.Roles'),
 			displayField: 'name',
 			valueField: 'id',
-			allowBlank: true
+			allowBlank: false
 		} ];
 
 		me.buttons = [ {

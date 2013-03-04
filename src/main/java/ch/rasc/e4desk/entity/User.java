@@ -32,6 +32,8 @@ import org.hibernate.validator.constraints.Email;
 import org.joda.time.DateTime;
 
 import ch.ralscha.extdirectspring.generator.Model;
+import ch.ralscha.extdirectspring.generator.ModelAssociation;
+import ch.ralscha.extdirectspring.generator.ModelAssociationType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -64,9 +66,9 @@ public class User extends AbstractPersistable {
 	@JsonIgnore
 	private String settings;
 
-	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "AppUserRoles", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
+	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = Role.class, foreignKey = "user_id", autoLoad = false)
 	private Set<Role> roles;
 
 	@JsonIgnore

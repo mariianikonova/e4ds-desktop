@@ -20,7 +20,6 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -49,8 +48,7 @@ public class ModuleService {
 			builder.add(new Module("E4desk.view.module.GridWindow", "Grid Window", "grid", true));
 			builder.add(new Module("E4desk.view.module.SystemStatus", "System Status", "systemstatus", true, "system"));
 
-			// todo is there a better way to check for a role?
-			if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			if (Util.hasRole("ROLE_ADMIN")) {
 				builder.add(new Submenu(messageSource.getMessage("system", null, locale), "settings", "system"));
 				builder.add(new Module("E4desk.view.UsersWindow", messageSource.getMessage("user", null, locale),
 						"users", true, "system"));

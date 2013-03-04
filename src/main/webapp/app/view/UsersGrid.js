@@ -35,6 +35,23 @@ Ext.define('E4desk.view.UsersGrid', {
 			dataIndex: 'name',
 			flex: 1
 		}, {
+			text: 'Roles',
+			dataIndex: 'roles',
+			width: 160,
+			renderer: function(value, metadata, record) {
+				var roles = record.roles();
+				var result = '';
+				if (roles) {
+					roles.each(function(item, index, count) {
+						result += item.get('name');
+						if (index + 1 < count) {
+							result += ', ';
+						}
+					});
+				}
+				return result;
+			}
+		}, {
 			text: i18n.user_active,
 			dataIndex: 'enabled',
 			width: 70,

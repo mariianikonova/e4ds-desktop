@@ -118,6 +118,18 @@ Ext.define('E4desk.controller.UsersController', {
 
 		var form = editPanel.getForm();
 		form.loadRecord(record);
+		var roles = [];
+		
+		if (record.roles()) {
+			roles = Ext.Array.map(record.roles().getRange(), function(item) {
+				return item.get('id');
+			});	
+		} 
+
+		form.setValues({
+			'roleIds': roles
+		});	
+
 	},
 
 	onAddButtonClick: function() {

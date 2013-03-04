@@ -20,6 +20,13 @@ Ext.define("E4desk.model.User",
     name : "id",
     type : "int"
   } ],
+  associations : [ {
+    type : "hasMany",
+    model : "E4desk.model.Role",
+    associationKey : "roles",
+    foreignKey : "user_id",
+    name : "roles"
+  } ],
   proxy : {
     type : "direct",
     api : {
