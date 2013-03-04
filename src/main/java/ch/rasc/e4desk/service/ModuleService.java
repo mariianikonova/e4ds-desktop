@@ -1,24 +1,54 @@
 package ch.rasc.e4desk.service;
 
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.rasc.e4desk.security.JpaUserDetails;
+import ch.rasc.e4desk.util.Util;
 
 import com.google.common.collect.ImmutableList;
 
 @Service
 public class ModuleService {
 
+	@Autowired
+	private MessageSource messageSource;
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ImmutableList<Module> read() {
-		return ImmutableList.<Module> builder()
-				.add(new Module("E4desk.view.module.OnlineUsers", "Online Users", "onlineusers", true))
-				.add(new Module("E4desk.view.module.Notepad", "Notepad", "notepad", false))
-				.add(new Module("E4desk.view.module.TabWindow", "Tab Window", "tabs", false))
-				.add(new Module("E4desk.view.module.GridWindow", "Grid Window", "grid", true))
-				.add(new Submenu("System", "settings", "system"))
-				.add(new Module("E4desk.view.module.SystemStatus", "System Status", "systemstatus", true, "system"))
-				.build();
+	@PreAuthorize("isAuthenticated()")
+	public ImmutableList<Module> read(Locale locale) {
+		JpaUserDetails user = Util.getLoggedInUser();
+		if (user != null) {
+			ImmutableList.Builder<Module> builder = ImmutableList.builder();
+
+			builder.add(new Module("E4desk.view.module.OnlineUsers", "Online Users", "onlineusers", true));
+			builder.add(new Module("E4desk.view.module.Notepad", "Notepad", "notepad", false));
+			builder.add(new Module("E4desk.view.module.TabWindow", "Tab Window", "tabs", false));
+			builder.add(new Module("E4desk.view.module.GridWindow", "Grid Window", "grid", true));
+			builder.add(new Module("E4desk.view.module.SystemStatus", "System Status", "systemstatus", true, "system"));
+
+			// todo is there a better way to check for a role?
+			if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+				builder.add(new Submenu(messageSource.getMessage("system", null, locale), "settings", "system"));
+				builder.add(new Module("E4desk.view.UsersWindow", messageSource.getMessage("user", null, locale),
+						"users", true, "system"));
+				builder.add(new Module("E4desk.view.LoggingEventsWindow", messageSource.getMessage("logevents", null,
+						locale), "loggingevents", true, "system"));
+				builder.add(new Module("E4desk.view.AccessLogWindow", messageSource.getMessage("accesslog", null,
+						locale), "accesslog", true, "system"));
+			}
+
+			return builder.build();
+		}
+
+		return ImmutableList.of();
+
 	}
 }

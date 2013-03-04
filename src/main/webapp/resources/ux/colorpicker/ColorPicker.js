@@ -328,7 +328,6 @@ Ext.define('Ext.ux.colorpicker.ColorPicker', {
 		var rgb = me.hsvToRgb(hsv.h, hsv.s, hsv.v);
 		var invert = me.invert(rgb);
 		var websafe = me.websafe(rgb);
-		var wsInvert = me.invert(websafe);
 
 		if (me.updateMode != 'hexa') {
 			me.down('#iHexa').setValue(me.rgbToHex(rgb));
@@ -357,7 +356,7 @@ Ext.define('Ext.ux.colorpicker.ColorPicker', {
 	},
 
 	setButtonColor : function(id, rgb) {
-		var me = this, dq = Ext.DomQuery, invert = me.invert(rgb);
+		var me = this, invert = me.invert(rgb);
 		me.down(id).getEl().applyStyles({
 			'background' : '#' + me.rgbToHex(rgb)
 		});

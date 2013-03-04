@@ -2,14 +2,14 @@
 <!DOCTYPE configuration>
 <configuration debug="false">
   
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>   
+  <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+    <connectionSource class="ch.qos.logback.core.db.JNDIConnectionSource">
+      <param name="jndiLocation" value="java:comp/env/jdbc/e4desk" />
+    </connectionSource>
   </appender>
 
   <root level="WARN">    
-    <appender-ref ref="STDOUT" />
+    <appender-ref ref="DB" />
   </root>  
    
 </configuration>

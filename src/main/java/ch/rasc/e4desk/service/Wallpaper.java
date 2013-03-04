@@ -1,5 +1,8 @@
 package ch.rasc.e4desk.service;
 
+import ch.ralscha.extdirectspring.generator.Model;
+
+@Model(value = "E4desk.model.Wallpaper", readMethod = "wallpaperService.read")
 public class Wallpaper {
 
 	private final String text;

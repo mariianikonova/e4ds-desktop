@@ -8,30 +8,30 @@ Ext.define('E4desk.view.Desktop', {
 
 	contextMenu: Ext.create('Ext.menu.Menu', {
 		items: [ {
-			text: 'Close All',
+			text: i18n.desktop_closeall,
 			action: 'closeall',
 			minWindows: 1
 		}, '-', {
-			text: 'Minimize All',
+			text: i18n.desktop_minimizeall,
 			action: 'minimizeall',
 			minWindows: 1
 		}, '-', {
-			text: 'Tile',
+			text: i18n.desktop_tile,
 			action: 'tile',
 			minWindows: 2
 		}, {
-			text: 'Cascade',
+			text: i18n.desktop_cascade,
 			action: 'cascade',
 			minWindows: 2
 		}, {
-			text: 'Fit Horizontal',
+			text: i18n.desktop_fithorizontal,
 			action: 'fithorizontal',
 			minWindows: 1
 		}, {
-			text: 'Fit Vertical',
+			text: i18n.desktop_fitvertical,
 			action: 'fitvertical',
 			minWindows: 1
-		}]
+		} ]
 	}),
 
 	initComponent: function() {
@@ -43,28 +43,23 @@ Ext.define('E4desk.view.Desktop', {
 
 		this.wallpaper = Ext.create('E4desk.view.Wallpaper');
 
-		this.items = [ this.wallpaper, {
-			xtype: 'dataview',
-			itemId: 'shortcutView',
-			overItemCls: 'view-over',
-			itemSelector: 'div.desktop-shortcut',
-			trackOver: true,
-			store: Ext.create('E4desk.store.DesktopStore'),
-			style: {
-				position: 'absolute'
-			},
-			tpl: [ 
-			       '<tpl for=".">', 
-			          '<div class="desktop-shortcut" id="{name}-shortcut">',
-					    '<div class="desktop-shortcut-icon {iconCls}-shortcut">', 
-					      '<img src="', Ext.BLANK_IMAGE_URL, '" title="{name}">',
-					    '</div>', 
-					    '<span class="desktop-shortcut-text">{name}</span>', 
-					  '</div>', 
-					'</tpl>',
-					'<div class="x-clear"></div>' 
-				]
-		} ];
+		this.items = [
+				this.wallpaper,
+				{
+					xtype: 'dataview',
+					itemId: 'shortcutView',
+					overItemCls: 'view-over',
+					itemSelector: 'div.desktop-shortcut',
+					trackOver: true,
+					store: Ext.create('E4desk.store.DesktopStore'),
+					style: {
+						position: 'absolute'
+					},
+					tpl: [ '<tpl for=".">', '<div class="desktop-shortcut" id="{name}-shortcut">',
+							'<div class="desktop-shortcut-icon {iconCls}-shortcut">', '<img src="', Ext.BLANK_IMAGE_URL,
+							'" title="{name}">', '</div>', '<span class="desktop-shortcut-text">{name}</span>', '</div>', '</tpl>',
+							'<div class="x-clear"></div>' ]
+				} ];
 
 		this.callParent(arguments);
 	}

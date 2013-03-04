@@ -10,17 +10,33 @@ Ext.define('E4desk.view.WindowBar', {
 	contextMenu: Ext.create('Ext.menu.Menu', {
 		defaultAlign: 'br-tr',
 		items: [ {
-			text: 'Restore',
+			text: i18n.desktop_restore,
 			action: 'restore'
 		}, {
-			text: 'Minimize',
+			text: i18n.desktop_minimize,
 			action: 'minimize'
 		}, {
-			text: 'Maximize',
+			text: i18n.desktop_maximize,
 			action: 'maximize'
 		}, '-', {
-			text: 'Close',
+			text: i18n.desktop_close,
 			action: 'close'
 		} ]
-	})
+	}),
+
+	initComponent: function() {
+		var me = this;
+
+		me.items = [ '->', {
+			id: 'server_connect_status',
+			xtype: 'image',
+			src: app_context_path + '/resources/images/connect-off.gif',
+			width: 20,
+			height: 16,
+			margin: '5 5 7 5'
+		} ];
+
+		me.callParent(arguments);
+	}
+
 });

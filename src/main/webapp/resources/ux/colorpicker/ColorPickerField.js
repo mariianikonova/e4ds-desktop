@@ -39,6 +39,6 @@ Ext.define('Ext.ux.colorpicker.ColorPickerField', {
 
 	onExpand : function(picker) {
 		var me = this, value = me.getValue();
-		me.picker.setValue(me.getValue());
+		me.picker.setValue(value);
 	}
 });

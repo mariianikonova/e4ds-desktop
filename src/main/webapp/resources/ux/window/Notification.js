@@ -30,7 +30,7 @@ Ext.define('Ext.ux.window.Notification', {
 	useXAxis: false,
 
 	// Options: br, bl, tr, tl, t, l, b, r
-	position: 'br',
+	position: 't',
 
 	// Pixels between each notification
 	spacing: 6,
@@ -70,16 +70,15 @@ Ext.define('Ext.ux.window.Notification', {
 		},
 		notification: function(title, text, error) {
 			Ext.create('Ext.ux.window.Notification', {
-				position: 'br',
+				position: 't',
 				title: title,
 				manager: 'notification',
 				iconCls: error ? 'ux-notification-icon-error' : 'ux-notification-icon-information',
 				
-				autoCloseDelay: 4000,
-				slideInDuration: 200,
+				autoCloseDelay: 3000,
+				slideInDuration: 150,
 				
-				paddingX: 5,
-				paddingY: 31,
+				paddingY: 5,
 				
 				html: text,
 				bodyStyle: {

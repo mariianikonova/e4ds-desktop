@@ -17,7 +17,11 @@ Ext.define('E4desk.controller.SettingsController', {
 		picturepos: {
 			change: 'onPictureposChange'
 		},
-		previewWallpaper: true
+		previewWallpaper: true,
+		resetWindowPosButton: {
+			click: 'onResetWindowPosButtonClick'
+		},
+		userSettingsPanel: true
 	},
 
 	wallpaperUrl: null,
@@ -40,6 +44,7 @@ Ext.define('E4desk.controller.SettingsController', {
 		this.getWallpaperDataview().getStore().on('load', this.onStoreLoad, this, {
 			single: true
 		});
+		this.getUserSettingsPanel().load();
 	},
 
 	onStoreLoad: function() {
@@ -83,11 +88,28 @@ Ext.define('E4desk.controller.SettingsController', {
 				.setWallpaper(this.wallpaperUrl, this.imageWidth, this.imageHeight, this.picturePosition, this.backgroundColor);
 		infrastructureService.saveUserSettings(this.wallpaperUrl, this.imageWidth, this.imageHeight, this.picturePosition,
 				this.backgroundColor);
-		this.getView().close();
+
+		if (this.getUserSettingsPanel().isValid()) {
+			this.getUserSettingsPanel().submit({
+				scope: this,
+				success: function() {
+					Ext.ux.window.Notification.info(i18n.successful, i18n.settings_saved);
+					this.getView().close();
+				}
+			});
+		}
 	},
 
 	onCancelButtonClick: function() {
 		this.getView().close();
+	},
+
+	onResetWindowPosButtonClick: function() {
+		Ext.state.Manager.clear('E4desk.view.AccessLogWindow');
+		Ext.state.Manager.clear('E4desk.view.LoggingEventsWindow');
+		Ext.state.Manager.clear('E4desk.view.Settings');
+		Ext.state.Manager.clear('E4desk.view.UsersWindow');
+		Ext.ux.window.Notification.info(i18n.successful, i18n.settings_windowpositionsreseted);
 	}
 
 });

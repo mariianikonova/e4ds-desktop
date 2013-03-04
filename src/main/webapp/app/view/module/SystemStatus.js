@@ -317,8 +317,8 @@ Ext.define('E4desk.view.module.SystemStatus', {
 				core2: 0,
 				time: 0
 			});
-
-			for ( var i = 1; i < 100; i++) {
+			var i;
+			for ( i = 1; i < 100; i++) {
 				data.push({
 					core1: generate(data[i - 1].core1),
 					core2: generate(data[i - 1].core2),

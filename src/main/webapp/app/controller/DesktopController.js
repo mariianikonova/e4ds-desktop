@@ -1,6 +1,6 @@
 Ext.define('E4desk.controller.DesktopController', {
 	extend: 'Deft.mvc.ViewController',
-	
+
 	activeWindowCls: 'desktop-active-win',
 	inactiveWindowCls: 'desktop-inactive-win',
 	windowBarCurrentWindow: null,
@@ -68,7 +68,9 @@ Ext.define('E4desk.controller.DesktopController', {
 	},
 	
 	handleUserSettings: function(settings) {
-		this.getView().wallpaper.setWallpaper(settings.wallpaper, settings.imageWidth, settings.imageHeight, settings.picturePos, settings.backgroundColor);
+		if (settings) {
+			this.getView().wallpaper.setWallpaper(settings.wallpaper, settings.imageWidth, settings.imageHeight, settings.picturePos, settings.backgroundColor);
+		}
 	},
 	
 	updateApplicationMenu: function(store) {
@@ -95,8 +97,8 @@ Ext.define('E4desk.controller.DesktopController', {
 			} else {
 				submenus[data.menuPath] = Ext.create('Ext.menu.Menu', {
 					listeners: {
-				        click: me.onApplicationMenuClick,
-				        scope: me
+						click: me.onApplicationMenuClick,
+						scope: me
 					}
 				});
 				applicationMenu.add({text: data.name, iconCls: data.iconCls, menu: submenus[data.menuPath]});
@@ -104,7 +106,6 @@ Ext.define('E4desk.controller.DesktopController', {
 
 		});
 
-		
 	},
 
 	onApplicationMenuClick: function(menu, item, e) {
@@ -114,10 +115,10 @@ Ext.define('E4desk.controller.DesktopController', {
 	},
 	
 	onTopBarSettingsClick: function() {
-    	var settingsWindow = Ext.create('E4desk.view.Settings');
-    	settingsWindow.getController().desktopWallpaper = this.getView().wallpaper;
-	   	this.getView().add(settingsWindow);
-	   	settingsWindow.show();
+		var settingsWindow = Ext.create('E4desk.view.Settings');
+		settingsWindow.getController().desktopWallpaper = this.getView().wallpaper;
+		this.getView().add(settingsWindow);
+		settingsWindow.show();
 	},
 	
 	onDesktopContextmenu: function(e) {
@@ -209,7 +210,7 @@ Ext.define('E4desk.controller.DesktopController', {
 		var noOfWindows = this.windows.length;
 		var fitHeight = parseInt(availHeight / noOfWindows);
 		
-		if (fitHeight > 0) {	    	  
+		if (fitHeight > 0) {
 			Ext.WindowManager.each(function(win) {
 				if (win.isWindow && win.isVisible()) {
 					win.setWidth(availWidth);
@@ -217,7 +218,7 @@ Ext.define('E4desk.controller.DesktopController', {
 					win.setPosition(0, y);
 					y += fitHeight;
 				}
-			});	    	  
+			});
 		}
 	},
 
@@ -259,8 +260,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	
 
 	onShortcutViewItemClick: function(view, record) {
-		var data = record.getData();
-		this.addWindow(data.id);
+		this.addWindow(record.getData().id);
 	},
 
 	// ------------------------------------------------------
@@ -278,7 +278,7 @@ Ext.define('E4desk.controller.DesktopController', {
 
 		var win = Ext.create(winId, {
 			windowId: winId,
-			stateful: false,
+			stateful: true,
 			constrainHeader: true,
 			minimizable: true,
 			maximizable: true
@@ -330,7 +330,6 @@ Ext.define('E4desk.controller.DesktopController', {
 	},
 
 	onWindowDestroy: function(win) {
-		this.getView().remove(win);
 		this.windows.removeAtKey(win.windowId);
 		this.removeWindowButton(win.windowButton);
 		this.updateActiveWindow();
@@ -366,7 +365,7 @@ Ext.define('E4desk.controller.DesktopController', {
 		var win = null;
 
 		Ext.WindowManager.eachTopDown(function(comp) {
-			if (comp.isWindow && !comp.hidden) {
+			if (comp.isWindow && !comp.hidden && !comp.hasCls('ux-notification-window')) {
 				win = comp;
 				return false;
 			}
@@ -394,13 +393,14 @@ Ext.define('E4desk.controller.DesktopController', {
 			win: win
 		};
 
-		var cmp = this.getWindowBar().add(config);
+		var noOfItems = this.getWindowBar().items.length;
+		var cmp = this.getWindowBar().add(noOfItems-2, config);
 		cmp.toggle(true);
 		return cmp;
 	},
 
 	removeWindowButton: function(btn) {
-		var found, me = this;
+		var found = null, me = this;
 		me.getWindowBar().items.each(function(item) {
 			if (item === btn) {
 				found = item;

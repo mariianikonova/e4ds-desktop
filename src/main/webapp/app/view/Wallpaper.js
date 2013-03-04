@@ -39,7 +39,8 @@ Ext.define('E4desk.view.Wallpaper', {
 	},
 	
 	refreshWallpaper: function() {
-		this.setWallpaper(this.wallpaper, this.imageWidth, this.imageHeight, this.picturePosition, this.backgroundColor);
+		this.setWallpaper(this.wallpaper, this.imageWidth, this.imageHeight, this.picturePosition,
+						this.backgroundColor);
 	},
 
 	setWallpaper: function(wallpaper, width, height, pos, bkgcolor) {
@@ -54,7 +55,7 @@ Ext.define('E4desk.view.Wallpaper', {
 		if (this.rendered) {
 			imgEl = this.el.dom.firstChild;
 
-			if (!wallpaper || wallpaper == Ext.BLANK_IMAGE_URL) {
+			if (!wallpaper || wallpaper === Ext.BLANK_IMAGE_URL) {
 				Ext.fly(imgEl).hide();
 				this.el.removeCls('wallpaper-center');
 				this.el.removeCls('wallpaper-tile');
@@ -78,12 +79,14 @@ Ext.define('E4desk.view.Wallpaper', {
 
 				var ratio = Math.min(hratio, wratio);
 
+				var w;
+				var h;
 				if (ratio < 1) {
-					var w = Math.ceil(this.imageWidth * ratio);
-					var h = Math.ceil(this.imageHeight * ratio);
+					w = Math.ceil(this.imageWidth * ratio);
+					h = Math.ceil(this.imageHeight * ratio);
 				} else {
-					var w = this.imageWidth;
-					var h = this.imageHeight;
+					w = this.imageWidth;
+					h = this.imageHeight;
 				}
 
 				Ext.fly(imgEl).setStyle({

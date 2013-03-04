@@ -52,6 +52,7 @@ public class I18nMessageController implements InitializingBean {
 		byte[] output = buildResponse(locale);
 		response.setContentLength(output.length);
 
+		@SuppressWarnings("resource")
 		ServletOutputStream out = response.getOutputStream();
 		out.write(output);
 		out.flush();

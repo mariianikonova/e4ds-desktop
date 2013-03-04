@@ -1,0 +1,19 @@
+<!DOCTYPE context>
+<Context>
+
+  <Resource name="jdbc/e4desk" auth="Container"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            type="javax.sql.DataSource" username="sa" password="papa8gei."
+            driverClassName="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://localhost/e4desk"
+            initialSize="2"
+            minIdle="2"
+            maxIdle="4"
+            maxActive="10" maxWait="10000"
+            defaultAutoCommit="false"/>
+    
+    <!-- Uncomment the following line to activate production profile -->     
+    <Environment name="spring.profiles.active" value="development" type="java.lang.String" override="false"/>
+
+
+</Context>

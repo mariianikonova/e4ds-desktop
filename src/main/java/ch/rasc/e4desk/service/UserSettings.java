@@ -1,16 +1,24 @@
 package ch.rasc.e4desk.service;
 
-public class UserSettings {
+import java.io.Serializable;
 
-	private final String wallpaper;
+public class UserSettings implements Serializable {
 
-	private final String picturePos;
+	private static final long serialVersionUID = 1L;
 
-	private final String backgroundColor;
+	private String wallpaper;
 
-	private final Integer imageWidth;
+	private String picturePos;
 
-	private final Integer imageHeight;
+	private String backgroundColor;
+
+	private Integer imageWidth;
+
+	private Integer imageHeight;
+
+	public UserSettings() {
+		// default constructor
+	}
 
 	public UserSettings(String wallpaper, Integer width, Integer height, String picturePos, String backgroundColor) {
 		this.wallpaper = wallpaper;
@@ -38,6 +46,32 @@ public class UserSettings {
 
 	public Integer getImageHeight() {
 		return imageHeight;
+	}
+
+	public void setWallpaper(String wallpaper) {
+		this.wallpaper = wallpaper;
+	}
+
+	public void setPicturePos(String picturePos) {
+		this.picturePos = picturePos;
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
+	public void setImageWidth(Integer imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+
+	public void setImageHeight(Integer imageHeight) {
+		this.imageHeight = imageHeight;
+	}
+
+	@Override
+	public String toString() {
+		return "UserSettings [wallpaper=" + wallpaper + ", picturePos=" + picturePos + ", backgroundColor="
+				+ backgroundColor + ", imageWidth=" + imageWidth + ", imageHeight=" + imageHeight + "]";
 	}
 
 }

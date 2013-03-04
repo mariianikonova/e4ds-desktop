@@ -3,10 +3,10 @@ Ext.onReady(function() {
 
 	var login = Ext.create('Ext.form.Panel', {
 		frame: true,
-		title: i18n.login_title,
+		title: 'e4desk',
 		url: 'j_spring_security_check',
-		width: 320,
-		iconCls: 'icon-login',
+		width: 380,
+		icon: 'resources/images/key.png',
 
 		standardSubmit: true,
 
@@ -21,12 +21,12 @@ Ext.onReady(function() {
 		},
 
 		items: [ {
-			fieldLabel: i18n.user_username,
+			fieldLabel: i18n.user_email,
 			name: 'j_username',
 			allowBlank: false,
 			listeners: {
 				specialkey: function(field, e) {
-					if (e.getKey() == e.ENTER) {
+					if (e.getKey() === e.ENTER) {
 						submitForm();
 					}
 				}
@@ -35,10 +35,10 @@ Ext.onReady(function() {
 			fieldLabel: i18n.user_password,
 			name: 'j_password',
 			inputType: 'password',
-			allowBlank: false,
+			allowBlank: true,
 			listeners: {
 				specialkey: function(field, e) {
-					if (e.getKey() == e.ENTER) {
+					if (e.getKey() === e.ENTER) {
 						submitForm();
 					}
 				}
@@ -49,12 +49,12 @@ Ext.onReady(function() {
 			xtype: 'checkbox'
 		} ],
 
-		buttons: [ {
+		buttons: [ /* <debug> */{
 			text: i18n.login_withuser,
 			handler: function() {
 				var form = this.up('form').getForm();
 				form.setValues({
-					j_username: 'user',
+					j_username: 'user@e4desk.ch',
 					j_password: 'user'
 				});
 				form.submit();
@@ -64,12 +64,12 @@ Ext.onReady(function() {
 			handler: function() {
 				var form = this.up('form').getForm();
 				form.setValues({
-					j_username: 'admin',
+					j_username: 'admin@e4desk.ch',
 					j_password: 'admin'
 				});
 				form.submit();
 			}
-		}, {
+		},/* </debug> */{
 			text: i18n.login,
 			handler: function() {
 				submitForm();
@@ -78,19 +78,36 @@ Ext.onReady(function() {
 	});
 
 	Ext.create('Ext.container.Viewport', {
-		layout: 'border',
+		layout: 'fit',
 		renderTo: Ext.getBody(),
 
 		items: [ {
-			xtype: 'container',
-			region: 'center',
+			xtype: 'panel',
+			border: false,
 			style: 'background-color: white',
 			layout: {
 				type: 'vbox',
 				align: 'center',
 				pack: 'center'
 			},
-			items: login
+			items: login,
+			dockedItems: [ {
+				dock: 'top',
+				xtype: 'toolbar',
+				items: [ {
+					xtype: 'image',
+					src: app_context_path + '/resources/images/favicon32.png',
+					margin: '2px 10px 2px 5px',
+					width: 32,
+					height: 32
+				}, {
+					xtype: 'label',
+					text: 'e4desk',
+					cls: 'appLabel',
+					padding: '5 0 0 0',
+					height: 30
+				} ]
+			} ]
 		} ]
 	});
 

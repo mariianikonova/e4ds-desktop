@@ -7,8 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.servlet.i18n.AbstractLocaleResolver;
+
+import ch.rasc.e4desk.security.JpaUserDetails;
 
 public class AppLocaleResolver extends AbstractLocaleResolver {
 
@@ -17,17 +18,18 @@ public class AppLocaleResolver extends AbstractLocaleResolver {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null) {
 			return request.getLocale();
-		} else if (authentication.getPrincipal() instanceof User) {
-			String username = ((User) authentication.getPrincipal()).getUsername();
-			if ("user".equals(username)) {
-				return Locale.GERMAN;
+		} else if (authentication.getPrincipal() instanceof JpaUserDetails) {
+			JpaUserDetails userDetail = (JpaUserDetails) authentication.getPrincipal();
+			if (userDetail.getLocale() != null) {
+				return new Locale(userDetail.getLocale());
 			}
-			return Locale.ENGLISH;
-		} else if (getDefaultLocale() != null) {
-			return getDefaultLocale();
-		} else {
-			return Locale.ENGLISH;
 		}
+
+		if (getDefaultLocale() != null) {
+			return getDefaultLocale();
+		}
+		return Locale.ENGLISH;
+
 	}
 
 	@Override

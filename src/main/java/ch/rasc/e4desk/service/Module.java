@@ -1,5 +1,8 @@
 package ch.rasc.e4desk.service;
 
+import ch.ralscha.extdirectspring.generator.Model;
+
+@Model(value = "E4desk.model.Module", readMethod = "moduleService.read")
 public class Module {
 
 	private final String id;
