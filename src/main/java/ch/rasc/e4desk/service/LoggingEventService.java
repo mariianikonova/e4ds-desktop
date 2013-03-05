@@ -95,7 +95,7 @@ public class LoggingEventService {
 	}
 
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void changeLogLevel(String levelString) {
 		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
 		ch.qos.logback.classic.Logger logger = lc.getLogger("ch.rasc.e4desk");
@@ -106,7 +106,7 @@ public class LoggingEventService {
 	}
 
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String getCurrentLevel() {
 		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
 		ch.qos.logback.classic.Logger logger = lc.getLogger("ch.rasc.e4desk");

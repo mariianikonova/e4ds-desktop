@@ -26,7 +26,7 @@ Ext.define('E4desk.view.TopBar', {
 		}, '-', {
 			text: i18n.settings,
 			itemId: 'topBarSettings',
-			icon: app_context_path + '/resources/images/settings.png'
+			icon: app_context_path + '/resources/images/settings-icon.png'
 		}, '-', {
 			text: i18n.logout,
 			icon: app_context_path + '/resources/images/logout.png',

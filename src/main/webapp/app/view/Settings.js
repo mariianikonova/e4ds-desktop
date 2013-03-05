@@ -11,7 +11,7 @@ Ext.define('E4desk.view.Settings', {
 	height: 600,
 	border: false,
 	constrain: true,
-	icon: app_context_path + '/resources/images/settings.png',
+	icon: app_context_path + '/resources/images/settings-icon.png',
 
 	initComponent: function() {
 

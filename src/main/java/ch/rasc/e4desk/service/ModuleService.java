@@ -41,6 +41,8 @@ public class ModuleService {
 						locale), "loggingevents", true, "system"));
 				builder.add(new Module("E4desk.view.AccessLogWindow", messageSource.getMessage("accesslog", null,
 						locale), "accesslog", true, "system"));
+				builder.add(new Module("E4desk.view.SystemSettings", messageSource.getMessage("systemsettings", null,
+						locale), "systemsettings", true, "system"));
 			}
 
 			return builder.build();

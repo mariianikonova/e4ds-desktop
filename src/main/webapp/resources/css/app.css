@@ -117,13 +117,21 @@ div.view-over.settings-wallpaper-item {
 	background-image: url(../images/users-icon.png);
 }
 
+.systemsettings-shortcut {
+	background-image: url(../images/settings.png);
+}
+
+.systemsettings-icon {
+	background-image: url(../images/settings-icon.png);
+}
+
 .loggedOnLabel {
 	padding-right: 5px;
 	font-weight: bold;
 }
 
 .settings {
-	background-image: url(../images/settings.png);
+	background-image: url(../images/settings-icon.png);
 }
 
 .logout {
