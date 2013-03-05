@@ -39,12 +39,19 @@ ${applicationScope.css_login}
   <script>
     var app_context_path = '<%= request.getContextPath() %>';
   </script>		
-	
-${applicationScope.js_login}
-<% Locale locale = RequestContextUtils.getLocale(request); %>
-<% if (locale != null && locale.getLanguage().toLowerCase().equals("de")) { %>
-  <script src="/resources/extjs/<spring:eval expression='@environment["extjs.version"]'/>/locale/ext-lang-de.js"></script>
-<% } %>	
+
+  <% Locale locale = RequestContextUtils.getLocale(request); %>
+  <spring:eval expression="@environment.acceptsProfiles('development')" var="isDevelopment" />
+  <% if ((Boolean)pageContext.getAttribute("isDevelopment")) { %>
+  <script src="i18n.js"></script>  
+  <% } else { %>
+  <script src="i18n-<%= locale %>_<spring:eval expression='@environment["application.version"]'/>.js"></script>
+  <% } %>
+		
+  ${applicationScope.js_login}  
+  <% if (locale != null && locale.getLanguage().toLowerCase().equals("de")) { %>
+    <script src="/resources/extjs/<spring:eval expression='@environment["extjs.version"]'/>/locale/ext-lang-de.js"></script>
+  <% } %>
   
   <script>
   Ext.onReady(function() {

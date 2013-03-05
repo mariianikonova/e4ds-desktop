@@ -1,13 +1,11 @@
 login:
   js-dev: 
     - /resources/extjs/{extjs.version}/ext-all-dev.js
-    - /i18n.js
     - /resources/ux/window/Notification.js    
     - /login.js    
   
   js-prod-script:
     - /resources/extjs/{extjs.version}/ext-all.js
-    - /i18n.js
   
   js-prod-mini:    
     - /resources/ux/window/Notification.js
@@ -23,7 +21,6 @@ login:
 app:
   js-dev:
     - /resources/extjs/{extjs.version}/ext-all-dev.js
-    - /i18n.js
     - /overrides.js
     - /deft-debug.js
     - /loader.js
@@ -33,7 +30,6 @@ app:
     
   js-prod-script:  
     - /resources/extjs/{extjs.version}/ext-all.js
-    - /i18n.js
     - /api-{application.version}.js
     
   js-prod-mini:
@@ -71,6 +67,7 @@ app:
     - /app/controller/DesktopController.js
     - /app/controller/LoggingEventsController.js
     - /app/controller/SettingsController.js
+    - /app/controller/SystemSettingsController.js
     - /app/controller/UsersController.js
     - /app/controller/module/GridWindowController.js
     - /app/controller/module/NotepadController.js
@@ -80,6 +77,7 @@ app:
     - /app/view/LoggingEventsGrid.js
     - /app/view/LoggingEventsWindow.js
     - /app/view/Settings.js
+    - /app/view/SystemSettings.js
     - /app/view/TopBar.js
     - /app/view/UserEdit.js
     - /app/view/UsersGrid.js
