@@ -19,7 +19,7 @@ public class ResourceServlet extends HttpServlet {
 	private final byte[] data;
 
 	private final String contentType;
-	
+
 	private final String etag;
 
 	public ResourceServlet(byte[] data, String contentType) {
@@ -32,7 +32,7 @@ public class ResourceServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		handleCacheableResponse(request, response);
 	}
-	
+
 	public void handleCacheableResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String ifNoneMatch = request.getHeader("If-None-Match");
 
