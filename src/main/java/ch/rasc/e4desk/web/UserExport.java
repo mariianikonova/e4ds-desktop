@@ -2,6 +2,7 @@ package ch.rasc.e4desk.web;
 
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +17,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -38,11 +41,14 @@ public class UserExport {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	@Autowired
+	private MessageSource messageSource;
+
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/usersExport.xls", method = RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void userExport(HttpServletResponse response, @RequestParam(required = false) final String filter)
-			throws Exception {
+	public void userExport(HttpServletResponse response, Locale locale,
+			@RequestParam(required = false) final String filter) throws Exception {
 
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.addHeader("Content-disposition", "attachment;filename=users.xlsx");
@@ -68,13 +74,13 @@ public class UserExport {
 		CellStyle titleStyle = workbook.createCellStyle();
 		titleStyle.setFont(titleFont);
 
-		Sheet sheet = workbook.createSheet("Benutzer");
+		Sheet sheet = workbook.createSheet(messageSource.getMessage("user", null, locale));
 
 		Row row = sheet.createRow(0);
-		createCell(row, 0, "E-Mail", titleStyle);
-		createCell(row, 1, "Vorname", titleStyle);
-		createCell(row, 2, "Nachname", titleStyle);
-		createCell(row, 3, "Aktiv", titleStyle);
+		createCell(row, 0, messageSource.getMessage("user_email", null, locale), titleStyle);
+		createCell(row, 1, messageSource.getMessage("user_firstname", null, locale), titleStyle);
+		createCell(row, 2, messageSource.getMessage("user_name", null, locale), titleStyle);
+		createCell(row, 3, messageSource.getMessage("user_active", null, locale), titleStyle);
 
 		JPQLQuery query = new JPAQuery(entityManager).from(QUser.user);
 
