@@ -64,7 +64,7 @@ Ext.define('E4desk.controller.DesktopController', {
 	},
 
 	showLoggedOnUser: function(fullname) {
-		this.getLoggedOnLabel().setText('Logged in as ' + fullname);
+		this.getLoggedOnLabel().setText(i18n.login_as + ' ' + fullname);
 	},
 	
 	handleUserSettings: function(settings) {
