@@ -54,7 +54,6 @@ ${applicationScope.css_app}
     <script src="/resources/extjs/<spring:eval expression='@environment["extjs.version"]'/>/locale/ext-lang-de.js"></script>
   <% } %>	
   
-  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDqNmB0Mk6hOBCG1Lx2tmqVgKBUh3l-JFg&sensor=false"></script>
   <script>
 	var $buoop = {vs:{i:8,f:12,o:11,s:5,n:9}} 
 	$buoop.ol = window.onload; 
