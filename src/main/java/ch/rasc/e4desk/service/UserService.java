@@ -94,7 +94,7 @@ public class UserService {
 
 	@ExtDirectMethod(FORM_POST)
 	@Transactional
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ExtDirectFormPostResult userFormPost(@RequestParam(value = "id", required = false) final Long userId,
 			@RequestParam(required = false) final String roleIds, @Valid final User modifiedUser,
 			final BindingResult bindingResult, Locale locale) {
