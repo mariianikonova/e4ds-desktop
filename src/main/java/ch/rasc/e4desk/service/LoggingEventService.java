@@ -41,7 +41,7 @@ public class LoggingEventService {
 
 	@ExtDirectMethod(STORE_READ)
 	@Transactional(readOnly = true)
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ExtDirectStoreReadResult<ch.rasc.e4desk.dto.LoggingEvent> read(ExtDirectStoreReadRequest request) {
 
 		JPQLQuery query = new JPAQuery(entityManager).from(QLoggingEvent.loggingEvent);
@@ -68,7 +68,7 @@ public class LoggingEventService {
 
 	@ExtDirectMethod
 	@Transactional
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteAll(String level) {
 		if (StringUtils.hasText(level)) {
 			for (ch.rasc.e4desk.entity.LoggingEvent le : new JPAQuery(entityManager).from(QLoggingEvent.loggingEvent)
@@ -84,7 +84,7 @@ public class LoggingEventService {
 	}
 
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void addTestData() {
 		Logger logger = LoggerFactory.getLogger(getClass());
 
