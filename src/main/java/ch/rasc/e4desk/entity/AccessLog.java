@@ -10,9 +10,6 @@ import net.sf.uadetector.service.UADetectorServiceFactory;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
 
 import ch.ralscha.extdirectspring.generator.Model;
 import ch.ralscha.extdirectspring.generator.ModelField;
@@ -92,7 +89,6 @@ public class AccessLog extends AbstractPersistable {
 		this.userAgent = userAgent;
 	}
 
-	@Transient
 	public String getBrowser() {
 		UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
 		UserAgent agent = parser.parse(userAgent);
@@ -100,17 +96,12 @@ public class AccessLog extends AbstractPersistable {
 				+ agent.getOperatingSystem().getName() + ")";
 	}
 
-	@Transient
 	public String getDuration() {
-		if (logIn != null && logOut != null) {
+		return duration;
+	}
 
-			PeriodFormatter minutesAndSeconds = new PeriodFormatterBuilder().appendMinutes()
-					.appendSuffix(" Minute", " Minuten").appendSeparator(" und ").printZeroRarelyLast().appendSeconds()
-					.appendSuffix(" Sekunde", " Sekunden").toFormatter();
-
-			return minutesAndSeconds.print(new Duration(new DateTime(logIn), new DateTime(logOut)).toPeriod());
-		}
-		return null;
+	public void setDuration(String duration) {
+		this.duration = duration;
 	}
 
 }
