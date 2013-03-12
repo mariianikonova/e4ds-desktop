@@ -50,7 +50,7 @@ ${applicationScope.css_login}
 		
   ${applicationScope.js_login}  
   <% if (locale != null && locale.getLanguage().toLowerCase().equals("de")) { %>
-    <script src="/resources/extjs/<spring:eval expression='@environment["extjs.version"]'/>/locale/ext-lang-de.js"></script>
+    <script src="<%= request.getContextPath() %>/resources/extjs/<spring:eval expression='@environment["extjs.version"]'/>/locale/ext-lang-de.js"></script>
   <% } %>
   
   <script>
