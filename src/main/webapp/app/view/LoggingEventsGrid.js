@@ -47,7 +47,7 @@ Ext.define('E4desk.view.LoggingEventsGrid', {
 			xtype: 'toolbar',
 			dock: 'top',
 			items: [ {
-				text: 'Export',
+				text: i18n.logevents_export,
 				itemId: 'exportButton',
 				icon: app_context_path + '/resources/images/document_down.png',
 				href: 'loggingEventExport.txt',
