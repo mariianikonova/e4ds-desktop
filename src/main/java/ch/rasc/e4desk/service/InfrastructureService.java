@@ -39,17 +39,16 @@ public class InfrastructureService {
 	}
 
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	public boolean switchUser(Long userId) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof JpaUserDetails) {
-			User switchToUser = entityManager.find(User.class, userId);
-			if (switchToUser != null) {
-				Util.signin(switchToUser);
-				return true;
-			}
+
+		User switchToUser = entityManager.find(User.class, userId);
+		if (switchToUser != null) {
+			Util.signin(switchToUser);
+			return true;
 		}
+
 		return false;
 	}
 
