@@ -7,7 +7,7 @@ For easier development and debugging there is the class `StartTomcat` in the def
 your development environment. 
 
 
-Switch between production and development mode comment or uncomment the following line in the file /e4ds-template/src/main/config/tomcat.xml 
+Switch between production and development mode comment or uncomment the following line in the file /e4ds-desktop/src/main/config/tomcat.xml 
 ```
 <Environment name="spring.profiles.active" value="development" type="java.lang.String" override="false"/>
 ```
