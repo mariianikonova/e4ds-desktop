@@ -31,8 +31,6 @@ Ext.define("E4desk.model.User",
     type : "direct",
     api : {
       read : userService.read,
-      create : null,
-      update : null,
       destroy : userService.destroy
     },
     reader : {
