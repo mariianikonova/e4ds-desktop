@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class AccessLog extends AbstractPersistable {
 
 	@Size(max = 100)
+	@JsonIgnore
 	private String sessionId;
 
 	@Size(max = 255)

@@ -2,9 +2,6 @@ Ext.define("E4desk.model.AccessLog",
 {
   extend : "Ext.data.Model",
   fields : [ {
-    name : "sessionId",
-    type : "string"
-  }, {
     name : "userName",
     type : "string"
   }, {
