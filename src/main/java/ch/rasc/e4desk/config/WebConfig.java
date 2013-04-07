@@ -71,7 +71,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public JsonHandler jsonHandler() {
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new Hibernate4Module());
+		Hibernate4Module hibernate4Module = new Hibernate4Module();
+		hibernate4Module.disable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
+		mapper.registerModule(hibernate4Module);
 
 		JsonHandler jsonHandler = new JsonHandler();
 		jsonHandler.setMapper(mapper);
