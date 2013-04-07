@@ -57,12 +57,6 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		container.addListener(new ContextLoaderListener(rootContext));
 		container.addListener(HttpSessionEventPublisher.class);
 
-		CharacterEncodingFilter encFilter = new CharacterEncodingFilter();
-		encFilter.setEncoding("UTF-8");
-		encFilter.setForceEncoding(true);
-		container.addFilter("characterEncodingFilter", encFilter).addMappingForServletNames(
-				EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE), true, "/*");
-
 		container.addFilter("springSecurityFilterChain",
 				new DelegatingFilterProxy("springSecurityFilterChain", rootContext)).addMappingForUrlPatterns(
 				EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD), true, "/*");
