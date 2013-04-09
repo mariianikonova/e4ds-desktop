@@ -19,11 +19,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.rasc.e4desk.web.AppLocaleResolver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.google.common.collect.ImmutableMap;
 
 @Configuration
@@ -66,18 +63,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 				"accessdenied").build());
 		config.setEnableBuffer(50);
 		return config;
-	}
-
-	@Bean
-	public JsonHandler jsonHandler() {
-		ObjectMapper mapper = new ObjectMapper();
-		Hibernate4Module hibernate4Module = new Hibernate4Module();
-		hibernate4Module.disable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
-		mapper.registerModule(hibernate4Module);
-
-		JsonHandler jsonHandler = new JsonHandler();
-		jsonHandler.setMapper(mapper);
-		return jsonHandler;
 	}
 
 	@Bean
