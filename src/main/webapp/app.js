@@ -5,6 +5,24 @@ Ext.define('E4desk.App', {
 	init: function() {
 		Ext.fly('circularG').destroy();
 
+		
+	    function createCustomExtLogFunction(defaultConfig) {
+	        return function(arg1) {
+	            var arg1IsConfig = Ext.isObject(arg1);
+	            var configArg = (arg1IsConfig ? arg1 : {});
+	            var otherArgs = [].slice.call(arguments, (arg1IsConfig ? 1 : 0));                
+	            Ext.applyIf(configArg, defaultConfig);
+	            return Ext.log.apply(this, [configArg].concat(otherArgs));
+	        };
+	    }	
+		
+	    Ext.applyIf(Ext, {
+	        logDebug: createCustomExtLogFunction({level: 'debug'}),
+	        logInfo: createCustomExtLogFunction({level: 'info'}),
+	        logWarn: createCustomExtLogFunction({level: 'warn'}),
+	        logError: createCustomExtLogFunction({level: 'error', stack: true})
+	    });
+		
 		Ext.tip.QuickTipManager.init();
 
 		if (this.hasLocalstorage()) {

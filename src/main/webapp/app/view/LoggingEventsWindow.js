@@ -4,7 +4,7 @@ Ext.define('E4desk.view.LoggingEventsWindow', {
 	stateId: 'E4desk.view.LoggingEventsWindow',
 	title: i18n.logevents,
 	width: 800,
-	height: 700,
+	height: 600,
 	iconCls: 'loggingevents-icon',
 	layout: 'fit',
 

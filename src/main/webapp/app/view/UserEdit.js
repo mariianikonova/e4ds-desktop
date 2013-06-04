@@ -1,10 +1,8 @@
 Ext.define('E4desk.view.UserEdit', {
 	extend: 'Ext.form.Panel',
-
-	requires: 'Ext.ux.form.field.BoxSelect',
-
+	requires: [ 'Ext.ux.form.MultiSelect' ],
 	width: 400,
-
+	
 	defaultType: 'textfield',
 	defaults: {
 		anchor: '100%'
@@ -76,16 +74,14 @@ Ext.define('E4desk.view.UserEdit', {
 			inputValue: 'true',
 			uncheckedValue: 'false'
 		}, {
-			xtype: 'comboboxselect',
+			xtype: 'multiselect',
 			name: 'roleIds',
-			queryMode: 'local',
-			pinList: false,
 			fieldLabel: i18n.user_roles,
 			store: Ext.create('E4desk.store.Roles'),
 			displayField: 'name',
 			valueField: 'id',
-			allowBlank: false
-		} ];
+			allowBlank: true
+		}];
 
 		me.buttons = [ {
 			xtype: 'button',

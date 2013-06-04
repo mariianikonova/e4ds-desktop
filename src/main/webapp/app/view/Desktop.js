@@ -43,9 +43,7 @@ Ext.define('E4desk.view.Desktop', {
 
 		this.wallpaper = Ext.create('E4desk.view.Wallpaper');
 
-		this.items = [
-				this.wallpaper,
-				{
+		this.items = [ this.wallpaper, {
 					xtype: 'dataview',
 					itemId: 'shortcutView',
 					overItemCls: 'view-over',
@@ -55,10 +53,15 @@ Ext.define('E4desk.view.Desktop', {
 					style: {
 						position: 'absolute'
 					},
-					tpl: [ '<tpl for=".">', '<div class="desktop-shortcut" id="{name}-shortcut">',
-							'<div class="desktop-shortcut-icon {iconCls}-shortcut">', '<img src="', Ext.BLANK_IMAGE_URL,
-							'" title="{name}">', '</div>', '<span class="desktop-shortcut-text">{name}</span>', '</div>', '</tpl>',
-							'<div class="x-clear"></div>' ]
+			tpl: [ '<tpl for=".">', 
+			         '<div class="desktop-shortcut" id="{name}-shortcut">',
+					   '<div class="desktop-shortcut-icon {iconCls}-shortcut">', 
+					     '<img src="', Ext.BLANK_IMAGE_URL, '" title="{name}">', 
+					   '</div>',
+					   '<span class="desktop-shortcut-text">{name}</span>', 
+					 '</div>', 
+				   '</tpl>',
+				   '<div class="x-clear"></div>' ]
 				} ];
 
 		this.callParent(arguments);

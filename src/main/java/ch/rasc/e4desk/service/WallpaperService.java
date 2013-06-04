@@ -25,7 +25,7 @@ public class WallpaperService {
 	private void init() {
 		Yaml y = new Yaml();
 		ImmutableList.Builder<Wallpaper> builder = ImmutableList.builder();
-		builder.add(new Wallpaper(" ", null, null, null));
+		builder.add(new Wallpaper("blank", null, null, null));
 		try (InputStream is = getClass().getResourceAsStream("/wallpapers.yaml")) {
 			for (String wp : (List<String>) y.load(is)) {
 				String[] splitted = wp.split(",");

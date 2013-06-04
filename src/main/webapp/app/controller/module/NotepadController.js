@@ -7,7 +7,7 @@ Ext.define('E4desk.controller.module.NotepadController', {
 	},
 
 	init: function() {
-		console.log('init');
+		Ext.logInfo('init E4desk.controller.module.NotepadController');
 		this.getMessageBus().fireEvent('refresh', {
 			someData: 'from notepad'
 		});

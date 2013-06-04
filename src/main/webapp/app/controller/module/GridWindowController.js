@@ -1,10 +1,6 @@
 Ext.define('E4desk.controller.module.GridWindowController', {
 	extend: 'Deft.mvc.ViewController',
-	// inject: [ 'messageBus' ],
-	//	
-	// config: {
-	// messageBus: null
-	// },
+	inject: [ 'messageBus' ],
 
 	observe: {
 		messageBus: {
@@ -13,13 +9,11 @@ Ext.define('E4desk.controller.module.GridWindowController', {
 	},
 
 	init: function() {
-		// console.log('init');
-		// console.log(this.getMessageBus());
+		Ext.logInfo('init');		
 	},
 
 	refreshHandler: function(e) {
-		console.log('refresh: ', e);
-		// this.messageBus.fireEvent('refreshed', {someData: 'hello'});
+		Ext.logDebug({dump: e}, "refreshHandler");
 	}
 
 });

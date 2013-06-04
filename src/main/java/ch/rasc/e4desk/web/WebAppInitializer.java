@@ -1,6 +1,5 @@
 package ch.rasc.e4desk.web;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -29,7 +28,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.yaml.snakeyaml.Yaml;
 
 import ch.rasc.e4desk.config.ComponentConfig;
 import ch.rasc.e4desk.config.DataConfig;
@@ -38,7 +36,10 @@ import ch.rasc.e4desk.config.SecurityConfig;
 import ch.rasc.e4desk.config.WebConfig;
 import ch.rasc.e4desk.util.Base62;
 
-import com.google.common.io.ByteStreams;
+import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
+import com.google.common.io.CharStreams;
+import com.google.common.io.InputSupplier;
 import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
@@ -69,58 +70,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		dispatcher.addMapping("/");
 
 		try {
-			if (rootContext.getEnvironment().acceptsProfiles("production")) {
-				processProdScripts(container);
-			} else {
-				processDevScripts(container);
-			}
+			processWebResources(container, rootContext.getEnvironment().acceptsProfiles("production"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-
-	}
-
-	private void processDevScripts(ServletContext container) throws IOException {
-
-		Properties versionProperties = readVersionProperties();
-
-		try (InputStream is = getClass().getResourceAsStream("/webresources.yaml")) {
-
-			Yaml yaml = new Yaml();
-			Map<String, Object> content = (Map<String, Object>) yaml.load(is);
-
-			for (String root : content.keySet()) {
-				Map<String, Object> children = (Map<String, Object>) content.get(root);
-
-				StringBuilder js = new StringBuilder();
-				for (String line : (List<String>) children.get("js-dev")) {
-					js.append("<script src=\"");
-					for (Entry<Object, Object> entry : versionProperties.entrySet()) {
-						String var = "{" + entry.getKey() + "}";
-						line = line.replace(var, (String) entry.getValue());
-					}
-					js.append(container.getContextPath());
-					js.append(line);
-					js.append("\"></script>");
-					js.append("\n");
-				}
-				container.setAttribute("js_" + root, js);
-
-				StringBuilder css = new StringBuilder();
-				for (String line : (List<String>) children.get("css")) {
-					css.append("<link rel=\"stylesheet\" href=\"");
-					for (Entry<Object, Object> entry : versionProperties.entrySet()) {
-						String var = "{" + entry.getKey() + "}";
-						line = line.replace(var, (String) entry.getValue());
-					}
-					css.append(container.getContextPath());
-					css.append(line);
-					css.append("\">");
-					css.append("\n");
-				}
-				container.setAttribute("css_" + root, css);
-
-			}
 		}
 
 	}
@@ -128,97 +80,138 @@ public class WebAppInitializer implements WebApplicationInitializer {
 	private final static Pattern DEV_CODE_PATTERN = Pattern.compile("/\\* <debug> \\*/.*?/\\* </debug> \\*/",
 			Pattern.DOTALL);
 
-	private void processProdScripts(ServletContext container) throws IOException {
+	private void processWebResources(ServletContext container, boolean production) throws IOException {
 
 		Properties versionProperties = readVersionProperties();
 
-		try (InputStream is = getClass().getResourceAsStream("/webresources.yaml")) {
+		Map<String, StringBuilder> htmlCodes = Maps.newHashMap();
+		Map<String, StringBuilder> codes = Maps.newHashMap();
 
-			Yaml yaml = new Yaml();
-			Map<String, Object> content = (Map<String, Object>) yaml.load(is);
+		try (InputStream is = getClass().getResourceAsStream("/webresources.txt")) {
+			List<String> lines = CharStreams.readLines(CharStreams.newReaderSupplier(createInputSupplier(is),
+					Charsets.UTF_8));
 
-			for (String root : content.keySet()) {
-				Map<String, Object> children = (Map<String, Object>) content.get(root);
+			String varName = null;
 
-				byte[] cssContent;
-				try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-					for (String line : (List<String>) children.get("css")) {
+			for (String line : lines) {
+				String l = line.trim();
+				if (l.isEmpty() || l.startsWith("#")) {
+					continue;
+				}
 
-						for (Entry<Object, Object> entry : versionProperties.entrySet()) {
-							String var = "{" + entry.getKey() + "}";
-							line = line.replace(var, (String) entry.getValue());
+				if (l.endsWith(":")) {
+					varName = l.substring(0, l.length() - 1);
+					htmlCodes.put(varName, new StringBuilder());
+					codes.put(varName, new StringBuilder());
+					continue;
+				}
+
+				if (varName == null) {
+					continue;
+				}
+
+				int pos = l.indexOf("[");
+				String mode = "p";
+				if (pos != -1) {
+					mode = l.substring(pos + 1, l.length() - 1);
+					l = l.substring(0, pos);
+				}
+
+				l = replaceVariables(l, versionProperties);
+
+				if (!production && mode.contains("d")) {
+					htmlCodes.get(varName).append(createHtmlCode(container, l, varName));
+				} else if (production && mode.contains("p")) {
+					if (mode.contains("s")) {
+						htmlCodes.get(varName).append(createHtmlCode(container, l, varName));
+					} else {
+						try (InputStream lis = container.getResourceAsStream(l)) {
+							String sourcecode = CharStreams.toString(CharStreams.newReaderSupplier(
+									createInputSupplier(lis), Charsets.UTF_8));
+
+							if (varName.endsWith("_js")) {
+								Matcher matcher = DEV_CODE_PATTERN.matcher(sourcecode);
+								StringBuffer cleanCode = new StringBuffer();
+								while (matcher.find()) {
+									matcher.appendReplacement(cleanCode, "");
+								}
+								matcher.appendTail(cleanCode);
+								String minifiedJs = minifyJs(cleanCode.toString());
+								codes.get(varName).append(minifiedJs).append('\n');
+							} else if (varName.endsWith("_css")) {
+								String changedCss = changeImageUrls(sourcecode, l);
+								changedCss = compressCss(changedCss);
+								codes.get(varName).append(changedCss);
+							}
 						}
-
-						byte[] b = ByteStreams.toByteArray(container.getResourceAsStream(line));
-						String changedCss = changeImageUrls(new String(b, StandardCharsets.UTF_8), line);
-						changedCss = compressCss(changedCss);
-						bos.write(changedCss.getBytes(StandardCharsets.UTF_8));
 					}
-					cssContent = bos.toByteArray();
 				}
-
-				String crc = Base62.generateMD5asBase62String(cssContent);
-				String servletPath = "/" + root + crc + ".css";
-				container.addServlet(root + crc + "css", new ResourceServlet(cssContent, "text/css")).addMapping(
-						servletPath);
-
-				StringBuilder css = new StringBuilder();
-				css.append("<link rel=\"stylesheet\" href=\"");
-				css.append(container.getContextPath());
-				css.append(servletPath);
-				css.append("\">");
-				css.append("\n");
-				container.setAttribute("css_" + root, css);
-
-				StringBuilder js = new StringBuilder();
-				for (String line : (List<String>) children.get("js-prod-script")) {
-					js.append("<script src=\"");
-					for (Entry<Object, Object> entry : versionProperties.entrySet()) {
-						String var = "{" + entry.getKey() + "}";
-						line = line.replace(var, (String) entry.getValue());
-					}
-					js.append(container.getContextPath());
-					js.append(line);
-					js.append("\"></script>");
-					js.append("\n");
-				}
-
-				byte[] jsContent;
-				try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-					for (String line : (List<String>) children.get("js-prod-mini")) {
-						byte[] b = ByteStreams.toByteArray(container.getResourceAsStream(line.trim()));
-						String code = new String(b, StandardCharsets.UTF_8);
-
-						Matcher matcher = DEV_CODE_PATTERN.matcher(code);
-						StringBuffer cleanCode = new StringBuffer();
-						while (matcher.find()) {
-							matcher.appendReplacement(cleanCode, "");
-						}
-						matcher.appendTail(cleanCode);
-
-						bos.write(minifyJs(cleanCode.toString()).getBytes(StandardCharsets.UTF_8));
-						bos.write('\n');
-
-					}
-					jsContent = bos.toByteArray();
-				}
-
-				crc = Base62.generateMD5asBase62String(jsContent);
-				servletPath = "/" + root + crc + ".js";
-				container.addServlet(root + crc + "js", new ResourceServlet(jsContent, "application/javascript"))
-						.addMapping(servletPath);
-
-				js.append("<script src=\"");
-				js.append(container.getContextPath());
-				js.append(servletPath);
-				js.append("\"></script>");
-				js.append("\n");
-
-				container.setAttribute("js_" + root, js);
-
 			}
-		}
 
+			for (Map.Entry<String, StringBuilder> entry : codes.entrySet()) {
+				String key = entry.getKey();
+				if (entry.getValue().length() > 0) {
+					byte[] content = entry.getValue().toString().getBytes(StandardCharsets.UTF_8);
+
+					if (key.endsWith("_js")) {
+						String root = key.substring(0, key.length() - 3);
+
+						String crc = Base62.generateMD5asBase62String(content);
+						String servletPath = "/" + root + crc + ".js";
+						container.addServlet(root + crc + "js", new ResourceServlet(content, "application/javascript"))
+								.addMapping(servletPath);
+
+						StringBuilder js = new StringBuilder();
+						js.append("<script src=\"");
+						js.append(container.getContextPath());
+						js.append(servletPath);
+						js.append("\"></script>");
+						js.append("\n");
+
+						htmlCodes.get(key).append(js);
+
+					} else if (key.endsWith("_css")) {
+						String root = key.substring(0, key.length() - 4);
+						String crc = Base62.generateMD5asBase62String(content);
+						String servletPath = "/" + root + crc + ".css";
+						container.addServlet(root + crc + "css", new ResourceServlet(content, "text/css")).addMapping(
+								servletPath);
+
+						StringBuilder css = new StringBuilder();
+						css.append("<link rel=\"stylesheet\" href=\"");
+						css.append(container.getContextPath());
+						css.append(servletPath);
+						css.append("\">");
+						css.append("\n");
+
+						htmlCodes.get(key).append(css);
+					}
+				}
+			}
+
+			for (Map.Entry<String, StringBuilder> entry : htmlCodes.entrySet()) {
+				container.setAttribute(entry.getKey(), entry.getValue());
+			}
+
+		}
+	}
+
+	private static StringBuilder createHtmlCode(ServletContext container, String line, String varName) {
+		StringBuilder sb = new StringBuilder(100);
+		if (varName.endsWith("_js")) {
+			sb.append("<script src=\"");
+			sb.append(container.getContextPath());
+			sb.append(line);
+			sb.append("\"></script>");
+			sb.append("\n");
+		} else if (varName.endsWith("_css")) {
+			sb.append("<link rel=\"stylesheet\" href=\"");
+			sb.append(container.getContextPath());
+			sb.append(line);
+			sb.append("\">");
+			sb.append("\n");
+		}
+		return sb;
 	}
 
 	private final static Pattern CSS_URL_PATTERN = Pattern.compile("(.*?url.*?\\('*)([^\\)']*)('*\\))",
@@ -232,10 +225,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 		while (matcher.find()) {
 			String url = matcher.group(2);
+			url = url.trim();
 			if (url.equals("#default#VML")) {
 				continue;
 			}
-			url = url.trim();
 			Path pa = basePath.resolveSibling(url).normalize();
 			matcher.appendReplacement(sb, "$1" + pa.toString().replace("\\", "/") + "$3");
 		}
@@ -302,4 +295,23 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		cc.compress(sw, linebreak);
 		return sw.toString();
 	}
+
+	private static String replaceVariables(String string, Properties versionProperties) {
+		String s = string;
+		for (Entry<Object, Object> entry : versionProperties.entrySet()) {
+			String var = "{" + entry.getKey() + "}";
+			s = s.replace(var, (String) entry.getValue());
+		}
+		return s;
+	}
+
+	private static InputSupplier<InputStream> createInputSupplier(final InputStream is) {
+		return new InputSupplier<InputStream>() {
+			@Override
+			public InputStream getInput() {
+				return is;
+			}
+		};
+	}
+
 }

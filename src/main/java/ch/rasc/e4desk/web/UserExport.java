@@ -45,7 +45,7 @@ public class UserExport {
 	private MessageSource messageSource;
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value = "/usersExport.xls", method = RequestMethod.GET)
+	@RequestMapping(value = "/usersExport.xlsx", method = RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void userExport(HttpServletResponse response, Locale locale,
 			@RequestParam(required = false) final String filter) throws Exception {

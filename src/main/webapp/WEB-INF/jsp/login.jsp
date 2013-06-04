@@ -14,7 +14,7 @@
 <style type="text/css">
   <%@ include file="loader.css"%>
 </style> 
-${applicationScope.css_login} 
+${applicationScope.login_css} 
 </head>
 <body>
   <div id="circularG">
@@ -48,9 +48,10 @@ ${applicationScope.css_login}
   <script src="i18n-<%= locale %>_<spring:eval expression='@environment["application.version"]'/>.js"></script>
   <% } %>
 		
-  ${applicationScope.js_login}  
+  ${applicationScope.login_js} 
+    
   <% if (locale != null && locale.getLanguage().toLowerCase().equals("de")) { %>
-    <script src="<%= request.getContextPath() %>/resources/extjs/<spring:eval expression='@environment["extjs.version"]'/>/locale/ext-lang-de.js"></script>
+    <script src="<%= request.getContextPath() %>/resources/extjs-gpl/<spring:eval expression='@environment["extjs.version"]'/>/locale/ext-lang-de.js"></script>
   <% } %>
   
   <script>
@@ -62,16 +63,9 @@ ${applicationScope.css_login}
 	<% } %>
   });
   </script>
+  
   <script>
-	var $buoop = {vs:{i:8,f:12,o:11,s:5,n:9}} 
-	$buoop.ol = window.onload; 
-	window.onload=function(){ 
-	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
-	 var e = document.createElement("script"); 
-	 e.setAttribute("type", "text/javascript"); 
-	 e.setAttribute("src", "http://browser-update.org/update.js"); 
-	 document.body.appendChild(e); 
-	} 
+    <%@ include file="browserupdate.js"%>
   </script>    
 </body>
 </html>

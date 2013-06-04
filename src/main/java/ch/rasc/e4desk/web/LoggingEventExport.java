@@ -60,8 +60,8 @@ public class LoggingEventExport {
 			}
 
 			for (LoggingEvent event : events) {
-				String userName = "";
-				String ip = "";
+				String userName = null;
+				String ip = null;
 
 				Set<LoggingEventProperty> properties = event.getLoggingEventProperty();
 				for (LoggingEventProperty prop : properties) {

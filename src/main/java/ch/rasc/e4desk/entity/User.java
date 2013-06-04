@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -19,6 +20,7 @@ import org.joda.time.DateTime;
 import ch.ralscha.extdirectspring.generator.Model;
 import ch.ralscha.extdirectspring.generator.ModelAssociation;
 import ch.ralscha.extdirectspring.generator.ModelAssociationType;
+import ch.ralscha.extdirectspring.generator.ModelField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -62,6 +64,14 @@ public class User extends AbstractPersistable {
 	@JsonIgnore
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime lockedOut;
+
+	@JsonIgnore
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime lastLogin;
+
+	@Transient
+	@ModelField(persist = false)
+	private String lastLoginDescription;
 
 	public String getName() {
 		return name;
@@ -142,6 +152,22 @@ public class User extends AbstractPersistable {
 
 	public void setLockedOut(DateTime lockedOut) {
 		this.lockedOut = lockedOut;
+	}
+
+	public DateTime getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(DateTime lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public String getLastLoginDescription() {
+		return lastLoginDescription;
+	}
+
+	public void setLastLoginDescription(String lastLoginDescription) {
+		this.lastLoginDescription = lastLoginDescription;
 	}
 
 }

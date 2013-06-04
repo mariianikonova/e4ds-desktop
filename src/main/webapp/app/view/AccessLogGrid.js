@@ -50,7 +50,7 @@ Ext.define('E4desk.view.AccessLogGrid', {
 			}, /* </debug> */'->', {
 				fieldLabel: i18n.accesslog_user,
 				itemId: 'filterField',
-				labelWidth: 40,
+				labelWidth: 50,
 				xtype: 'filterfield'
 			} ]
 		}, {

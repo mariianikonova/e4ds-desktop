@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,12 @@ public class InfrastructureService {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	@Autowired
+	private MailService mailService;
+
+	@Autowired
+	private Environment environment;
 
 	@ExtDirectMethod(value = POLL, event = "heartbeat")
 	@PreAuthorize("isAuthenticated()")
@@ -128,6 +137,22 @@ public class InfrastructureService {
 		}
 
 		return null;
+	}
+
+	@ExtDirectMethod
+	@PreAuthorize("isAuthenticated()")
+	public void sendFeedback(String feedbackText) throws MessagingException {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof JpaUserDetails) {
+			String username = ((JpaUserDetails) principal).getUsername();
+			String to;
+			if (environment.acceptsProfiles("development")) {
+				to = "test@test.com";
+			} else {
+				to = "someproductionemail@test.com";
+			}
+			mailService.sendHtmlMessage(username, to, "Feedback from e4ds-desktop", feedbackText);
+		}
 	}
 
 }

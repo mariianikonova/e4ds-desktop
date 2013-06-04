@@ -1,7 +1,16 @@
 Ext.onReady(function() {
 	Ext.QuickTips.init();
 
-	var login = Ext.create('Ext.form.Panel', {
+	var login;
+	
+	function submitForm() {
+		var form = login.getForm();
+		if (form.isValid()) {
+			form.submit();
+		}
+	}
+	
+	login = Ext.create('Ext.form.Panel', {
 		frame: true,
 		title: 'e4desk',
 		url: 'j_spring_security_check',
@@ -110,13 +119,6 @@ Ext.onReady(function() {
 			} ]
 		} ]
 	});
-
-	function submitForm() {
-		var form = login.getForm();
-		if (form.isValid()) {
-			form.submit();
-		}
-	}
 
 	login.getForm().findField('j_username').focus();
 

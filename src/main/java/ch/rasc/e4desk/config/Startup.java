@@ -15,6 +15,7 @@ import ch.rasc.e4desk.entity.QRole;
 import ch.rasc.e4desk.entity.QUser;
 import ch.rasc.e4desk.entity.Role;
 import ch.rasc.e4desk.entity.User;
+import ch.rasc.e4desk.service.MailService;
 
 import com.google.common.collect.Sets;
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -28,12 +29,17 @@ public class Startup implements ApplicationListener<ContextRefreshedEvent> {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private MailService mailService;
+
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Override
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+
+		mailService.configure();
 
 		if (new JPAQuery(entityManager).from(QUser.user).count() == 0) {
 			// admin user

@@ -12,6 +12,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
+import org.joda.time.Duration;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
@@ -40,6 +45,7 @@ import ch.rasc.e4desk.util.Util;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 
@@ -59,7 +65,7 @@ public class UserService {
 	@ExtDirectMethod(STORE_READ)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional(readOnly = true)
-	public ExtDirectStoreReadResult<User> read(ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreReadResult<User> read(ExtDirectStoreReadRequest request, Locale locale) {
 
 		JPQLQuery query = new JPAQuery(entityManager).from(QUser.user);
 		if (!request.getFilters().isEmpty()) {
@@ -77,10 +83,30 @@ public class UserService {
 		}
 
 		Util.addPagingAndSorting(query, request, User.class, QUser.user);
-		List<User> users = query.list(QUser.user);
-		long total = query.count();
+		SearchResults<User> searchResult = query.listResults(QUser.user);
 
-		return new ExtDirectStoreReadResult<>(total, users);
+		PeriodFormatter periodFormatter = new PeriodFormatterBuilder()
+				.appendDays()
+				.appendSuffix(" " + messageSource.getMessage("day", null, locale),
+						" " + messageSource.getMessage("days", null, locale))
+				.appendSeparator(" " + messageSource.getMessage("and", null, locale) + " ")
+				.appendHours()
+				.appendSuffix(" " + messageSource.getMessage("hour", null, locale),
+						" " + messageSource.getMessage("hours", null, locale)).toFormatter();
+
+		for (User user : searchResult.getResults()) {
+			if (user.getLastLogin() != null) {
+				Period period = new Duration(user.getLastLogin(), null).toPeriod().normalizedStandard(
+						PeriodType.dayTime());
+				String output = periodFormatter.print(period);
+				if (StringUtils.hasText(output) && output.length() > 4) {
+					user.setLastLoginDescription(output);
+				}
+				user.setLastLoginDescription(messageSource.getMessage("user_lastloginlessthanahour", null, locale));
+			}
+		}
+
+		return new ExtDirectStoreReadResult<>(searchResult.getTotal(), searchResult.getResults());
 	}
 
 	@ExtDirectMethod(STORE_MODIFY)

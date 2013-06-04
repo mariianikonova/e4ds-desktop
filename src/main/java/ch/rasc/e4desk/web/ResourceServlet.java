@@ -51,4 +51,5 @@ public class ResourceServlet extends HttpServlet {
 		out.write(data);
 		out.flush();
 	}
+
 }

@@ -16,6 +16,6 @@ Ext.define("E4desk.model.Wallpaper",
   } ],
   proxy : {
     type : "direct",
-    directFn : wallpaperService.read
+    directFn : "wallpaperService.read"
   }
 });

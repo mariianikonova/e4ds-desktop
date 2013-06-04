@@ -17,6 +17,10 @@ Ext.define("E4desk.model.User",
     name : "enabled",
     type : "boolean"
   }, {
+    name : "lastLoginDescription",
+    type : "string",
+    persist : false
+  }, {
     name : "id",
     type : "int"
   } ],
@@ -30,8 +34,8 @@ Ext.define("E4desk.model.User",
   proxy : {
     type : "direct",
     api : {
-      read : userService.read,
-      destroy : userService.destroy
+      read : "userService.read",
+      destroy : "userService.destroy"
     },
     reader : {
       root : "records"

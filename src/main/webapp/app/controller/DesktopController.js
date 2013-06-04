@@ -29,7 +29,10 @@ Ext.define('E4desk.controller.DesktopController', {
 		applicationMenu: {
 			click: 'onApplicationMenuClick'
 		},
-		loggedOnLabel: true
+		loggedOnLabel: true,
+		feedbackButton: {
+			click: 'onFeedbackClick'
+		}
 	},
 
 	init: function() {
@@ -119,6 +122,12 @@ Ext.define('E4desk.controller.DesktopController', {
 		settingsWindow.getController().desktopWallpaper = this.getView().wallpaper;
 		this.getView().add(settingsWindow);
 		settingsWindow.show();
+	},
+	
+	onFeedbackClick: function() {
+		var feedbackWindow = Ext.create('E4desk.view.Feedback');
+		this.getView().add(feedbackWindow);
+		feedbackWindow.show();
 	},
 	
 	onDesktopContextmenu: function(e) {
@@ -280,6 +289,7 @@ Ext.define('E4desk.controller.DesktopController', {
 			windowId: winId,
 			stateful: true,
 			constrainHeader: true,
+			constrain: true,
 			minimizable: true,
 			maximizable: true
 		});
@@ -341,7 +351,7 @@ Ext.define('E4desk.controller.DesktopController', {
 			return;
 		}
 
-		if (last) {
+		if (last && last.el) {
 			if (last.el.dom) {
 				last.addCls(this.inactiveWindowCls);
 				last.removeCls(this.activeWindowCls);

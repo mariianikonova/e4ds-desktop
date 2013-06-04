@@ -102,16 +102,12 @@
 			</column>
 			
 			<column name="passwordHash" type="varchar(80)" />
-			<column name="enabled" type="BOOLEAN" />
-			
-			<column name="settings" type="varchar(1000)" />
-			
-			<column name="locale" type="varchar(8)" />
-			
-            <column name="failedLogins" type="INT" />
-            
-            <column name="lockedOut" type="datetime" />
-
+                        <column name="locale" type="varchar(8)" />			
+			<column name="enabled" type="BOOLEAN" />			
+			<column name="settings" type="varchar(1000)" />						
+                        <column name="failedLogins" type="INT" />
+                        <column name="lockedOut" type="datetime" />
+                        <column name="lastLogin" type="datetime" />
 		</createTable>
 	</changeSet>
 
@@ -170,6 +166,44 @@
 			<column name="userAgent" type="varchar(255)" />
 
 		</createTable>
+	</changeSet>	
+	
+	<changeSet author="dev" id="13">
+		<createTable tableName="persistent_logins">
+			<column name="series" type="varchar(64)">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="pk_persistent_logins" />
+			</column>	
+						
+			<column name="username" type="varchar(255)">
+               <constraints nullable="false"/>
+			</column>
+
+			<column name="token" type="varchar(64)">
+               <constraints nullable="false"/>
+			</column>			
+
+			<column name="last_used" type="TIMESTAMP">
+               <constraints nullable="false"/>
+			</column>	
+		</createTable>
+	</changeSet>		
+	
+	<changeSet author="dev" id="14">
+		<createTable tableName="Configuration">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_Configuration" />
+			</column>	
+						
+			<column name="confKey" type="varchar(256)" />
+			<column name="confValue" type="varchar(1024)" />
+
+		</createTable>
+	</changeSet>    
+	
+	<changeSet author="dev" id="15">
+	  <sql>insert into Configuration(confKey, confValue) values('SMTP_SENDER', 'test@test.com')</sql>
+	  <sql>insert into Configuration(confKey, confValue) values('SMTP_SERVER', 'localhost')</sql>
+	  <sql>insert into Configuration(confKey, confValue) values('SMTP_PORT', '25')</sql>
 	</changeSet>	
 	
 </databaseChangeLog>

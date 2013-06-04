@@ -24,6 +24,10 @@ Ext.define('E4desk.view.TopBar', {
 			cls: 'loggedOnLabel',
 			itemId: 'loggedOnLabel'
 		}, '-', {
+			icon: app_context_path + '/resources/images/mail_write.png',
+			text: i18n.feedback,
+			itemId: 'feedbackButton'
+		}, '-', {
 			text: i18n.settings,
 			itemId: 'topBarSettings',
 			icon: app_context_path + '/resources/images/settings-icon.png'

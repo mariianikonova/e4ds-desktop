@@ -20,8 +20,9 @@ Ext.define('E4desk.view.UsersGrid', {
 			dataIndex: 'name',
 			flex: 1
 		}, {
-			text: 'Roles',
+			text: i18n.user_roles,
 			dataIndex: 'roles',
+			sortable: false,
 			width: 160,
 			renderer: function(value, metadata, record) {
 				var roles = record.roles();
@@ -46,6 +47,11 @@ Ext.define('E4desk.view.UsersGrid', {
 				}
 				return i18n.no;
 			}
+		}, {
+			text: i18n.user_lastlogin,
+			sortable: false,
+			dataIndex: 'lastLoginDescription',
+			flex: 1
 		} ];
 
 		me.dockedItems = [ {
@@ -70,7 +76,7 @@ Ext.define('E4desk.view.UsersGrid', {
 				text: i18n.user_export,
 				itemId: 'exportButton',
 				icon: app_context_path + '/resources/images/excel.gif',
-				href: 'usersExport.xls',
+				href: 'usersExport.xlsx',
 				hrefTarget: '_self'
 			}, {
 				xtype: 'tbseparator'

@@ -3,7 +3,6 @@ package ch.rasc.e4desk.service;
 import static ch.ralscha.extdirectspring.annotation.ExtDirectMethodType.STORE_READ;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -33,6 +32,7 @@ import ch.rasc.e4desk.entity.AccessLog;
 import ch.rasc.e4desk.entity.QAccessLog;
 import ch.rasc.e4desk.util.Util;
 
+import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -47,7 +47,7 @@ public class AccessLogService {
 	private MessageSource messageSource;
 
 	@ExtDirectMethod(STORE_READ)
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional(readOnly = true)
 	public ExtDirectStoreReadResult<AccessLog> read(ExtDirectStoreReadRequest request, Locale locale) {
 
@@ -56,26 +56,25 @@ public class AccessLogService {
 		if (!request.getFilters().isEmpty()) {
 			StringFilter userNameFilter = (StringFilter) request.getFilters().iterator().next();
 			String userName = userNameFilter.getValue();
-			query.where(QAccessLog.accessLog.userName.contains(userName));
+			query.where(QAccessLog.accessLog.userName.startsWithIgnoreCase(userName));
 		}
 
 		Util.addPagingAndSorting(query, request, AccessLog.class, QAccessLog.accessLog,
 				Collections.<String, String> emptyMap(), Collections.singleton("browser"));
 
-		List<AccessLog> accessLogs = query.list(QAccessLog.accessLog);
-		long total = query.count();
+		SearchResults<AccessLog> searchResult = query.listResults(QAccessLog.accessLog);
 
 		PeriodFormatter minutesAndSeconds = new PeriodFormatterBuilder()
 				.appendMinutes()
-				.appendSuffix(" " + messageSource.getMessage("accesslog_minute", null, locale),
-						" " + messageSource.getMessage("accesslog_minutes", null, locale))
-				.appendSeparator(" " + messageSource.getMessage("accesslog_and", null, locale) + " ")
+				.appendSuffix(" " + messageSource.getMessage("minute", null, locale),
+						" " + messageSource.getMessage("minutes", null, locale))
+				.appendSeparator(" " + messageSource.getMessage("and", null, locale) + " ")
 				.printZeroRarelyLast()
 				.appendSeconds()
-				.appendSuffix(" " + messageSource.getMessage("accesslog_second", null, locale),
-						" " + messageSource.getMessage("accesslog_seconds", null, locale)).toFormatter();
+				.appendSuffix(" " + messageSource.getMessage("second", null, locale),
+						" " + messageSource.getMessage("seconds", null, locale)).toFormatter();
 
-		for (AccessLog accessLog : accessLogs) {
+		for (AccessLog accessLog : searchResult.getResults()) {
 			if (accessLog.getLogIn() != null && accessLog.getLogOut() != null) {
 				Duration duration = new Duration(accessLog.getLogIn(), accessLog.getLogOut());
 				Period period = new Period(duration, PeriodType.forFields(new DurationFieldType[] {
@@ -85,19 +84,19 @@ public class AccessLogService {
 
 		}
 
-		return new ExtDirectStoreReadResult<>(total, accessLogs);
+		return new ExtDirectStoreReadResult<>(searchResult.getTotal(), searchResult.getResults());
 
 	}
 
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	public void deleteAll() {
 		new JPADeleteClause(entityManager, QAccessLog.accessLog).execute();
 	}
 
 	@ExtDirectMethod
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	public void addTestData(HttpServletRequest request) {
 		String[] users = { "admin", "user" };

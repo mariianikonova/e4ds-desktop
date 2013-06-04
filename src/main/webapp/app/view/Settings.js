@@ -151,7 +151,8 @@ Ext.define('E4desk.view.Settings', {
 					queryMode: 'local',
 					emptyText: i18n.user_selectlanguage,
 					allowBlank: false,
-					forceSelection: true
+					forceSelection: true,
+					anchor: '50%'
 				} ]
 			}), Ext.create('Ext.panel.Panel', {
 				title: i18n.settings_reset,

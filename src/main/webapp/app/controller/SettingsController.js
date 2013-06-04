@@ -108,8 +108,10 @@ Ext.define('E4desk.controller.SettingsController', {
 		Ext.state.Manager.clear('E4desk.view.AccessLogWindow');
 		Ext.state.Manager.clear('E4desk.view.LoggingEventsWindow');
 		Ext.state.Manager.clear('E4desk.view.Settings');
+                Ext.state.Manager.clear('E4desk.view.Feedback');
 		Ext.state.Manager.clear('E4desk.view.UsersWindow');
 		Ext.state.Manager.clear('E4desk.view.SystemSettings');
+                Ext.state.Manager.clear('E4desk.view.ConfigurationWindow');
 		Ext.ux.window.Notification.info(i18n.successful, i18n.settings_windowpositionsreseted);
 	}
 

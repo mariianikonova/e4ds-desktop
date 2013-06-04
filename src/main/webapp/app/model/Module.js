@@ -19,6 +19,6 @@ Ext.define("E4desk.model.Module",
   } ],
   proxy : {
     type : "direct",
-    directFn : moduleService.read
+    directFn : "moduleService.read"
   }
 });

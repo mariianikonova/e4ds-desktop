@@ -24,9 +24,7 @@ Ext.define('E4desk.controller.LoggingEventsController', {
 	filterLogLevel: function(field, newValue, oldValue) {
 		var myStore = this.getGrid().getStore();
 		if (newValue) {
-			myStore.remoteFilter = false;
 			myStore.clearFilter(true);
-			myStore.remoteFilter = true;
 			myStore.filter('level', newValue);
 			this.getExportButton().setParams({
 				level: newValue

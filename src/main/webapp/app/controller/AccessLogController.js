@@ -23,9 +23,7 @@ Ext.define('E4desk.controller.AccessLogController', {
 	handleFilter: function(field, newValue) {
 		var myStore = this.getGrid().getStore();
 		if (newValue) {
-			myStore.remoteFilter = false;
 			myStore.clearFilter(true);
-			myStore.remoteFilter = true;
 			myStore.filter('filter', newValue);
 		} else {
 			myStore.clearFilter();
@@ -51,7 +49,7 @@ Ext.define('E4desk.controller.AccessLogController', {
 	},
 
 	doGridRefresh: function() {
-		this.getPagingtoolbar().doRefresh();
+		this.getGrid().getStore().load();
 	}
 
 });

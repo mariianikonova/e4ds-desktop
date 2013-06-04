@@ -2,8 +2,8 @@ Ext.require('Ext.window.Window',
     function() {
         Ext.override(Ext.window.Window, {
             /**
-			 * Fix for stateful windows position being messed up See:
-			 * http://www.sencha.com/forum/showthread.php?249459-4.1.3-Stateful-window-position-is-STILL-incorrect.
+     * Fix for stateful windows position being messed up
+     * See: http://www.sencha.com/forum/showthread.php?249459-4.1.3-Stateful-window-position-is-STILL-incorrect.
 			 */
             getState: function() {
                 var me = this,
@@ -19,7 +19,6 @@ Ext.require('Ext.window.Window',
                     // If we're animating a show, it will be from offscreen, so
                     // grab the position from the final box
                     pos = [ghostBox.x, ghostBox.y];
-
 
                     // <WestyFix>
                     var isContainedFloater = me.isContainedFloater(),

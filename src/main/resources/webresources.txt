@@ -1,0 +1,83 @@
+# [d]   = dev only. script or link tag
+# [ps]  = prod only. script or link tag
+# [dps] = dev and prod. script or link tag
+# [dp]  = dev and prod. script/link tag in dev. concat and minify in prod
+# [p]   = prod only. contact and minify. can be ommited
+
+login_js:
+  /resources/extjs-gpl/{extjs.version}/ext-all-dev.js[d]
+  /resources/extjs-gpl/{extjs.version}/ext-all.js[ps]
+  /resources/extjs-gpl/{extjs.version}/ux/window/Notification.js[dp]
+  /login.js[dp]
+
+login_css:
+  /resources/extjs-gpl/{extjs.version}/resources/ext-theme-classic/ext-theme-classic-all.css[dps]
+  /resources/css/app.css[dp]
+  /resources/extjs-gpl/{extjs.version}/ux/css/Notification.css[dp]
+
+app_js:
+  /resources/extjs-gpl/{extjs.version}/ext-all-dev.js[d]
+  /resources/extjs-gpl/{extjs.version}/ext-all.js[ps]
+  /overrides.js[dp]
+  /deft-debug.js[d]
+  /deft.js
+  /loader.js[d]
+  /api.js[d]
+  /api-{application.version}.js[ps]
+  /resources/extjs-gpl/{extjs.version}/ux/colorpicker/ColorPicker.js
+  /resources/extjs-gpl/{extjs.version}/ux/colorpicker/ColorPickerField.js
+  /resources/extjs-gpl/{extjs.version}/ux/form/field/ClearCombo.js
+  /resources/extjs-gpl/{extjs.version}/ux/form/field/FilterField.js
+  /resources/extjs-gpl/{extjs.version}/ux/form/MultiSelect.js
+  /resources/extjs-gpl/{extjs.version}/ux/window/Notification.js    
+  /direct.js[dp]
+  /app/model/AccessLog.js
+  /app/model/LoggingEvent.js
+  /app/model/Module.js
+  /app/model/Role.js
+  /app/model/User.js
+  /app/model/Wallpaper.js  
+  /app/store/AccessLogs.js
+  /app/store/DesktopStore.js
+  /app/store/LoggingEvents.js
+  /app/store/LogLevels.js
+  /app/store/ModuleStore.js
+  /app/store/Roles.js
+  /app/store/Users.js
+  /app/store/WallpaperStore.js  
+  /app/controller/AccessLogController.js
+  /app/controller/ConfigurationController.js
+  /app/controller/DesktopController.js
+  /app/controller/FeedbackController.js
+  /app/controller/LoggingEventsController.js
+  /app/controller/SettingsController.js
+  /app/controller/UsersController.js
+  /app/controller/module/GridWindowController.js
+  /app/controller/module/NotepadController.js
+  /app/view/AccessLogGrid.js
+  /app/view/AccessLogWindow.js
+  /app/view/ConfigurationEdit.js
+  /app/view/ConfigurationWindow.js
+  /app/view/Desktop.js
+  /app/view/Feedback.js
+  /app/view/LoggingEventsGrid.js
+  /app/view/LoggingEventsWindow.js
+  /app/view/Settings.js
+  /app/view/TopBar.js
+  /app/view/UserEdit.js
+  /app/view/UsersGrid.js
+  /app/view/UsersWindow.js
+  /app/view/Viewport.js
+  /app/view/Wallpaper.js
+  /app/view/WindowBar.js
+  /app/view/module/GridWindow.js
+  /app/view/module/Notepad.js
+  /app/view/module/OnlineUsers.js
+  /app/view/module/SystemStatus.js
+  /app/view/module/TabWindow.js
+  /app.js[dp]
+
+app_css:
+  /resources/extjs-gpl/{extjs.version}/resources/ext-theme-classic/ext-theme-classic-all.css[dps]
+  /resources/css/app.css[dp]
+  /resources/extjs-gpl/{extjs.version}/ux/css/Notification.css[dp]

@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.LoggingEventsGrid', {
 	extend: 'Ext.grid.Panel',
 
-	requires: [ 'Ext.ux.RowExpander' ],
+	requires: [ 'Ext.ux.RowExpander', 'Ext.ux.form.field.ClearCombo' ],
 
 	plugins: [ {
 		ptype: 'rowexpander',
@@ -61,7 +61,7 @@ Ext.define('E4desk.view.LoggingEventsGrid', {
 				itemId: 'testButton',
 				icon: app_context_path + '/resources/images/add.png'
 			},/* </debug> */'->', {
-				xtype: 'combobox',
+				xtype: 'clearcombo',
 				fieldLabel: i18n.logevents_filter,
 				labelWidth: 40,
 				itemId: 'logLevelFilter',
@@ -70,11 +70,7 @@ Ext.define('E4desk.view.LoggingEventsGrid', {
 				valueField: 'level',
 				displayField: 'level',
 				queryMode: 'local',
-				forceSelection: true,
-				plugins: Ext.create('Ext.ux.form.field.ClearButton', {
-					hideClearButtonWhenEmpty: false,
-					hideClearButtonWhenMouseOut: false
-				})
+				forceSelection: true
 			} ]
 		}, {
 			xtype: 'pagingtoolbar',

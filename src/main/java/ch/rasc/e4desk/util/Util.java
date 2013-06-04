@@ -51,7 +51,7 @@ public class Util {
 	public static void addPagingAndSorting(JPQLQuery query, ExtDirectStoreReadRequest request, Class<?> clazz,
 			EntityPathBase<?> entityPathBase, Map<String, String> mapGuiColumn2Dbfield, Set<String> sortIgnoreProperties) {
 
-		if (request.getStart() != null) {
+		if (request.getStart() != null && request.getLimit() > 0) {
 			query.offset(request.getStart()).limit(request.getLimit());
 		}
 
