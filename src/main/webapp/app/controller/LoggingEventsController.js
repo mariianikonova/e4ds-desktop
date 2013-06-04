@@ -17,7 +17,6 @@ Ext.define('E4desk.controller.LoggingEventsController', {
 		logLevelFilter: {
 			change: 'filterLogLevel'
 		},
-		pagingtoolbar: true,
 		exportButton: true
 	},
 
@@ -56,7 +55,7 @@ Ext.define('E4desk.controller.LoggingEventsController', {
 	},
 
 	doGridRefresh: function() {
-		this.getPagingtoolbar().doRefresh();
+		this.getGrid().getStore().load();
 	}
 
 });

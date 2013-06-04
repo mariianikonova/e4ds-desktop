@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.LoggingEventsGrid', {
 	extend: 'Ext.grid.Panel',
 
-	requires: [ 'Ext.ux.RowExpander', 'Ext.ux.form.field.ClearCombo' ],
+	requires: [ 'Ext.ux.form.field.ClearCombo' ],
 
 	plugins: [ {
 		ptype: 'rowexpander',
@@ -74,7 +74,6 @@ Ext.define('E4desk.view.LoggingEventsGrid', {
 			} ]
 		}, {
 			xtype: 'pagingtoolbar',
-			itemId: 'pagingtoolbar',
 			dock: 'bottom',
 			store: me.store,
 			displayInfo: true,

@@ -6,7 +6,6 @@ Ext.define('E4desk.controller.AccessLogController', {
 			show: 'onShow'
 		},
 		grid: true,
-		pagingtoolbar: true,
 		deleteAllButton: {
 			click: 'deleteAll'
 		},

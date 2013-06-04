@@ -55,7 +55,6 @@ Ext.define('E4desk.view.AccessLogGrid', {
 			} ]
 		}, {
 			xtype: 'pagingtoolbar',
-			itemId: 'pagingtoolbar',
 			dock: 'bottom',
 			store: me.store,
 			displayInfo: true,

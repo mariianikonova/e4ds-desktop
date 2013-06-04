@@ -33,7 +33,6 @@ Ext.define('E4desk.controller.UsersController', {
 		filterField: {
 			filter: 'handleFilter'
 		},
-		pagingtoolbar: true,
 		exportButton: true,
 		form: {
 			show: 'onFormShow'
@@ -149,15 +148,16 @@ Ext.define('E4desk.controller.UsersController', {
 		if (btn === 'yes') {
 			var record = this.getGrid().getSelectionModel().getSelection()[0];
 			if (record) {
+				this.getGrid().getStore().remove(record);
 				record.destroy();
-				this.getPagingtoolbar().doRefresh();
+				this.getGrid().getStore().load();
 				Ext.ux.window.Notification.info(i18n.successful, i18n.user_deleted);
 			}
 		}
 	},
 
 	onShow: function() {
-		this.getPagingtoolbar().doRefresh();
+		this.getGrid().getStore().load();
 	},
 
 	onStoreLoad: function() {
@@ -175,7 +175,7 @@ Ext.define('E4desk.controller.UsersController', {
 			},
 			scope: this,
 			success: function() {
-				this.getPagingtoolbar().doRefresh();
+				this.getGrid().getStore().load();
 				Ext.ux.window.Notification.info(i18n.successful, i18n.user_saved);
 			}
 		});

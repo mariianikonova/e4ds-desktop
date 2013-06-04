@@ -93,7 +93,6 @@ Ext.define('E4desk.view.UsersGrid', {
 			} ]
 		}, {
 			xtype: 'pagingtoolbar',
-			itemId: 'pagingtoolbar',
 			dock: 'bottom',
 			store: me.store,
 			displayInfo: true,
