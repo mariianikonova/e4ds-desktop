@@ -5,21 +5,21 @@ import javax.persistence.PersistenceContext;
 
 import org.joda.time.DateTime;
 import org.springframework.context.ApplicationListener;
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import ch.rasc.e4desk.entity.User;
 
 @Component
-public class UserAuthenticationSuccessfulHandler implements ApplicationListener<AuthenticationSuccessEvent> {
+public class UserAuthenticationSuccessfulHandler implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Override
 	@Transactional
-	public void onApplicationEvent(AuthenticationSuccessEvent event) {
+	public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
 		Object principal = event.getAuthentication().getPrincipal();
 		if (principal instanceof JpaUserDetails) {
 			User user = entityManager.find(User.class, ((JpaUserDetails) principal).getUserDbId());
