@@ -1,6 +1,6 @@
 Sample application with ExtJs4, ExtDirectSpring, Spring Framework 3.2, Spring Data JPA, Hibernate, Spring Security.
 
-###See the application in action: http://e4ds.rasc.ch/e4ds-desktop
+###See the application in action: http://demo.rasc.ch/e4desk/
 
 
 For easier development and debugging there is the class `StartTomcat` in the default package. Simply run this class like a normal java program inside
