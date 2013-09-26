@@ -13,7 +13,7 @@ Ext.onReady(function() {
 	login = Ext.create('Ext.form.Panel', {
 		frame: true,
 		title: 'e4desk',
-		url: 'j_spring_security_check',
+		url: 'login.html',
 		width: 380,
 		icon: 'resources/images/key.png',
 
@@ -31,7 +31,7 @@ Ext.onReady(function() {
 
 		items: [ {
 			fieldLabel: i18n.user_email,
-			name: 'j_username',
+			name: 'username',
 			allowBlank: false,
 			listeners: {
 				specialkey: function(field, e) {
@@ -42,9 +42,9 @@ Ext.onReady(function() {
 			}
 		}, {
 			fieldLabel: i18n.user_password,
-			name: 'j_password',
+			name: 'password',
 			inputType: 'password',
-			allowBlank: true,
+			allowBlank: false,
 			listeners: {
 				specialkey: function(field, e) {
 					if (e.getKey() === e.ENTER) {
@@ -54,7 +54,7 @@ Ext.onReady(function() {
 			}
 		}, {
 			fieldLabel: i18n.login_rememberme,
-			name: '_spring_security_remember_me',
+			name: 'remember-me',
 			xtype: 'checkbox'
 		} ],
 
@@ -63,8 +63,8 @@ Ext.onReady(function() {
 			handler: function() {
 				var form = this.up('form').getForm();
 				form.setValues({
-					j_username: 'user@e4desk.ch',
-					j_password: 'user'
+					username: 'user@e4desk.ch',
+					password: 'user'
 				});
 				form.submit();
 			}
@@ -73,8 +73,8 @@ Ext.onReady(function() {
 			handler: function() {
 				var form = this.up('form').getForm();
 				form.setValues({
-					j_username: 'admin@e4desk.ch',
-					j_password: 'admin'
+					username: 'admin@e4desk.ch',
+					password: 'admin'
 				});
 				form.submit();
 			}
@@ -120,6 +120,6 @@ Ext.onReady(function() {
 		} ]
 	});
 
-	login.getForm().findField('j_username').focus();
+	login.getForm().findField('username').focus();
 
 });

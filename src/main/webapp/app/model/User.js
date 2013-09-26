@@ -1,6 +1,7 @@
 Ext.define("E4desk.model.User",
 {
   extend : "Ext.data.Model",
+  uses : [ "E4desk.model.Role" ],
   fields : [ {
     name : "email",
     type : "string"
@@ -22,7 +23,8 @@ Ext.define("E4desk.model.User",
     persist : false
   }, {
     name : "id",
-    type : "int"
+    type : "int",
+    useNull : true
   } ],
   associations : [ {
     type : "hasMany",

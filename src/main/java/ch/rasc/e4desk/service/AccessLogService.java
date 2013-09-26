@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.filter.StringFilter;
 import ch.rasc.e4desk.entity.AccessLog;
 import ch.rasc.e4desk.entity.QAccessLog;
@@ -49,7 +49,7 @@ public class AccessLogService {
 	@ExtDirectMethod(STORE_READ)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional(readOnly = true)
-	public ExtDirectStoreReadResult<AccessLog> read(ExtDirectStoreReadRequest request, Locale locale) {
+	public ExtDirectStoreResult<AccessLog> read(ExtDirectStoreReadRequest request, Locale locale) {
 
 		JPQLQuery query = new JPAQuery(entityManager).from(QAccessLog.accessLog);
 
@@ -84,7 +84,7 @@ public class AccessLogService {
 
 		}
 
-		return new ExtDirectStoreReadResult<>(searchResult.getTotal(), searchResult.getResults());
+		return new ExtDirectStoreResult<>(searchResult.getTotal(), searchResult.getResults());
 
 	}
 

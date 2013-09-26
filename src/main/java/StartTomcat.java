@@ -8,7 +8,7 @@ public class StartTomcat {
 		skipJars += "jackson-*.jar;javassist-*.jar;javax*.jar;jboss-*.jar;jcl-over-slf4j-*.jar;joda-*.jar;jsr305-*.jar;jul-to-slf4j-*.jar;liquibase-core*.jar;";
 		skipJars += "logback-*.jar;mysema-commons-lang-*.jar;poi-*.jar;querydsl-*.jar;slf4j-api-*.jar;snakeyaml*.jar;spring-*.jar;uadetector*.jar;";
 		skipJars += "usertype*.jar;validation-api-*.jar;xmlbeans-*.jar;yuicompressor*.jar";
-		skipJars += "tomcat-*.jar;ecj-*.jar;juni*.jar;hamcrest*.jar";
+		skipJars += "tomcat-*.jar;ecj-*.jar;h2*.jar";
 
 		EmbeddedTomcat.create().skipJarsDefaultJarScanner(skipJars).setContextFile("./src/main/config/tomcat.xml")
 				.startAndWait();

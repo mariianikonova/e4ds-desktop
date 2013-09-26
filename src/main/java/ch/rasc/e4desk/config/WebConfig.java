@@ -14,6 +14,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -37,7 +38,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
+		ResourceHandlerRegistration registration = registry.addResourceHandler("/resources/**").addResourceLocations(
+				"/resources/");
+		if (environment.acceptsProfiles("production")) {
+			registration.setCachePeriod(31556926);
+		}
 	}
 
 	@Override
@@ -61,7 +66,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		config.setSendStacktrace(environment.acceptsProfiles("development"));
 		config.setExceptionToMessage(new ImmutableMap.Builder<Class<?>, String>().put(AccessDeniedException.class,
 				"accessdenied").build());
-		config.setEnableBuffer(50);
 		return config;
 	}
 

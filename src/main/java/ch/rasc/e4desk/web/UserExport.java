@@ -86,10 +86,9 @@ public class UserExport {
 
 		if (StringUtils.isNotBlank(filter)) {
 			BooleanBuilder bb = new BooleanBuilder();
-			String likeValue = "%" + filter.toLowerCase() + "%";
-			bb.or(QUser.user.name.lower().like(likeValue));
-			bb.or(QUser.user.firstName.lower().like(likeValue));
-			bb.or(QUser.user.email.lower().like(likeValue));
+			bb.or(QUser.user.name.contains(filter));
+			bb.or(QUser.user.firstName.contains(filter));
+			bb.or(QUser.user.email.contains(filter));
 
 			query.where(bb);
 		}

@@ -5,11 +5,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import ch.ralscha.extdirectspring.generator.ModelField;
+
 @MappedSuperclass
 public abstract class AbstractPersistable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ModelField(useNull = true)
 	private Long id;
 
 	public Long getId() {

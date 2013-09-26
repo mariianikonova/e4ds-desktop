@@ -1,4 +1,4 @@
-package ch.rasc.e4desk.web;
+package ch.rasc.e4desk.config;
 
 import java.io.IOException;
 
@@ -7,8 +7,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.util.DigestUtils;
 
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
@@ -22,10 +20,13 @@ public class ResourceServlet extends HttpServlet {
 
 	private final String etag;
 
-	public ResourceServlet(byte[] data, String contentType) {
+	private final Integer cacheInMonths;
+
+	public ResourceServlet(final byte[] data, final String etag, final Integer cacheInMonths, final String contentType) {
 		this.data = data;
 		this.contentType = contentType;
-		etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
+		this.etag = "\"" + etag + "\"";
+		this.cacheInMonths = cacheInMonths;
 	}
 
 	@Override
@@ -44,12 +45,11 @@ public class ResourceServlet extends HttpServlet {
 		response.setContentType(contentType);
 		response.setContentLength(data.length);
 
-		ExtDirectSpringUtil.addCacheHeaders(response, etag, 6);
+		ExtDirectSpringUtil.addCacheHeaders(response, etag, cacheInMonths);
 
 		@SuppressWarnings("resource")
 		ServletOutputStream out = response.getOutputStream();
 		out.write(data);
 		out.flush();
 	}
-
 }

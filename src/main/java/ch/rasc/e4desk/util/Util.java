@@ -93,7 +93,6 @@ public class Util {
 	}
 
 	public static boolean hasRole(String role) {
-		// get security context from thread local
 		SecurityContext context = SecurityContextHolder.getContext();
 		if (context == null) {
 			return false;

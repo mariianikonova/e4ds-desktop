@@ -43,6 +43,7 @@ public class MdcFilter implements Filter {
 		} finally {
 			MDC.remove("userName");
 			MDC.remove("ip");
+			MDC.remove("userAgent");
 		}
 	}
 }

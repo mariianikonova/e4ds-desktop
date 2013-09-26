@@ -34,8 +34,15 @@ Ext.define('E4desk.view.TopBar', {
 		}, '-', {
 			text: i18n.logout,
 			icon: app_context_path + '/resources/images/logout.png',
-			href: 'j_spring_security_logout',
-			hrefTarget: '_self'
+			handler: function() {
+				Ext.Ajax.request({
+					url: 'logout',
+					method: 'POST',
+					success: function(response) {
+						window.location = 'login.html?logout';
+					}
+				});
+			}
 		} ];
 
 		this.callParent(arguments);

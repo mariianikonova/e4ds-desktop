@@ -9,13 +9,13 @@ import javax.sql.DataSource;
 
 import liquibase.integration.spring.SpringLiquibase;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -38,20 +38,14 @@ public class DataConfig {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
 		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 		emf.setDataSource(dataSource());
-		emf.setPersistenceProvider(new org.hibernate.ejb.HibernatePersistence());
+		HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+		// hibernateJpaVendorAdapter.setShowSql(true);
+		emf.setJpaVendorAdapter(hibernateJpaVendorAdapter);
 		emf.setPackagesToScan("ch.rasc.e4desk.entity");
 
 		Map<String, String> properties = Maps.newHashMap();
-		// properties.put("hibernate.show_sql", "true");
-
-		String dialect = environment.getProperty("hibernate.dialect");
-		if (StringUtils.isNotBlank(dialect)) {
-			properties.put("hibernate.dialect", dialect);
-		}
-
 		properties.put("jadira.usertype.databaseZone", "UTC");
 		properties.put("jadira.usertype.javaZone", "UTC");
-
 		emf.setJpaPropertyMap(properties);
 
 		return emf;
