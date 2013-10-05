@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode;
 
 @Configuration
 @EnableWebSecurity
@@ -59,8 +61,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		//@formatter:off
 		http
+		.headers()
+		    .contentTypeOptions()
+		    .xssProtection()
+		    .cacheControl()
+		    .httpStrictTransportSecurity()
+		    .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
+		    .and()		
 		  .authorizeRequests()
-		    .antMatchers("/i18n*", "/login*").permitAll()
+		    .antMatchers("/i18n*", "/login*", "/app/ux/window/Notification.js").permitAll()
 			.anyRequest().authenticated()
 		    .and()
 	      .formLogin()

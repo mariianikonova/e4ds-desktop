@@ -1,4 +1,4 @@
-Ext.define('Ext.ux.form.field.FilterField', {
+Ext.define('E4desk.ux.form.field.FilterField', {
 	extend: 'Ext.form.field.Trigger',
 	alias: 'widget.filterfield',
 	

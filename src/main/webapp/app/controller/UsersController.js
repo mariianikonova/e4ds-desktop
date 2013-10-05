@@ -151,7 +151,7 @@ Ext.define('E4desk.controller.UsersController', {
 				this.getGrid().getStore().remove(record);
 				record.destroy();
 				this.getGrid().getStore().load();
-				Ext.ux.window.Notification.info(i18n.successful, i18n.user_deleted);
+				E4desk.ux.window.Notification.info(i18n.successful, i18n.user_deleted);
 			}
 		}
 	},
@@ -176,7 +176,7 @@ Ext.define('E4desk.controller.UsersController', {
 			scope: this,
 			success: function() {
 				this.getGrid().getStore().load();
-				Ext.ux.window.Notification.info(i18n.successful, i18n.user_saved);
+				E4desk.ux.window.Notification.info(i18n.successful, i18n.user_saved);
 			}
 		});
 

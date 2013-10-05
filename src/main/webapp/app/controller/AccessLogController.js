@@ -31,14 +31,14 @@ Ext.define('E4desk.controller.AccessLogController', {
 
 	deleteAll: function() {
 		accessLogService.deleteAll(function() {
-			Ext.ux.window.Notification.info(i18n.successful, i18n.accesslog_deleted);
+			E4desk.ux.window.Notification.info(i18n.successful, i18n.accesslog_deleted);
 			this.doGridRefresh();
 		}, this);
 	},
 
 	addTestData: function() {
 		accessLogService.addTestData(function() {
-			Ext.ux.window.Notification.info(i18n.successful, i18n.accesslog_testinserted);
+			E4desk.ux.window.Notification.info(i18n.successful, i18n.accesslog_testinserted);
 			this.doGridRefresh();
 		}, this);
 	},

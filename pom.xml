@@ -27,7 +27,7 @@
 
 		<maven.build.timestamp.format>yyyy-MM-dd'T'hh:mm:ss.SSSZ</maven.build.timestamp.format>
 		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-		<extjs.version>4.2.1</extjs.version>
+		<extjs.version>4.2.2</extjs.version>
 	</properties>
 
 	<dependencies>
@@ -318,7 +318,7 @@
 		<dependency>
 			<groupId>net.sf.uadetector</groupId>
 			<artifactId>uadetector-resources</artifactId>
-			<version>2013.08</version>
+			<version>2013.09</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>jsr305</artifactId>

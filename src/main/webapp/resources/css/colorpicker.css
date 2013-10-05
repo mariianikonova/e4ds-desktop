@@ -3,7 +3,7 @@
 	background : #FFF;
 }
 .x-cp-rgbpicker {
-	background-image: url(images/colorpicker/mask.png);
+	background-image: url(../images/colorpicker/mask.png);
 	background-repeat: no-repeat;
 	background-color: red;
 	width: 182px;
@@ -25,7 +25,7 @@
 	top: -7px;
 	width: 15px;
 	height: 15px;
-	background-image: url(images/colorpicker/slider-rgb.gif) !important;
+	background-image: url(../images/colorpicker/slider-rgb.gif) !important;
 	background-repeat: no-repeat !important;
 	cursor: pointer;
 	_cursor: hand;
@@ -36,7 +36,7 @@
 	width: 9px;
 	float: left;
 	margin: 7px 0 0 7px;
-	background-image: url(images/colorpicker/hue.png) !important;
+	background-image: url(../images/colorpicker/hue.png) !important;
 	background-repeat: no-repeat;
 	cursor: pointer;
 	_cursor: hand;
@@ -48,7 +48,7 @@
 	top: -7px;
 	width: 15px;
 	height: 15px;
-	background-image: url(images/colorpicker/slider-rgb.gif) !important;
+	background-image: url(../images/colorpicker/slider-rgb.gif) !important;
 	background-repeat: no-repeat;
 	cursor: pointer;
 	_cursor: hand;
@@ -82,7 +82,7 @@
 }
 
 .x-cp-leftarrow {
-	background-image: url(images/colorpicker/leftarrow.jpg) !important;
+	background-image: url(../images/colorpicker/leftarrow.jpg) !important;
 	background-repeat: no-repeat;
 	background-position: center center;
 	padding: 0 2px 0 2px;

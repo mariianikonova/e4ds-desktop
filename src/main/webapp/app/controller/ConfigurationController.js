@@ -44,7 +44,7 @@ Ext.define('E4desk.controller.ConfigurationController', {
 		var me = this;
 		this.getConfigurationEditPanel().submit({
 			success: function(form, action) {
-				Ext.ux.window.Notification.info(i18n.successful, i18n.configuration_saved);
+				E4desk.ux.window.Notification.info(i18n.successful, i18n.configuration_saved);
 				me.getView().close();
 			}
 		});
@@ -55,15 +55,15 @@ Ext.define('E4desk.controller.ConfigurationController', {
 		if (this.getConfigurationEditPanel().isValid()) {
 			this.getConfigurationEditPanel().submit({
 				success: function(form, action) {
-					Ext.ux.window.Notification.info(i18n.successful, i18n.configuration_saved);
+					E4desk.ux.window.Notification.info(i18n.successful, i18n.configuration_saved);
 					appConfigurationService.sendTestEmail(testReceiver, function() {
-						Ext.ux.window.Notification.info(i18n.successful, i18n.configuration_testEmailsent);
+						E4desk.ux.window.Notification.info(i18n.successful, i18n.configuration_testEmailsent);
 					});
 				}
 			});
 		} else {
 			appConfigurationService.sendTestEmail(testReceiver, function() {
-				Ext.ux.window.Notification.info(i18n.successful, i18n.configuration_testEmailsent);
+				E4desk.ux.window.Notification.info(i18n.successful, i18n.configuration_testEmailsent);
 			});
 		}
 	}

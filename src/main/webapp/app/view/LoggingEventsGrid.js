@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.LoggingEventsGrid', {
 	extend: 'Ext.grid.Panel',
 
-	requires: [ 'Ext.ux.form.field.ClearCombo' ],
+	requires: [ 'E4desk.ux.form.field.ClearCombo', 'E4desk.store.LogLevels', 'E4desk.store.LoggingEvents' ],
 
 	plugins: [ {
 		ptype: 'rowexpander',

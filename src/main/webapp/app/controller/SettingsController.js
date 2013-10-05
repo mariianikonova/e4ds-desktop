@@ -93,7 +93,7 @@ Ext.define('E4desk.controller.SettingsController', {
 			this.getUserSettingsPanel().submit({
 				scope: this,
 				success: function() {
-					Ext.ux.window.Notification.info(i18n.successful, i18n.settings_saved);
+					E4desk.ux.window.Notification.info(i18n.successful, i18n.settings_saved);
 					this.getView().close();
 				}
 			});
@@ -112,7 +112,7 @@ Ext.define('E4desk.controller.SettingsController', {
 		Ext.state.Manager.clear('E4desk.view.UsersWindow');
 		Ext.state.Manager.clear('E4desk.view.SystemSettings');
                 Ext.state.Manager.clear('E4desk.view.ConfigurationWindow');
-		Ext.ux.window.Notification.info(i18n.successful, i18n.settings_windowpositionsreseted);
+		E4desk.ux.window.Notification.info(i18n.successful, i18n.settings_windowpositionsreseted);
 	}
 
 });

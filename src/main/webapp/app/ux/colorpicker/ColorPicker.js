@@ -10,7 +10,7 @@
  * 
  */
 
-Ext.define('Ext.ux.colorpicker.ColorPicker', {
+Ext.define('E4desk.ux.colorpicker.ColorPicker', {
 	extend : 'Ext.container.Container',
 	alias : 'widget.ux.colorpicker',
 	width : 350,

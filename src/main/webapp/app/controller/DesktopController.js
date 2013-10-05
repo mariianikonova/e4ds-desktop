@@ -1,6 +1,7 @@
 Ext.define('E4desk.controller.DesktopController', {
 	extend: 'Deft.mvc.ViewController',
-
+	requires: ['E4desk.store.ModuleStore'],
+	
 	activeWindowCls: 'desktop-active-win',
 	inactiveWindowCls: 'desktop-inactive-win',
 	windowBarCurrentWindow: null,

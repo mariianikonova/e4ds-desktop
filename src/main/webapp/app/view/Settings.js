@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.Settings', {
 	extend: 'Ext.window.Window',
 	controller: 'E4desk.controller.SettingsController',
-	requires: [ 'Ext.ux.colorpicker.ColorPicker', 'Ext.ux.colorpicker.ColorPickerField' ],
+	requires: [ 'E4desk.ux.colorpicker.ColorPicker', 'E4desk.ux.colorpicker.ColorPickerField' ],
 	stateId: 'E4desk.view.Settings',
 	stateful: true,
 	layout: 'fit',

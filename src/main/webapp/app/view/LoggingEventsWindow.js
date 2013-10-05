@@ -1,5 +1,6 @@
 Ext.define('E4desk.view.LoggingEventsWindow', {
 	extend: 'Ext.window.Window',
+	requires: ['E4desk.view.LoggingEventsGrid'],
 	controller: 'E4desk.controller.LoggingEventsController',
 	stateId: 'E4desk.view.LoggingEventsWindow',
 	title: i18n.logevents,

@@ -57,9 +57,9 @@ public class WebResourceProcessor {
 	private final static Pattern CSS_URL_PATTERN = Pattern.compile("(.*?url.*?\\(\\s*'?)(.*?)('?\\s*\\))",
 			Pattern.CASE_INSENSITIVE);
 
-	private final static String REQUIRES_PATTERN = "(?i)requires.*?:.*?\\[.*?\\].*?,";
+	private final static String REQUIRES_PATTERN = "(?is)requires.*?:.*?\\[.*?\\].*?,";
 
-	private final static String USES_PATTERN = "(?i)uses.*?:.*?\\[.*?\\].*?,";
+	private final static String USES_PATTERN = "(?is)uses.*?:.*?\\[.*?\\].*?,";
 
 	private final static String JAVASCRIPT_TAG = "<script src=\"%s\"></script>";
 

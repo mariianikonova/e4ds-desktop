@@ -1,4 +1,4 @@
-Ext.define('Ext.ux.form.field.ClearCombo', {
+Ext.define('E4desk.ux.form.field.ClearCombo', {
 	extend: 'Ext.form.field.ComboBox',
 	alias: 'widget.clearcombo',
 

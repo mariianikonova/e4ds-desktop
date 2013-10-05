@@ -7,14 +7,14 @@
 login_js:
   /resources/extjs-gpl/{extjs.version}/ext-all-dev.js[d]
   /resources/extjs-gpl/{extjs.version}/ext-all.js[ps]
-  /resources/extjs-gpl/{extjs.version}/ux/window/Notification.js[dp]
+  /app/ux/window/Notification.js[dp]
   /login.js[dp]
   /resources/detect.js[dp]
 
 login_css:
   /resources/extjs-gpl/{extjs.version}/resources/ext-theme-classic/ext-theme-classic-all.css[dps]
   /resources/css/app.css[dp]
-  /resources/extjs-gpl/{extjs.version}/ux/css/Notification.css[dp]
+  /resources/css/Notification.css[dp]
 
 app_js:
   /resources/extjs-gpl/{extjs.version}/ext-all-dev.js[d]
@@ -25,12 +25,8 @@ app_js:
   /loader.js[d]
   /api.js[d]
   /api-{application.version}.js[ps]
-  /resources/extjs-gpl/{extjs.version}/ux/colorpicker/ColorPicker.js
-  /resources/extjs-gpl/{extjs.version}/ux/colorpicker/ColorPickerField.js
-  /resources/extjs-gpl/{extjs.version}/ux/form/field/ClearCombo.js
-  /resources/extjs-gpl/{extjs.version}/ux/form/field/FilterField.js
   /resources/extjs-gpl/{extjs.version}/ux/form/MultiSelect.js
-  /resources/extjs-gpl/{extjs.version}/ux/window/Notification.js    
+  /app/ux/
   /direct.js[dp]
   /app/model/
   /app/store/
@@ -42,4 +38,5 @@ app_js:
 app_css:
   /resources/extjs-gpl/{extjs.version}/resources/ext-theme-classic/ext-theme-classic-all.css[dps]
   /resources/css/app.css[dp]
-  /resources/extjs-gpl/{extjs.version}/ux/css/Notification.css[dp]
+  /resources/css/Notification.css[dp]
+  /resources/css/colorpicker.css[dp]

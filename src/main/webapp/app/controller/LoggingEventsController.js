@@ -37,14 +37,14 @@ Ext.define('E4desk.controller.LoggingEventsController', {
 	deleteAll: function() {
 		var filter = this.getGrid().getStore().filters.get(0);
 		loggingEventService.deleteAll(filter && filter.value, function() {
-			Ext.ux.window.Notification.info(i18n.successful, i18n.logevents_deleted);
+			E4desk.ux.window.Notification.info(i18n.successful, i18n.logevents_deleted);
 			this.doGridRefresh();
 		}, this);
 	},
 
 	addTestData: function() {
 		loggingEventService.addTestData(function() {
-			Ext.ux.window.Notification.info(i18n.successful, i18n.logevents_testinserted);
+			E4desk.ux.window.Notification.info(i18n.successful, i18n.logevents_testinserted);
 			this.doGridRefresh();
 		}, this);
 

@@ -19,7 +19,7 @@ Ext.define('E4desk.controller.FeedbackController', {
 		var me = this;
 		var feedbackText = me.getFeedbackText().getValue();
 		infrastructureService.sendFeedback(feedbackText, function() {
-			Ext.ux.window.Notification.info(i18n.successful, i18n.configuration_feedbackEmailsent);
+			E4desk.ux.window.Notification.info(i18n.successful, i18n.configuration_feedbackEmailsent);
 			me.getView().close();	
 		});
 		

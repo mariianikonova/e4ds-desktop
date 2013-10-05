@@ -1,18 +1,17 @@
 /* 
- *	Notification / Toastwindow extension for Ext JS 4.x
+ *	Notification extension for Ext JS 4.0.2+
+ *	Version: 2.1.2
  *
  *	Copyright (c) 2011 Eirik Lorentsen (http://www.eirik.net/)
  *
- *	Examples and documentation at: http://www.eirik.net/Ext/ux/window/Notification.html
+ *	Follow project on GitHub: https://github.com/EirikLorentsen/Ext.ux.window.Notification
  *
  *	Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
- *	and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ *	and GPL (http://opensource.org/licenses/GPL-3.0) licenses.
  *
- *	Version: 2.1
- *	Last changed date: 2012-08-12
  */
 
-Ext.define('Ext.ux.window.Notification', {
+Ext.define('E4desk.ux.window.Notification', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.uxNotification',
 
@@ -30,7 +29,7 @@ Ext.define('Ext.ux.window.Notification', {
 	useXAxis: false,
 
 	// Options: br, bl, tr, tl, t, l, b, r
-	position: 't',
+	position: 'br',
 
 	// Pixels between each notification
 	spacing: 6,
@@ -50,7 +49,7 @@ Ext.define('Ext.ux.window.Notification', {
 
 	// Private. Do not override!
 	isHiding: false,
-	readyToHide: false,
+	isFading: false,
 	destroyAfterHide: false,
 	closeOnMouseOut: false,
 
@@ -69,16 +68,17 @@ Ext.define('Ext.ux.window.Notification', {
 			this.notification(title, text, true);
 		},
 		notification: function(title, text, error) {
-			Ext.create('Ext.ux.window.Notification', {
-				position: 't',
+			Ext.create('E4desk.ux.window.Notification', {
+				position: 'br',
 				title: title,
 				manager: 'notification',
 				iconCls: error ? 'ux-notification-icon-error' : 'ux-notification-icon-information',
 				
-				autoCloseDelay: 3000,
-				slideInDuration: 150,
+				autoCloseDelay: 4000,
+				slideInDuration: 300,
 				width: 200,
-				paddingY: 5,
+				paddingX: 10,
+				paddingY: 44,
 				
 				html: text,
 				bodyStyle: {
@@ -88,6 +88,7 @@ Ext.define('Ext.ux.window.Notification', {
 				}
 			}).show();
 		}		
+		
 	},
 
 	initComponent: function() {
@@ -131,6 +132,7 @@ Ext.define('Ext.ux.window.Notification', {
 
 	onRender: function() {
 		var me = this;
+		me.callParent(arguments);
 
 		me.el.hover(
 			function () {
@@ -145,8 +147,6 @@ Ext.define('Ext.ux.window.Notification', {
 			},
 			me
 		);
-
-		this.callParent(arguments);
 
 	},
 	
@@ -233,7 +233,7 @@ Ext.define('Ext.ux.window.Notification', {
 		// Avoid error messages if the manager does not have a dom element
 		if (me.manager && me.manager.el && me.manager.el.dom) {
 			if (!me.useXAxis) {
-				// Element should already be aligned verticaly
+				// Element should already be aligned vertically
 				return me.el.getLeft();
 			} else {
 				// Using getAnchorXY instead of getTop/getBottom should give a correct placement when document is used
@@ -259,7 +259,7 @@ Ext.define('Ext.ux.window.Notification', {
 		// Avoid error messages if the manager does not have a dom element
 		if (me.manager && me.manager.el && me.manager.el.dom) {
 			if (me.useXAxis) {
-				// Element should already be aligned horizontaly
+				// Element should already be aligned horizontally
 				return me.el.getTop();
 			} else {
 				// Using getAnchorXY instead of getTop/getBottom should give a correct placement when document is used
@@ -369,6 +369,8 @@ Ext.define('Ext.ux.window.Notification', {
 	afterShow: function () {
 		var me = this;
 
+		me.callParent(arguments);
+
 		var notifications = me.getNotifications(me.managerAlignment);
 
 		if (notifications.length) {
@@ -383,7 +385,12 @@ Ext.define('Ext.ux.window.Notification', {
 
 		Ext.Array.include(notifications, me);
 
+		// Repeating from coordinates makes sure the windows does not flicker into the center of the viewport during animation
 		me.el.animate({
+			from: {
+				x: me.el.getX(),
+				y: me.el.getY()
+			},
 			to: {
 				x: me.xPos,
 				y: me.yPos,
@@ -394,7 +401,6 @@ Ext.define('Ext.ux.window.Notification', {
 			dynamic: true
 		});
 
-		this.callParent(arguments);
 	},
 	
 	slideBack: function () {
@@ -455,6 +461,7 @@ Ext.define('Ext.ux.window.Notification', {
 			var notifications = me.getNotifications(me.managerAlignment);
 			var index = Ext.Array.indexOf(notifications, me);
 			if (index != -1) {
+				// Requires Ext JS 4.0.2
 				Ext.Array.erase(notifications, index, 1);
 
 				// Slide "down" all notifications "above" the hidden one
@@ -468,72 +475,48 @@ Ext.define('Ext.ux.window.Notification', {
 	hide: function () {
 		var me = this;
 
-		// Avoids restarting the last animation on an element already underway with its hide animation
-		if (!me.isHiding && me.el) {
-
+		if (me.isHiding) {
+			if (!me.isFading) {
+				me.callParent(arguments);
+				// Must come after callParent() since it will pass through hide() again triggered by destroy()
+				me.isHiding = false;
+			}
+		} else {
+			// Must be set right away in case of double clicks on the close button
 			me.isHiding = true;
+			me.isFading = true;
 
 			me.cancelAutoClose();
-			me.stopAnimation();
 
-			me.el.animate({
-				to: {
-					opacity: 0
-				},
-				easing: 'easeIn',
-				duration: me.hideDuration,
-				dynamic: false,
-				listeners: {
-					afteranimate: function () {
-						me.removeFromManager();
-						me.readyToHide = true;
-						me.hide(me.animateTarget, me.doClose, me);
+			if (me.el) {
+				me.el.fadeOut({
+					opacity: 0,
+					easing: 'easeIn',
+					duration: me.hideDuration,
+					remove: me.destroyAfterHide,
+					listeners: {
+						afteranimate: function () {
+							me.isFading = false;
+							me.removeCls('notification-fixed');
+							me.removeFromManager();
+							me.hide();
+						}
 					}
-				}
-			});
-		}
-
-		// Calling parent's hide function to complete hiding
-		if (me.readyToHide) {
-			me.isHiding = false;
-			me.readyToHide = false;
-			me.removeCls('notification-fixed');
-			me.callParent(arguments);
-			if (me.destroyAfterHide) {
-				me.destroy();
+				});
 			}
 		}
+
+		return me;
 	},
 
 	destroy: function () {
 		var me = this;
-
 		if (!me.hidden) {
 			me.destroyAfterHide = true;
-			me.hide(me.animateTarget, me.doClose, me);
+			me.hide();
 		} else {
 			me.callParent(arguments);
 		}
 	}
 
 });
-
-
-/*	Changelog:
- *
- *  2011-09-01 - 1.1: Bugfix. Array.indexOf not universally implemented, causing errors in IE<=8. Replaced with Ext.Array.indexOf.
- *  2011-09-12 - 1.2: Added config options: stickOnClick and stickWhileHover.
- *  2011-09-13 - 1.3: Cleaned up component destruction.
- *  2012-03-06 - 2.0: Renamed some properties ending with "Delay" to the more correct: "Duration".
- *                    Moved the hiding animation out of destruction and into hide.
- *                    Renamed the corresponding "destroy" properties to "hide".
- *                    (Hpsam) Changed addClass to addCls.
- *                    (Hpsam) Avoiding setting 'notification-fixed' when auto hiding.
- *                    (Justmyhobby) Using separate arrays to enable managers to mix alignments.
- *                    (Kreeve_ctisn) Removed default title.
- *                    (Jmaia) Center of edges can be used for positioning. Renamed corner property to position.
- *                    (Hpsam) Hiding or destroying manager does not cause errors.
- *  2012-08-12 - 2.1: Renamed autoHide to autoClose
- *                    (Dmurat) Enabled reuse of notifications (closeAction: 'hide')
- *                    (Idonofrio) Destroying notification by default (closeAction: 'destroy')
- */

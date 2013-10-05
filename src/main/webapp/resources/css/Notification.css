@@ -5,9 +5,9 @@
 }
 
 .ux-notification-icon-information {
-	background-image: url('images/icon16_info.png');
+	background-image: url('../images/icon16_info.png');
 }
 
 .ux-notification-icon-error {
-	background-image: url('images/icon16_error.png');
+	background-image: url('../images/icon16_error.png');
 }

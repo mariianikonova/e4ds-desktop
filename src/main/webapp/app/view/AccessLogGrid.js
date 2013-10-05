@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.AccessLogGrid', {
 	extend: 'Ext.grid.Panel',
 
-	requires: [ 'Ext.ux.form.field.FilterField' ],
+	requires: [ 'E4desk.ux.form.field.FilterField', 'E4desk.store.AccessLogs' ],
 
 	initComponent: function() {
 		var me = this;

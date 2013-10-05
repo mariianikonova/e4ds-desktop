@@ -1,6 +1,6 @@
 Ext.define('E4desk.view.UserEdit', {
 	extend: 'Ext.form.Panel',
-	requires: [ 'Ext.ux.form.MultiSelect' ],
+	requires: [ 'Ext.ux.form.MultiSelect', 'E4desk.store.Roles' ],
 	width: 400,
 	
 	defaultType: 'textfield',

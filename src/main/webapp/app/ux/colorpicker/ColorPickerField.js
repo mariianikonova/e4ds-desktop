@@ -10,16 +10,16 @@
  * @version 1.0.0
  */
 
-Ext.define('Ext.ux.colorpicker.ColorPickerField', {
+Ext.define('E4desk.ux.colorpicker.ColorPickerField', {
 	extend : 'Ext.form.field.Picker',
-	requires : [ 'Ext.ux.colorpicker.ColorPicker' ],
+	requires : [ 'E4desk.ux.colorpicker.ColorPicker' ],
 	alias : 'widget.ux.colorpickerfield',
 	matchFieldWidth : false,
 
 	createPicker : function() {
 		var me = this;
 
-		return Ext.create('Ext.ux.colorpicker.ColorPicker', {
+		return Ext.create('E4desk.ux.colorpicker.ColorPicker', {
 			floating : true,
 			focusOnShow : true,
 			baseCls : Ext.baseCSSPrefix + 'colorpicker',
