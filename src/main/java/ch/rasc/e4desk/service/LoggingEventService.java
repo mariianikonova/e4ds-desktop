@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
@@ -91,25 +89,6 @@ public class LoggingEventService {
 		logger.info("this is a info log entry");
 		logger.warn("a warning", new IllegalArgumentException());
 		logger.error("a serious error", new NullPointerException());
-	}
-
-	@ExtDirectMethod
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void changeLogLevel(String levelString) {
-		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-		ch.qos.logback.classic.Logger logger = lc.getLogger("ch.rasc.e4desk");
-		Level level = Level.toLevel(levelString);
-		if (level != null) {
-			logger.setLevel(level);
-		}
-	}
-
-	@ExtDirectMethod
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String getCurrentLevel() {
-		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-		ch.qos.logback.classic.Logger logger = lc.getLogger("ch.rasc.e4desk");
-		return logger != null && logger.getLevel() != null ? logger.getLevel().toString() : "ERROR";
 	}
 
 }
