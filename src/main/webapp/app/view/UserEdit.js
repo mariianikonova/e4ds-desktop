@@ -9,7 +9,7 @@ Ext.define('E4desk.view.UserEdit', {
 	},
 
 	api: {
-		submit: userService.userFormPost
+		submit: 'userService.userFormPost'
 	},
 
 	fieldDefaults: {
