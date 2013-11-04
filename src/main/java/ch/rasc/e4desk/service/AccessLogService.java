@@ -30,7 +30,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.filter.StringFilter;
 import ch.rasc.e4desk.entity.AccessLog;
 import ch.rasc.e4desk.entity.QAccessLog;
-import ch.rasc.e4desk.util.Util;
+import ch.rasc.edsutil.QueryUtil;
 
 import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.JPQLQuery;
@@ -59,7 +59,7 @@ public class AccessLogService {
 			query.where(QAccessLog.accessLog.userName.startsWithIgnoreCase(userName));
 		}
 
-		Util.addPagingAndSorting(query, request, AccessLog.class, QAccessLog.accessLog,
+		QueryUtil.addPagingAndSorting(query, request, AccessLog.class, QAccessLog.accessLog,
 				Collections.<String, String> emptyMap(), Collections.singleton("browser"));
 
 		SearchResults<AccessLog> searchResult = query.listResults(QAccessLog.accessLog);

@@ -21,7 +21,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.filter.StringFilter;
 import ch.rasc.e4desk.entity.LoggingEvent;
 import ch.rasc.e4desk.entity.QLoggingEvent;
-import ch.rasc.e4desk.util.Util;
+import ch.rasc.edsutil.QueryUtil;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -51,8 +51,8 @@ public class LoggingEventService {
 			query.where(QLoggingEvent.loggingEvent.levelString.eq(levelValue));
 		}
 
-		Util.addPagingAndSorting(query, request, LoggingEvent.class, QLoggingEvent.loggingEvent, mapGuiColumn2DbField,
-				Collections.<String> emptySet());
+		QueryUtil.addPagingAndSorting(query, request, LoggingEvent.class, QLoggingEvent.loggingEvent,
+				mapGuiColumn2DbField, Collections.<String> emptySet());
 
 		SearchResults<LoggingEvent> searchResult = query.listResults(QLoggingEvent.loggingEvent);
 

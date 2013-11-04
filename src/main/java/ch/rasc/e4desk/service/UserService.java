@@ -40,7 +40,7 @@ import ch.rasc.e4desk.entity.QUser;
 import ch.rasc.e4desk.entity.Role;
 import ch.rasc.e4desk.entity.User;
 import ch.rasc.e4desk.security.JpaUserDetails;
-import ch.rasc.e4desk.util.Util;
+import ch.rasc.edsutil.QueryUtil;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
@@ -82,7 +82,7 @@ public class UserService {
 			query.where(bb);
 		}
 
-		Util.addPagingAndSorting(query, request, User.class, QUser.user);
+		QueryUtil.addPagingAndSorting(query, request, User.class, QUser.user);
 		SearchResults<User> searchResult = query.listResults(QUser.user);
 
 		PeriodFormatter periodFormatter = new PeriodFormatterBuilder()
