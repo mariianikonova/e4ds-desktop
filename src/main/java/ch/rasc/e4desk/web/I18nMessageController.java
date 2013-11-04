@@ -32,10 +32,6 @@ public class I18nMessageController implements InitializingBean {
 	@Autowired(required = false)
 	private JsonHandler jsonHandler;
 
-	private final static String prefix = "var i18n = ";
-
-	private final static String postfix = ";";
-
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (jsonHandler == null) {
@@ -76,7 +72,7 @@ public class I18nMessageController implements InitializingBean {
 			messages.put(key, rb.getString(key));
 		}
 
-		String output = prefix + jsonHandler.writeValueAsString(messages) + postfix;
+		String output = "var i18n = " + jsonHandler.writeValueAsString(messages) + ";";
 		return output.getBytes(StandardCharsets.UTF_8);
 	}
 
