@@ -1,6 +1,6 @@
 Ext.define('E4desk.controller.UsersController', {
 	extend: 'Deft.mvc.ViewController',
-
+	requires : [ 'E4desk.store.Users' ],
 	store: Ext.create('E4desk.store.Users'),
 
 	observe: {
