@@ -11,10 +11,10 @@
 	</prerequisites>
 
 	<properties>
-		<spring.version>3.2.4.RELEASE</spring.version>
-		<spring.security.version>3.2.0.RC1</spring.security.version>
+		<spring.version>4.0.0.RC1</spring.version>
+		<spring.security.version>3.2.0.RC2</spring.security.version>
 
-		<hibernate.version>4.2.7.SP1</hibernate.version>
+		<hibernate.version>4.3.0.Beta4</hibernate.version>
 		<querydsl.version>3.2.4</querydsl.version>
 
 		<slf4j.version>1.7.5</slf4j.version>
@@ -31,6 +31,12 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>ch.rasc</groupId>
+			<artifactId>edsutil</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -119,13 +125,13 @@
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.core</artifactId>
-			<version>3.0.0.GA</version>
+			<version>3.1.0.CR8</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.3.1.Final</version>
+			<version>5.0.1.Final</version>
 		</dependency>
 
 		<dependency>
@@ -163,7 +169,7 @@
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-			<version>3.0.6</version>
+			<version>3.0.7</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>snakeyaml</artifactId>
@@ -318,7 +324,7 @@
 		<dependency>
 			<groupId>net.sf.uadetector</groupId>
 			<artifactId>uadetector-resources</artifactId>
-			<version>2013.09</version>
+			<version>2013.10</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>jsr305</artifactId>
@@ -588,7 +594,7 @@
 								<vars>true</vars>
 								<plusplus>true</plusplus>
 								<unparam>true</unparam>
-								<predef>Ext,Deft,E4desk,app_context_path,i18n,accessLogService,userService,logService,
+								<predef>Ext,Deft,REMOTING_API,POLLING_URLS,E4desk,app_context_path,i18n,accessLogService,userService,logService,
 								loggingEventService,infrastructureService,moduleService,wallpaperService,
 								appConfigurationService</predef>
 							</options>
