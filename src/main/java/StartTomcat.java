@@ -10,6 +10,15 @@ public class StartTomcat {
 		skipJars += "usertype*.jar;validation-api-*.jar;xmlbeans-*.jar;yuicompressor*.jar";
 		skipJars += "tomcat-*.jar;ecj-*.jar;h2*.jar";
 
+		/*
+		 * To activate development mode from tomcat context file add this
+		 * statement: <Environment name="spring.profiles.active"
+		 * value="development" type="java.lang.String" override="false"/>
+		 */
+
+		// Comment out the following line to activate production profile
+		System.setProperty("spring.profiles.active", "development");
+
 		EmbeddedTomcat.create().skipJarsDefaultJarScanner(skipJars).setContextFile("./src/main/config/tomcat.xml")
 				.startAndWait();
 	}
