@@ -24,7 +24,8 @@ Ext.define("E4desk.model.User",
   }, {
     name : "id",
     type : "int",
-    useNull : true
+    useNull : true,
+    convert : null
   } ],
   associations : [ {
     type : "hasMany",

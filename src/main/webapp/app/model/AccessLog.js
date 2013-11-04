@@ -21,7 +21,8 @@ Ext.define("E4desk.model.AccessLog",
   }, {
     name : "id",
     type : "int",
-    useNull : true
+    useNull : true,
+    convert : null
   } ],
   proxy : {
     type : "direct",

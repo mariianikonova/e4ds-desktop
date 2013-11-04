@@ -7,7 +7,8 @@ Ext.define("E4desk.model.Role",
   }, {
     name : "id",
     type : "int",
-    useNull : true
+    useNull : true,
+    convert : null
   } ],
   proxy : {
     type : "direct",
