@@ -19,15 +19,13 @@ login_css:
 app_js:
   /resources/extjs-gpl/{extjs.version}/ext-all-dev.js[d]
   /resources/extjs-gpl/{extjs.version}/ext-all.js[ps]
-  /overrides.js[dp]
+  /overrides/
   /deft-debug.js[d]
   /deft.js
-  /loader.js[d]
-  /api.js[d]
-  /api-{application.version}.js[ps]
+  /api.js?apiNs=[d]
+  /api-{application.version}.js?apiNs=[ps]
   /resources/extjs-gpl/{extjs.version}/ux/form/MultiSelect.js
   /app/ux/
-  /direct.js[dp]
   /app/model/
   /app/store/
   /app/controller/

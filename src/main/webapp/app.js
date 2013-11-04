@@ -1,11 +1,28 @@
+/* <debug> */
+Ext.Loader.setConfig({
+	enabled: true,
+	paths: {
+		'E4desk': 'app',
+		'Ext.ux': 'resources/extjs-gpl/4.2.2/ux'
+	}
+});
+/* </debug> */
+
 Ext.define('E4desk.App', {
 	extend: 'Deft.mvc.Application',
-	requires: [ 'E4desk.ux.window.Notification', 'E4desk.view.Viewport' ],
+	requires: [ 'overrides.AbstractMixedCollection', 'overrides.Window', 'E4desk.ux.window.Notification', 'E4desk.view.Viewport' ],
 
 	init: function() {
 		Ext.fly('circularG').destroy();
 
-		
+		var heartbeat = new Ext.direct.PollingProvider({
+			type: 'polling',
+			interval: 5 * 60 * 1000, // 5 minutes
+			url: POLLING_URLS.heartbeat
+		});
+		REMOTING_API.id = 'remoting';
+		Ext.direct.Manager.addProvider(REMOTING_API, heartbeat);
+	
 	    function createCustomExtLogFunction(defaultConfig) {
 	        return function(arg1) {
 	            var arg1IsConfig = Ext.isObject(arg1);
