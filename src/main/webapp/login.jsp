@@ -57,7 +57,7 @@ ${applicationScope.login_css}
   Ext.onReady(function() {
     Ext.fly('circularG').destroy();
 	<% if (session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION") != null) { /**/ %> 
-	  E4desk.ux.window.Notification.error('Fehler', 'Anmeldung fehlgeschlagen');
+	  E4desk.ux.window.Notification.error(i18n.error, i18n.login_failed);
 	  <% session.removeAttribute("SPRING_SECURITY_LAST_EXCEPTION"); %>
 	<% } %>
   });
