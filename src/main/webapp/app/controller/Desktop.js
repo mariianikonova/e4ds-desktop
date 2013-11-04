@@ -1,4 +1,4 @@
-Ext.define('E4desk.controller.DesktopController', {
+Ext.define('E4desk.controller.Desktop', {
 	extend: 'Deft.mvc.ViewController',
 	requires: ['E4desk.store.ModuleStore'],
 	

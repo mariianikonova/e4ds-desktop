@@ -1,6 +1,6 @@
 Ext.define('E4desk.view.Desktop', {
 	extend: 'Ext.panel.Panel',
-	controller: 'E4desk.controller.DesktopController',
+	controller: 'E4desk.controller.Desktop',
 	requires: [ 'E4desk.view.WindowBar', 'E4desk.view.Wallpaper', 'E4desk.store.DesktopStore', 'E4desk.view.TopBar', 'E4desk.view.module.OnlineUsers',
 			'E4desk.view.module.Notepad', 'E4desk.view.module.TabWindow', 'E4desk.view.module.GridWindow', 'E4desk.view.module.SystemStatus',
 			'E4desk.view.UsersWindow', 'E4desk.view.LoggingEventsWindow', 'E4desk.view.AccessLogWindow', 'E4desk.view.ConfigurationWindow' ],

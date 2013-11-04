@@ -1,4 +1,4 @@
-Ext.define('E4desk.controller.UsersController', {
+Ext.define('E4desk.controller.User', {
 	extend: 'Deft.mvc.ViewController',
 	requires : [ 'E4desk.store.Users' ],
 	store: Ext.create('E4desk.store.Users'),

@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.UsersWindow', {
 	extend: 'Ext.window.Window',
 	requires: [ 'E4desk.view.UsersGrid', 'E4desk.view.UserEdit' ],
-	controller: 'E4desk.controller.UsersController',
+	controller: 'E4desk.controller.User',
 	stateId: 'E4desk.view.UsersWindow',
 	title: i18n.user,
 	width: 1070,

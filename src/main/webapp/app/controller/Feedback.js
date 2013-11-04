@@ -1,4 +1,4 @@
-Ext.define('E4desk.controller.FeedbackController', {
+Ext.define('E4desk.controller.Feedback', {
 	extend: 'Deft.mvc.ViewController',
 
 	control: {	

@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.AccessLogWindow', {
 	extend: 'Ext.window.Window',
 	requires: ['E4desk.view.AccessLogGrid'],
-	controller: 'E4desk.controller.AccessLogController',
+	controller: 'E4desk.controller.AccessLog',
 	stateId: 'E4desk.view.AccessLogWindow',
 
 	title: i18n.accesslog,

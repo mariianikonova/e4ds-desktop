@@ -1,7 +1,7 @@
 Ext.define('E4desk.view.ConfigurationWindow', {
 	extend: 'Ext.window.Window',
 	requires: ['E4desk.view.ConfigurationEdit'],
-	controller: 'E4desk.controller.ConfigurationController',
+	controller: 'E4desk.controller.Configuration',
 	stateId: 'E4desk.view.ConfigurationWindow',
 
 	title: i18n.configuration,

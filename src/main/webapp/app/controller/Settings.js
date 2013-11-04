@@ -1,4 +1,4 @@
-Ext.define('E4desk.controller.SettingsController', {
+Ext.define('E4desk.controller.Settings', {
 	extend: 'Deft.mvc.ViewController',
 
 	control: {

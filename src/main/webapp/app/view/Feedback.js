@@ -1,6 +1,6 @@
 Ext.define('E4desk.view.Feedback', {
 	extend: 'Ext.window.Window',
-	controller: 'E4desk.controller.FeedbackController',
+	controller: 'E4desk.controller.Feedback',
 	stateId: 'E4desk.view.Feedback',
 	stateful: true,
 	layout: 'border',
