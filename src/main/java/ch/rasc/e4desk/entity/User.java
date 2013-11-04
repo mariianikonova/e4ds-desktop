@@ -21,6 +21,7 @@ import ch.ralscha.extdirectspring.generator.Model;
 import ch.ralscha.extdirectspring.generator.ModelAssociation;
 import ch.ralscha.extdirectspring.generator.ModelAssociationType;
 import ch.ralscha.extdirectspring.generator.ModelField;
+import ch.rasc.edsutil.entity.AbstractPersistable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

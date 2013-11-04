@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import ch.ralscha.extdirectspring.generator.Model;
+import ch.rasc.edsutil.entity.AbstractPersistable;
 
 @Entity
 @Model(value = "E4desk.model.Role", readMethod = "userService.readRoles")
