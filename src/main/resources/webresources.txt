@@ -20,8 +20,8 @@ app_js:
   /resources/extjs-gpl/{extjs.version}/ext-all-dev.js[d]
   /resources/extjs-gpl/{extjs.version}/ext-all.js[ps]
   /overrides/
-  /deft-debug.js[d]
-  /deft.js
+  /resources/deft-debug.js[d]
+  /resources/deft.js
   /api.js?apiNs=[d]
   /api-{application.version}.js?apiNs=[ps]
   /resources/extjs-gpl/{extjs.version}/ux/form/MultiSelect.js
