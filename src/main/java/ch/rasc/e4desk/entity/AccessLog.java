@@ -11,10 +11,10 @@ import net.sf.uadetector.service.UADetectorServiceFactory;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import ch.ralscha.extdirectspring.generator.Model;
-import ch.ralscha.extdirectspring.generator.ModelField;
 import ch.rasc.edsutil.entity.AbstractPersistable;
 import ch.rasc.edsutil.jackson.ISO8601DateTimeSerializer;
+import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

@@ -7,11 +7,11 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import ch.ralscha.extdirectspring.generator.Model;
-import ch.ralscha.extdirectspring.generator.ModelField;
 import ch.rasc.e4desk.entity.LoggingEventException;
 import ch.rasc.e4desk.entity.LoggingEventProperty;
 import ch.rasc.e4desk.util.DateTimeSerializer;
+import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelField;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
