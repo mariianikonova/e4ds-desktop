@@ -60,7 +60,6 @@ Ext.define('E4desk.controller.Desktop', {
 		desktopCtxMenu.down('menuitem[action=fitvertical]').on('click', this.onDesktopContextmenuFitVertical, this);
 		
 		var windowBarCtxMenu = this.getWindowBar().contextMenu;
-		windowBarCtxMenu.on('hide', function() { this.windowBarCurrentWindow = null; }, this);
 		windowBarCtxMenu.down('menuitem[action=restore]').on('click', this.onWindowBarContextmenuRestore, this);		
 		windowBarCtxMenu.down('menuitem[action=minimize]').on('click', this.onWindowBarContextmenuMinimize, this);
 		windowBarCtxMenu.down('menuitem[action=maximize]').on('click', this.onWindowBarContextmenuMaximize, this);
@@ -348,6 +347,7 @@ Ext.define('E4desk.controller.Desktop', {
 
 	updateActiveWindow: function() {
 		var activeWindow = this.getActiveWindow(), last = this.lastActiveWindow;
+
 		if (activeWindow === last) {
 			return;
 		}
@@ -376,7 +376,7 @@ Ext.define('E4desk.controller.Desktop', {
 		var win = null;
 
 		Ext.WindowManager.eachTopDown(function(comp) {
-			if (comp.isWindow && !comp.hidden && !comp.hasCls('ux-notification-window')) {
+			if (comp.isWindow && !comp.hidden && !comp.hasCls('ux-notification-window') && !comp.hasCls('x-window-ghost')) {
 				win = comp;
 				return false;
 			}
