@@ -11,7 +11,7 @@
 	</prerequisites>
 
 	<properties>
-		<spring.security.version>3.2.0.RC2</spring.security.version>
+		<spring.security.version>3.2.0.RELEASE</spring.security.version>
 
 		<hibernate.version>4.3.0.CR2</hibernate.version>
 		<querydsl.version>3.2.4</querydsl.version>
