@@ -13,7 +13,7 @@
 	<properties>
 		<spring.security.version>3.2.0.RELEASE</spring.security.version>
 
-		<hibernate.version>4.3.0.CR2</hibernate.version>
+		<hibernate.version>4.3.0.Final</hibernate.version>
 		<querydsl.version>3.2.4</querydsl.version>
 
 		<slf4j.version>1.7.5</slf4j.version>
@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>ch.rasc</groupId>
 			<artifactId>edsutil</artifactId>
-			<version>1.0.4</version>
+			<version>1.0.5</version>
 		</dependency>
 
 		<dependency>
@@ -140,7 +140,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.0.1.Final</version>
+			<version>5.0.2.Final</version>
 		</dependency>
 
 		<dependency>
@@ -377,7 +377,7 @@
 			<url>http://repository.rasc.ch</url>
 		</repository>
 
-		<repository>
+<!-- 		<repository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
 			<url>http://repo.spring.io/milestone</url>
@@ -385,7 +385,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-
+ -->
 	</repositories>
 
 	<build>
