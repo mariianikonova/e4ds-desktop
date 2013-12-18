@@ -22,8 +22,8 @@ app_js:
   /overrides/
   /resources/deft-debug.js[d]
   /resources/deft.js
-  /api.js?apiNs=[d]
-  /api-{application.version}.js?apiNs=[ps]
+  /api.js[d]
+  /api-{application.version}.js[ps]
   /resources/extjs-gpl/{extjs.version}/ux/form/MultiSelect.js
   /app/ux/
   /app/model/

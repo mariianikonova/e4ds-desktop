@@ -18,10 +18,10 @@ Ext.define('E4desk.App', {
 		var heartbeat = new Ext.direct.PollingProvider({
 			type: 'polling',
 			interval: 5 * 60 * 1000, // 5 minutes
-			url: POLLING_URLS.heartbeat
+			url: Ext.app.POLLING_URLS.heartbeat
 		});
-		REMOTING_API.id = 'remoting';
-		Ext.direct.Manager.addProvider(REMOTING_API, heartbeat);
+		Ext.app.REMOTING_API.id = 'remoting';
+		Ext.direct.Manager.addProvider(Ext.app.REMOTING_API, heartbeat);
 	
 	    function createCustomExtLogFunction(defaultConfig) {
 	        return function(arg1) {
