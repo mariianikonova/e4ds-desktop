@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,7 +23,29 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
+
+	@Configuration
+	@Order(1)
+	public static class CachableWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			//@formatter:off
+			http
+				.antMatcher("/i18n*")
+				.headers()
+					.disable()
+				.authorizeRequests()
+					.antMatchers("/i18n*").permitAll()
+					.and()
+				.csrf()
+					.disable();
+			//@formatter:on
+		}
+	}
+
+	@Configuration
+	public static class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -42,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity builder) throws Exception {
-		builder.ignoring().antMatchers("/resources/**", "/favicon.ico");
+			builder.ignoring().antMatchers("/resources/**", "/favicon.ico", "/api*.js");
 	}
 
 	@Bean
@@ -69,7 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
 		    .and()		
 		  .authorizeRequests()
-		    .antMatchers("/i18n*", "/login*", "/app/ux/window/Notification.js").permitAll()
+		    .antMatchers("/login*", "/app/ux/window/Notification.js").permitAll()
 			.anyRequest().authenticated()
 		    .and()
 	      .formLogin()
@@ -87,6 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		  .csrf()
 		    .disable();
 		//@formatter:on
+	}
 	}
 
 }
