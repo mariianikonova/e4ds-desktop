@@ -79,7 +79,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-		</dependency>		
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -123,6 +123,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -171,6 +177,10 @@
 				<exclusion>
 					<artifactId>jsr305</artifactId>
 					<groupId>net.sourceforge.findbugs</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -345,7 +355,7 @@
 		<dependency>
 			<groupId>ch.rasc</groupId>
 			<artifactId>embeddedtc</artifactId>
-			<version>1.10</version>
+			<version>1.11</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -377,15 +387,6 @@
 			<url>http://repository.rasc.ch</url>
 		</repository>
 
-<!-- 		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>http://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
- -->
 	</repositories>
 
 	<build>
@@ -591,14 +592,14 @@
 								<plusplus>true</plusplus>
 								<unparam>true</unparam>
 								<predef>Ext,Deft,REMOTING_API,POLLING_URLS,E4desk,app_context_path,i18n,accessLogService,userService,logService,
-								loggingEventService,infrastructureService,moduleService,wallpaperService,
-								appConfigurationService</predef>
+									loggingEventService,infrastructureService,moduleService,wallpaperService,
+									appConfigurationService</predef>
 							</options>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			
+
 		</plugins>
 
 
