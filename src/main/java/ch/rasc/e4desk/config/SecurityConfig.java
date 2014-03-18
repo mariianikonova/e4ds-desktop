@@ -47,70 +47,70 @@ public class SecurityConfig {
 	@Configuration
 	public static class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+		@Autowired
+		private UserDetailsService userDetailsService;
 
-	@Autowired
-	private DataSource dataSource;
+		@Autowired
+		private DataSource dataSource;
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+		@Bean
+		public PasswordEncoder passwordEncoder() {
+			return new BCryptPasswordEncoder();
+		}
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-	}
+		@Override
+		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+			auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		}
 
-	@Override
-	public void configure(WebSecurity builder) throws Exception {
+		@Override
+		public void configure(WebSecurity builder) throws Exception {
 			builder.ignoring().antMatchers("/resources/**", "/favicon.ico", "/api*.js");
-	}
+		}
 
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+		@Bean
+		@Override
+		public AuthenticationManager authenticationManagerBean() throws Exception {
+			return super.authenticationManagerBean();
+		}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
 
-		JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
-		tokenRepo.setDataSource(dataSource);
-		tokenRepo.setCreateTableOnStartup(false);
-		tokenRepo.afterPropertiesSet();
+			JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
+			tokenRepo.setDataSource(dataSource);
+			tokenRepo.setCreateTableOnStartup(false);
+			tokenRepo.afterPropertiesSet();
 
-		//@formatter:off
-		http
-		.headers()
-		    .contentTypeOptions()
-		    .xssProtection()
-		    .cacheControl()
-		    .httpStrictTransportSecurity()
-		    .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
-		    .and()		
-		  .authorizeRequests()
-		    .antMatchers("/login*", "/app/ux/window/Notification.js").permitAll()
-			.anyRequest().authenticated()
-		    .and()
-	      .formLogin()
-	        .loginPage("/login.html")
-	        .defaultSuccessUrl("/index.html", true)
-	        .permitAll()
-		    .and()
-		  .logout()
-		    .deleteCookies("JSESSIONID")
-		    .permitAll()
-		    .and()
-		  .rememberMe()
-		    .tokenRepository(tokenRepo)
-		    .and()
-		  .csrf()
-		    .disable();
-		//@formatter:on
-	}
+			//@formatter:off
+			http
+			.headers()
+			    .contentTypeOptions()
+			    .xssProtection()
+			    .cacheControl()
+			    .httpStrictTransportSecurity()
+			    .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
+			    .and()		
+			  .authorizeRequests()
+			    .antMatchers("/login*", "/app/ux/window/Notification.js").permitAll()
+				.anyRequest().authenticated()
+			    .and()
+		      .formLogin()
+		        .loginPage("/login.html")
+		        .defaultSuccessUrl("/index.html", true)
+		        .permitAll()
+			    .and()
+			  .logout()
+			    .deleteCookies("JSESSIONID")
+			    .permitAll()
+			    .and()
+			  .rememberMe()
+			    .tokenRepository(tokenRepo)
+			    .and()
+			  .csrf()
+			    .disable();
+			//@formatter:on
+		}
 	}
 
 }
